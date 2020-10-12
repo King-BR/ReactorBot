@@ -8,9 +8,11 @@ module.exports = {
             // Codigo do comando
             if(!message.member.hasPermission("MANAGE_MESSAGES", "ADMINISTRATOR")) return message.channel.send("Você não tem permissão para isso");
             if(typeof parseInt(args[0]) != "number") return message.channel.send("Quantidade invalida");
+            if(parseInt(args[0]) < 1) return message.channel.send("O numero precisa ser maior que 0");
 
 		    message.channel.bulkDelete(parseInt(args[0]) + 1)
-                .then(messages => message.channel.send(`Foram deletadas ${messages.size - 1} mensagens.`));
+                .then(messages => message.channel.send(`Foram deletadas ${messages.size - 1} mensagens.`))
+                .then(message => client.setTimeout(function(){message.delete();},3 * 1000),message);
 
         } catch(err) {
             let embed = new Discord.MessageEmbed()

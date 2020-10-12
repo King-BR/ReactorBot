@@ -13,7 +13,7 @@ module.exports = {
 			    .setColor('#FFFF00')
 			    .setAuthor(message.author.tag,message.author.displayAvatarURL())
 			    .setTitle('Aviso!')
-			    .setDescription(`${user} levou warn. Motivo:\n\n${ args[1] ? args.slice(1).join(" ") : "[Nenhum motivo foi dado]" }`)
+			    .setDescription(`${user} levou warn.\n\nMotivo: ${ args[1] ? args.slice(1).join(" ") : "[Nenhum motivo foi dado]" }`)
 			    .setThumbnail(user.displayAvatarURL({dynamic: true, format: "png", size: 1024}));
             await channel.send(embed);
 
