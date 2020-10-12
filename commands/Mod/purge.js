@@ -19,7 +19,7 @@ module.exports = {
                 .setTitle("Erro inesperado")
                 .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
             message.channel.send(embed)
-            console.log(`=> ${newError(err, this.config.name, message.guild.id)}`);
+            console.log(`=> ${newError(err, "purge", message.guild.id)}`);
         }
     },
 
