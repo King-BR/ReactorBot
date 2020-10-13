@@ -6,7 +6,7 @@ module.exports = {
         newError = botUtils.newError;
         try {
             // Codigo do comando
-            if(!message.member.hasPermission("KICK_MEMBERS", "BAN_MEMBERS", "ADMINISTRATOR")) return message.channel.send("Você não tem permissão para isso");
+            if(!message.member.hasPermission("KICK_MEMBERS", "BAN_MEMBERS", "ADMINISTRATOR")) return message.reply("Você não tem permissão para isso");
             const user = message.mentions.users.first();
 		    const channel = message.guild.channels.cache.find(ch => ch.name === 'punição');
 		    let embed = new Discord.MessageEmbed()
@@ -14,7 +14,8 @@ module.exports = {
 			    .setAuthor(message.author.tag,message.author.displayAvatarURL())
 			    .setTitle('Aviso!')
 			    .setDescription(`${user} levou warn.\n\nMotivo: ${ args[1] ? args.slice(1).join(" ") : "[Nenhum motivo foi dado]" }`)
-			    .setThumbnail(user.displayAvatarURL({dynamic: true, format: "png", size: 1024}));
+			    .setThumbnail(user.displayAvatarURL({dynamic: true, format: "png", size: 1024}))
+                .setTimestamp();
             await channel.send(embed);
 
         } catch(err) {

@@ -6,7 +6,7 @@ module.exports = {
         newError = botUtils.newError;
         try {
             // Codigo do comando
-			if(!message.member.hasPermission("KICK_MEMBERS", "ADMINISTRATOR")) return message.reply("Você não tem permissão para isso");
+			if(!message.member.hasPermission("BAN_MEMBERS", "ADMINISTRATOR")) return message.reply("Você não tem permissão para isso");
 			
             const user = message.mentions.members.first();
 			const channel = message.guild.channels.cache.find(ch => ch.name === 'punição');
@@ -19,14 +19,15 @@ module.exports = {
 			if(rankUser >= rankAuthor) return message.reply(`Você é incapaz de expulsar o ${user.user.username}`);
 			if(rankUser >= rankBot)    return message.reply(`Eu sou incapaz de expulsar o ${user.user.username}`);	
 
-			user.kick(reason)
+			user.ban({ days: 7, reason: reason})
 				.then( async () => {
 					let embed = new Discord.MessageEmbed()
-						.setColor('#FF0000')
+						.setColor('#5100FF')
 						.setAuthor(message.author.tag,message.author.displayAvatarURL())
-						.setTitle('Kick!')
-						.setDescription(`${user} levou kick.\n\nMotivo: ${ reason }`)
-						.setThumbnail(user.user.displayAvatarURL({dynamic: true, format: "png", size: 1024}))
+                        .setTitle('Ban!')
+                        .setImage('https://media1.tenor.com/images/a218955491d07f811b5fb219e8a10e6c/tenor.gif?itemid=18035543')
+                        .setDescription(`${user} levou ban.\n\nMotivo: ${ reason }`)
+                        .setThumbnail(user.user.displayAvatarURL({dynamic: true, format: "png", size: 1024}))
                         .setTimestamp();
 					await channel.send(embed);
 				});
@@ -37,17 +38,17 @@ module.exports = {
                 .setTitle("Erro inesperado")
                 .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
             message.channel.send(embed)
-            console.log(`=> ${newError(err, "kick", message.guild.id)}`);
+            console.log(`=> ${newError(err, "ban", message.guild.id)}`);
         }
     },
 
     // Configuração do comando
     config: {
-        name: "kick",
+        name: "ban",
         noalias: "Sem sinonimos",
         aliases: [],
-        description: "De um kick em um membro do server",
-        usage: "kick <@member> [motivo]",
+        description: "De um ban em um membro do server",
+        usage: "ban <@member> [motivo]",
         accessableby: "STAFF"
     }
 }
