@@ -5,7 +5,7 @@ module.exports = ({ client, botUtils }) => {
 	
 	    console.log(`\nBot foi logado como ${client.user.tag}`);
 	    client.user.setActivity("!ajuda para a lista de comandos",{type:"WATCHING"});
-        channel.send("O bot foi iniciado");
+        //channel.send("O bot foi iniciado");
     } catch(err) {
         console.log(`=> ${newError(err, "ClientReady")}`);
     }
