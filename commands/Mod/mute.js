@@ -13,7 +13,6 @@ module.exports = {
             const user = message.mentions.members.first();
 			const channel = message.guild.channels.cache.find(ch => ch.name === 'punição');
             const reason =  args[2] ? args.slice(2).join(" ") : "[Nenhum motivo foi dado]"
-            var db = new JsonDB(new Config("database", true, false, '/'));
             
 			user.roles.add(message.guild.roles.cache.get("755665930159390721"),reason)
 				.then( async () => {
