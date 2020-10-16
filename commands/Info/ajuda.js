@@ -17,14 +17,14 @@ module.exports = {
                     command = client.commands.get(command) || client.commands.get(client.aliases.get(command));
                     let embed = new Discord.MessageEmbed()
                         .setColor("RANDOM")
-                        .setDescription(`O meu prefixo é: ${prefix}\n
-                            **Comando:** ${command.config.name}\n
-                            **Descrição:** ${command.config.description || "Sem descrição"}\n
-                            **Uso:** ${command.config.usage || "Sem uso definido"}\n
-                            parametros entre <> são obrigatorios
-                            parametros entre [] são opcionais\n
-                            **Acessivel para:** ${command.config.accessableby || "Membros"}\n
-                            **Sinonimos:** ${command.config.noalias || command.config.aliases.join(", ")}`)
+                        .setDescription(`O meu prefixo é: ${prefix}`)
+                        .addField(`Comando:`,`command.config.name`)
+                        .addField(`Descrição:`,`${command.config.description || "Sem descrição"}`)
+                        .addField(`Uso:`,`${command.config.usage || "Sem uso definido"}\n
+                            parametros entre <> são obrigatorios\n
+                            parametros entre [] são opcionais\n`)
+                        .addField(`Acessivel para:`,`${command.config.accessableby || "Membros"}`)
+                        .addField(`Sinonimos:`,`${command.config.noalias || command.config.aliases.join(", ")}`)
                         .setFooter(`Requisitado por: ${message.author.tag}`);
                     message.channel.send(embed);
                 }
