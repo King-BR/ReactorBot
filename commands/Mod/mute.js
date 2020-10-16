@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
-import { JsonDB } from 'node-json-db';
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig';
+
 
 module.exports = {
     // Execução do comando
@@ -9,6 +8,9 @@ module.exports = {
         try {
 
             // Codigo do comando
+            import { JsonDB } from 'node-json-db';
+            import { Config } from 'node-json-db/dist/lib/JsonDBConfig';
+
 			if(!message.member.hasPermission("KICK_MEMBERS", "ADMINISTRATOR")) return message.reply("Você não tem permissão para isso");
 			
             const user = message.mentions.members.first();
