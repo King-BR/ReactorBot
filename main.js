@@ -4,6 +4,7 @@ const fs = require("fs");
 const Enmap = require("enmap");
 
 // Bot config
+require("dotenv").config()
 const config = require("./config.json");
 const botUtils = require("./utils.js");
 const client = new Discord.Client({
@@ -115,5 +116,5 @@ commandsFolder.forEach(folder => {
 });
 
 // Login do bot com a API do discord
-const token = process.env.TOKEN || config.token
+const token = process.env.TOKEN || client.config.token
 client.login(token);

@@ -23,9 +23,9 @@ module.exports = {
                             **Uso:** ${command.config.usage || "Sem uso definido"}\n
                             parametros entre <> são obrigatorios
                             parametros entre [] são opcionais\n
-                            **Acessivel para:** ${command.config.accessableby || "todo mundo"}\n
+                            **Acessivel para:** ${command.config.accessableby || "Membros"}\n
                             **Sinonimos:** ${command.config.noalias || command.config.aliases.join(", ")}`)
-                        .setFooter(`Requisitado por: ${message.author.username}`);
+                        .setFooter(`Requisitado por: ${message.author.tag}`);
                     message.channel.send(embed);
                 }
                 return;
@@ -42,7 +42,7 @@ module.exports = {
 
                 commandsFolder.forEach(folder => {
                     if (folder === "teste") return console.log("Achou a paste de teste");
-                    if (folder === 'ZZZdev' && (message.author.id !== "291693225411084289" && message.author.id !== "375462796697010176")) return;
+                    if (folder === 'Dev' && (!botUtils.isDev(message.author.id))) return;
                     var all = fs.readdirSync(`commands/${folder}`);
                     var files = all.filter(f => {
                         let dirCheck = isDir(`commands/${folder}/${f}`);
@@ -52,8 +52,8 @@ module.exports = {
                         let pull = require(`../../commands/${folder}/${f}`);
                         return pull.config.name;
                     }).join(", ");
-                    let folderName = folder.replace('ZZZ', '');
-                    embedHelp.addField(`**${folderName}**`, `\`${string}\``);
+
+                    embedHelp.addField(`**${folder}**`, `\`${string}\``);
                 });
                 message.channel.send(embedHelp);
             }
@@ -69,7 +69,7 @@ module.exports = {
         name: "ajuda",
         noalias: "Sem sinonimos",
         aliases: [],
-        description: "lista de comandos",
+        description: "Lista de comandos",
         usage: "ajuda [nome do comando]",
         accessableby: "Membros"
     }

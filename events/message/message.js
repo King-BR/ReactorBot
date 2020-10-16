@@ -26,6 +26,6 @@ module.exports = async ({ client, botUtils }, message) => {
       console.log(`=> ${newError(err, cmd.slice(prefix.length))}`)
     }
   }catch(err) {
-    console.log(`=> ${newError(err, "message")}`);
+    console.log(`=> ${newError(err, "ClientMessage")}`);
   }
 }

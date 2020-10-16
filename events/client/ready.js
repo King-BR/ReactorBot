@@ -7,6 +7,6 @@ module.exports = ({ client, botUtils }) => {
 	    client.user.setActivity("!ajuda para a lista de comandos",{type:"WATCHING"});
         channel.send("O bot foi iniciado");
     } catch(err) {
-        console.log(`=> ${newError(err, "ready")}`);
+        console.log(`=> ${newError(err, "ClientReady")}`);
     }
 }
