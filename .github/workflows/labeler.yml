@@ -1,4 +1,4 @@
-# Setup auto labeler
+# Auto labeler config
 
 root:
 - ./*
