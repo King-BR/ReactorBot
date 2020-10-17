@@ -41,9 +41,9 @@ var newError = (err, fileName, IDs) => {
 
     let folder = fs.existsSync('./errors');
     fileName = fileName.split('.')[0];
-    let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date(), "ddMMyyyy_HHMMSS")}.json`;
+    let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date(), "ddMMyyyy_HHmmSS")}.json`;
     let data = {
-        date: format(new Date(), "dd/MM/yyyy HH:MM:SS"),
+        date: format(new Date(), "dd/MM/yyyy HH:mm:SS"),
         msg: err.message || null,
         stack: err.stack || null,
         IDs: {
