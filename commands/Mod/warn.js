@@ -22,8 +22,14 @@ module.exports = {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Erro inesperado")
                 .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
-            message.channel.send(embed)
-            console.log(`=> ${newError(err, "warn", message.guild.id)}`);
+            message.channel.send(embed);
+
+            let IDs = {
+                server: message.guild.id,
+                user: [message.author.id, user.id],
+                msg: message.id
+            }
+            console.log(`=> ${newError(err, "warn", IDs)}`);
         }
     },
 

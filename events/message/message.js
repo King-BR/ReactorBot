@@ -26,6 +26,11 @@ module.exports = async ({ client, botUtils }, message) => {
       console.log(`=> ${newError(err, cmd.slice(prefix.length))}`)
     }
   }catch(err) {
-    console.log(`=> ${newError(err, "ClientMessage")}`);
+    let IDs = {
+        server: message.guild.id,
+        user: message.author.id,
+        msg: message.id
+    }
+    console.log(`=> ${newError(err, "ClientMessage", IDs)}`);
   }
 }
