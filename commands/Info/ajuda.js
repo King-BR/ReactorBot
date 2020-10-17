@@ -18,7 +18,7 @@ module.exports = {
                     let embed = new Discord.MessageEmbed()
                         .setColor("RANDOM")
                         .setDescription(`O meu prefixo é: ${prefix}`)
-                        .addField(`Comando:`,`command.config.name`)
+                        .addField(`Comando:`,`${command.config.name}`)
                         .addField(`Descrição:`,`${command.config.description || "Sem descrição"}`)
                         .addField(`Uso:`,`${prefix}${command.config.usage || "Sem uso definido"}\n
                             parametros entre <> são obrigatorios
