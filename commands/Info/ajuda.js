@@ -17,14 +17,12 @@ module.exports = {
                     command = client.commands.get(command) || client.commands.get(client.aliases.get(command));
                     let embed = new Discord.MessageEmbed()
                         .setColor("RANDOM")
-                        .setDescription(`O meu prefixo é: ${prefix}\n
-                            **Comando:** ${command.config.name}\n
-                            **Descrição:** ${command.config.description || "Sem descrição"}\n
-                            **Uso:** ${command.config.usage || "Sem uso definido"}\n
-                            parametros entre <> são obrigatorios
-                            parametros entre [] são opcionais\n
-                            **Acessivel para:** ${command.config.accessableby || "Membros"}\n
-                            **Sinonimos:** ${command.config.noalias || command.config.aliases.join(", ")}`)
+                        .setDescription(`O meu prefixo é: ${prefix}`)
+                        .addField(`Comando:`,`${command.config.name}`)
+                        .addField(`Descrição:`,`${command.config.description || "Sem descrição"}`)
+                        .addField(`Uso:`,`${prefix}${command.config.usage || "Sem uso definido"}\n\nparametros entre <> são obrigatorios\nparametros entre [] são opcionais`)
+                        .addField(`Acessivel para:`,`${command.config.accessableby || "Membros"}`)
+                        .addField(`Sinonimos:`,`${command.config.noalias || command.config.aliases.join(", ")}`)
                         .setFooter(`Requisitado por: ${message.author.tag}`);
                     message.channel.send(embed);
                 }
@@ -61,8 +59,14 @@ module.exports = {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Erro inesperado")
                 .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
-            message.channel.send(embed)
-            console.log(`=> ${newError(err, "ajuda", message.guild.id)}`);
+            message.channel.send(embed);
+
+            let IDs = {
+                server: message.guild.id,
+                user: message.author.id,
+                msg: message.id
+            }
+            console.log(`=> ${newError(err, "ajuda", IDs)}`);
         }
     },
     config: {

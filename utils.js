@@ -1,6 +1,7 @@
 const chalk = require("chalk");
 const fs = require("fs");
 const config = require("./config.json");
+const format = require("date-fns/format");
 
 // Chalk config
 var chalkClient = {
@@ -29,29 +30,39 @@ var isDir = (path) => {
  * Cria o log de um novo erro
  * @param err {Error} Erro que aconteceu
  * @param [fileName] {String} Nome do arquivo onde que aconteceu o erro
- * @param [id] {String|Number} Id do server e/ou user do erro
+ * @param [IDs] {String|Number} IDs relacionados ao erro
+ * @param [IDs.server] {String|Number} ID do server
+ * @param [IDs.user] {String|Number} ID do usuario
+ * @param [IDs.msg] {String|Number} ID da mensagem
  * @returns {String} String para logar no console
  */
-var newError = (err, fileName, id) => {
+var newError = (err, fileName, IDs) => {
     if (!err) return;
 
     let folder = fs.existsSync('./errors');
     fileName = fileName.split('.')[0];
-    let data = `${err.message}\n\n${err.stack}`;
-    let errorFileName = `${fileName ? fileName + "_" : ""}${id ? id + "_" : ""}Error.log`;
-
-    if (folder) {
-        fs.writeFileSync(`./errors/${errorFileName}`, data, { encoding: 'utf8' });
-    } else {
-        fs.mkdirSync('./errors');
-        fs.writeFileSync(`./errors/${errorFileName}`, data, { encoding: 'utf8' });
+    let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date(), "ddMMyyyy_HHmmSS")}.json`;
+    let data = {
+        date: format(new Date(), "dd/MM/yyyy HH:mm:SS"),
+        msg: err.message || null,
+        stack: err.stack || null,
+        IDs: {
+            server: IDs.server || null,
+            user: IDs.user || null,
+            msg: IDs.msg || null
+        }
     }
+
+    if (!folder) {
+        fs.mkdirSync('./errors');
+    }
+    fs.writeFileSync(`./errors/${errorFileName}`, JSON.stringify(data, null, 2), { encoding: 'utf8' });
 
     return `${chalkClient.error('Erro detectado!')}\nVeja o log em: ./errors/${errorFileName}`;
 }
 
 /**
- * Limpar errors antigos
+ * Limpa todos os erros
  */
 var clearErrors = () => {
     let errorFolder = fs.readdirSync('./errors');

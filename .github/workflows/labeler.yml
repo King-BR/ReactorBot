@@ -1,0 +1,13 @@
+# Auto labeler config
+
+root:
+- ./*
+
+commands:
+- commands/**/*
+
+events:
+- events/**/*
+
+bot templates:
+- templates/*
