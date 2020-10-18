@@ -74,11 +74,37 @@ var isDev = (ID) => {
     return false;
 }
 
+/**
+ * transforma um objeto em um .json
+ * @param {String} path Caminho para o json a ser criado/substituido
+ * @param {object}   
+ */
+var jsonPush = (path,object) => {
+    var data = JSON.stringify(object)
+    fs.writeFile(path, data, (err) => {
+        if (err) throw err;
+      });
+    return false;
+}
+
+/**
+ * transforma um .json em um objeto
+ * @param {String} path Caminho para o json a ser transformado
+ * @returns {object} 
+ */
+var jsonPull = (path) => {
+    var data = fs.readFileSync(path);
+
+    return JSON.parse(data);
+}
+
 // Exports
 module.exports = {
     chalkClient: chalkClient,
     isDir: isDir,
     newError: newError,
     clearErrors: clearErrors,
-    isDev: isDev
+    isDev: isDev,
+    jsonPush: jsonPush,
+    jsonPull: jsonPull
 }
