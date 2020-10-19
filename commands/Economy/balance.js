@@ -3,13 +3,19 @@ const Discord = require("discord.js");
 
 module.exports = {
     run: async (client, botUtils, message, args) => {
-        if(!botUtils.isDev(message.author.id)) return message.channel.send("Voce não tem permissão para executar esse comando")
-
-        newError = botUtils.newError;
-        isDir = botUtils.isDir;
 
         try {
-            message.channel.send("Ainda, não configurado");
+
+            const bal = botUtils.jsonPull('./dataBank/balance.json')
+
+            let emb = new Discord.MessageEmbed()
+                .setTimestamp()
+                .setColor("RANDOM")
+                .setTitle("Bufunfa")
+                .setDescription(`Você possui: ${bal[message.author.id] || 0}\$`)
+                .setThumbnail(message.author.displayAvatarURL({dynamic: true, format: "png", size: 1024}));
+            message.channel.send(emb);
+
         } catch (err) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Erro inesperado")
@@ -26,11 +32,11 @@ module.exports = {
     },
 
     config: {
-        name: "error",
-        noalias: "Sem sinonimos",
-        aliases: [],
-        description: "Cheque os erros salvos pelo handler de erros",
-        usage: "error",
-        accessableby: "Desenvolvedores"
+        name: "balance",
+        noalias: "Money, Dinheiro, Carteira",
+        aliases: ['money','dinheiro','carteira','bufunfa','b'],
+        description: "Ve quanto dinheiro você possui",
+        usage: "balance",
+        accessableby: "Membros"
     }
 }

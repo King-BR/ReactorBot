@@ -90,6 +90,16 @@ var isDev = (ID) => {
  * @param {String} path Caminho para o json a ser criado/substituido
  * @param {object}   
  */
+var jsonChange = (path,func) => {
+    let bal = jsonPull(path)
+    jsonPush(path,func(bal) || bal)
+}
+
+/**
+ * transforma um objeto em um .json
+ * @param {String} path Caminho para o json a ser criado/substituido
+ * @param {object}   
+ */
 var jsonPush = (path,object) => {
     var data = JSON.stringify(object,null,2)
     fs.writeFile(path, data, (err) => {
@@ -105,7 +115,6 @@ var jsonPush = (path,object) => {
  */
 var jsonPull = (path) => {
     var data = fs.readFileSync(path);
-
     return JSON.parse(data);
 }
 
@@ -117,5 +126,6 @@ module.exports = {
     clearErrors: clearErrors,
     isDev: isDev,
     jsonPush: jsonPush,
-    jsonPull: jsonPull
+    jsonPull: jsonPull,
+    jsonChange: jsonChange
 }

@@ -71,8 +71,8 @@ module.exports = {
     },
     config: {
         name: "ajuda",
-        noalias: "Sem sinonimos",
-        aliases: [],
+        noalias: "help",
+        aliases: ['help'],
         description: "Lista de comandos",
         usage: "ajuda [nome do comando]",
         accessableby: "Membros"
