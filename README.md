@@ -19,7 +19,7 @@ Bot feito para o servidor [MindustryBR](https://discord.gg/UjzPZKe).
 
 ## Selfhost
 
-Nenhum suporte será oferecido caso voce queira hostear sua versão do bot
+Nenhum suporte será oferecido caso você queira hostear sua versão do bot
 
 ## Contribuição
 
