@@ -86,9 +86,9 @@ var isDev = (ID) => {
 }
 
 /**
- * transforma um objeto em um .json
- * @param {String} path Caminho para o json a ser criado/substituido
- * @param {object}   
+ * Pega um .json e utiliza em uma função
+ * @param {String} path Caminho para o json usado
+ * @param {function} func função para utilizar o func
  */
 var jsonChange = (path,func) => {
     let bal = jsonPull(path)

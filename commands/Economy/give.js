@@ -9,15 +9,18 @@ module.exports = {
             let bal = botUtils.jsonPull('./dataBank/balance.json')
             const user = message.mentions.members.first();
             
+            if (message.author == client.users.cache.get("657752992153337876")) return message.reply('sai fora Rodrigo');
             if(!user)return message.reply('Precisa informar o usuario a se enviar o dinheiro');
             if(!parseInt(args[1]))return message.reply('Não foi possivel indentificar a quantia de dinheiro a se informar');
             if (user.user.bot)return message.reply('Nem vem com essa putaria');
             if ((bal[message.author.id] || 0) < parseInt(args[1]))return message.reply('Você não possui dinheiro o suficiente');
+            if (parseInt(args[1]) < 0)return message.reply('Você não pode roubar dinheiro');
+            if (user.id == message.author)return message.reply('Você não pode se dar dinheiro');
 
-            bal[message.author.id] -= parseInt(args[1])
-            bal[user.id] = (bal[user.id] || 0) + parseInt(args[1])
+            bal[message.author.id] = (bal[message.author.id] || 0) - parseInt(args[1]);
+            bal[user.id] = (bal[user.id] || 0) + parseInt(args[1]);
 
-            botUtils.jsonPush('./dataBank/balance.json',bal)
+            botUtils.jsonPush('./dataBank/balance.json',bal);
 
             message.reply('seu dinheiro foi enviado');
 

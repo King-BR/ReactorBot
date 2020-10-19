@@ -6,13 +6,15 @@ module.exports = {
 
         try {
 
+            const user = args[0] ? message.mentions.users.cache.first() : message.author;
+            const nick = args[0] ? `O ${user.username}` : "Você";
             const bal = botUtils.jsonPull('./dataBank/balance.json')
 
             let emb = new Discord.MessageEmbed()
                 .setTimestamp()
                 .setColor("RANDOM")
                 .setTitle("Bufunfa")
-                .setDescription(`Você possui: ${bal[message.author.id] || 0}\$`)
+                .setDescription(`${nick} possui: ${bal[user.id] || 0}\$`)
                 .setThumbnail(message.author.displayAvatarURL({dynamic: true, format: "png", size: 1024}));
             message.channel.send(emb);
 

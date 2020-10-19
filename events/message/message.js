@@ -4,7 +4,7 @@ prefix = config.prefix
 module.exports = async ({ client, botUtils }, message) => {
   newError = botUtils.newError;
   try {
-    let messageArray = message.content.split(" ");
+    let messageArray = message.content.split(/ +/);
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
 
