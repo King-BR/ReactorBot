@@ -91,7 +91,7 @@ var isDev = (ID) => {
  * @param {object}   
  */
 var jsonPush = (path,object) => {
-    var data = JSON.stringify(object)
+    var data = JSON.stringify(object,null,2)
     fs.writeFile(path, data, (err) => {
         if (err) throw err;
       });

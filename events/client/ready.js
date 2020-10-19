@@ -12,7 +12,7 @@ module.exports = ({ client, botUtils }) => {
             let muted = botUtils.jsonPull('./dataBank/mutedlist.json')
             for (let userid in muted) {
                 
-                if( d.getTime() > muted[userid]){
+                if( Math.sign(muted[userid])*(d.getTime() - muted[userid]) > 0){
                     delete muted[userid];
                     const user = client.users.cache.get(userid);
                     user.send(`Você foi desmutado do server ${guild}`);

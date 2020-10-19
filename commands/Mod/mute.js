@@ -15,8 +15,8 @@ module.exports = {
 			const channel = message.guild.channels.cache.find(ch => ch.name === 'punição');
             const reason =  args[2] ? args.slice(2).join(" ") : "[Nenhum motivo foi dado]"
             const d = new Date()
-            const stotime = {m: 60*1000,h: 60*60*1000,d: 24*60*60*1000,y: 365*24*60*60*1000,s: 100*365*24*60*60*1000};
-            const stostr = {m: "Minutos",h: "Horas",d: "Dias",y: "Anos",s: "Séculos"};
+            const stotime = {m: 60*1000,h: 60*60*1000,d: 24*60*60*1000,y: 365*24*60*60*1000,s: 100*365*24*60*60*1000, e: -d.getTime()};
+            const stostr = {m: "Minutos",h: "Horas",d: "Dias",y: "Anos",s: "Séculos",e: "Eternidades"};
 
             if(!stotime[args[1].slice(-1)] || !parseInt(args[1].slice(0,-1))) return message.reply("Não foi possivel indentificar a duração, use `!ajuda mute` para mais informações");
 
@@ -58,8 +58,8 @@ module.exports = {
         name: "mute",
         noalias: "Sem sinonimos",
         aliases: [],
-        description: "De um warn para um membro do server",
-        usage: "mute <@member> <tempo><m/h/d/y/s> [motivo]",
+        description: "De um mute para um membro do server",
+        usage: "mute <@member> <tempo><m/h/d/y> [motivo]",
         accessableby: "STAFF"
     }
 }
