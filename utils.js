@@ -2,13 +2,14 @@ const chalk = require("chalk");
 const fs = require("fs");
 const config = require("./config.json");
 const format = require("date-fns/format");
+const Discord = require("discord.js");
 
 // Chalk config
 var chalkClient = {
-    chalk: chalk,
-    error: chalk.bold.red,
-    warn: chalk.bold.keyword('orange'),
-    ok: chalk.bold.green
+  chalk: chalk,
+  error: chalk.bold.red,
+  warn: chalk.bold.keyword('orange'),
+  ok: chalk.bold.green
 }
 
 // Handler utils
@@ -18,13 +19,22 @@ var chalkClient = {
  * @returns {Boolean}
  */
 var isDir = (path) => {
-    try {
-        var stat = fs.lstatSync(path);
-        return stat.isDirectory();
-    } catch (e) {
-        return false;
-    }
+  try {
+    var stat = fs.lstatSync(path);
+    return stat.isDirectory();
+  } catch (e) {
+    return false;
+  }
 };
+
+// Formatar datas
+/**
+ * @param date {Date} Data para formatar
+ * @returns {String} Data formatada no estilo dd/MM/yyyy HH:mm:SS
+ */
+var formatDate = (date) => {
+  return format(date, "dd/MM/yyyy HH:mm:SS");
+} 
 
 /**
  * Cria o log de um novo erro
@@ -37,42 +47,39 @@ var isDir = (path) => {
  * @returns {String} String para logar no console
  */
 var newError = (err, fileName, IDs) => {
-    if (!err) return;
+  if (!err) return;
 
-    let folder = fs.existsSync('./errors');
-    fileName = fileName.split('.')[0];
-    let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date(), "ddMMyyyy_HHmmSS")}.json`;
-    let data = {
-        date: format(new Date(), "dd/MM/yyyy HH:mm:SS"),
-        msg: err.message || null,
-        stack: err.stack || null,
-        IDs: {
-            server: IDs.server || null,
-            user: IDs.user || null,
-            msg: IDs.msg || null
-        }
-    }
+  let folder = fs.existsSync('./errors');
+  fileName = fileName.split('.')[0];
+  let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date(), "ddMMyyyy HH:mm:SS")}.json`;
+  let dados = {
+    date: formatDate(new Date()),
+    msg: err.message || null,
+    stack: err.stack || null,
+    IDs: IDs || null
+  }
 
-    if (!folder) {
-        fs.mkdirSync('./errors');
-    }
-    fs.writeFileSync(`./errors/${errorFileName}`, JSON.stringify(data, null, 2), { encoding: 'utf8' });
+  if (!folder) {
+    fs.mkdirSync('./errors');
+  }
 
-    return `${chalkClient.error('Erro detectado!')}\nVeja o log em: ./errors/${errorFileName}`;
+  fs.writeFileSync(`./errors/${errorFileName}`, JSON.stringify(dados, null, 2), { encoding: 'utf8' });
+
+  return `${chalkClient.error('Erro detectado!')}\nVeja o log em: ./errors/${errorFileName}`;
 }
 
 /**
  * Limpa todos os erros
  */
 var clearErrors = () => {
-    let errorFolder = fs.readdirSync('./errors');
-    if(errorFolder) {
-        errorFolder.forEach(errorFile => {
-            fs.unlink(`./errors/${errorFile}`, (err) => {
-                console.log(newError(err, errorFile));
-            });
-        });
-    }
+  let errorFolder = fs.readdirSync('./errors');
+  if (errorFolder) {
+    errorFolder.forEach(errorFile => {
+      fs.unlink(`./errors/${errorFile}`, (err) => {
+        console.log(newError(err, errorFile));
+      });
+    });
+  }
 }
 
 /**
@@ -81,18 +88,8 @@ var clearErrors = () => {
  * @returns {Boolean}
  */
 var isDev = (ID) => {
-    if(config.devsID.includes(ID)) return true;
-    return false;
-}
-
-/**
- * Pega um .json e utiliza em uma função
- * @param {String} path Caminho para o json usado
- * @param {function} func função para utilizar o func
- */
-var jsonChange = (path,func) => {
-    let bal = jsonPull(path)
-    jsonPush(path,func(bal) || bal)
+  if (config.devsID.includes(ID)) return true;
+  return false;
 }
 
 /**
@@ -100,12 +97,12 @@ var jsonChange = (path,func) => {
  * @param {String} path Caminho para o json a ser criado/substituido
  * @param {object}   
  */
-var jsonPush = (path,object) => {
-    var data = JSON.stringify(object,null,2)
-    fs.writeFile(path, data, (err) => {
-        if (err) throw err;
-      });
-    return false;
+var jsonPush = (path, object) => {
+  var data = JSON.stringify(object, null, 2)
+  fs.writeFile(path, data, (err) => {
+    if (err) throw err;
+  });
+  return false;
 }
 
 /**
@@ -114,18 +111,29 @@ var jsonPush = (path,object) => {
  * @returns {object} 
  */
 var jsonPull = (path) => {
-    var data = fs.readFileSync(path);
-    return JSON.parse(data);
+  var data = fs.readFileSync(path);
+  return JSON.parse(data);
+}
+
+/**
+ * Pega um .json e utiliza em uma função
+ * @param {String} path Caminho para o json usado
+ * @param {function} func função para utilizar o func
+ */
+var jsonChange = (path, func) => {
+  let bal = jsonPull(path)
+  jsonPush(path, func(bal) || bal);
 }
 
 // Exports
 module.exports = {
-    chalkClient: chalkClient,
-    isDir: isDir,
-    newError: newError,
-    clearErrors: clearErrors,
-    isDev: isDev,
-    jsonPush: jsonPush,
-    jsonPull: jsonPull,
-    jsonChange: jsonChange
+  chalkClient: chalkClient,
+  isDir: isDir,
+  formatDate: formatDate,
+  newError: newError,
+  clearErrors: clearErrors,
+  isDev: isDev,
+  jsonPush: jsonPush,
+  jsonPull: jsonPull,
+  jsonChange: jsonChange
 }

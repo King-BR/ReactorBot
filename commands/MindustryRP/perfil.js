@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const fs = require("fs");
 
 module.exports = {
   // Execução do comando
@@ -7,6 +8,13 @@ module.exports = {
 
     try {
       // Codigo do comando
+
+      //tira dps
+      return message.reply('ainda não implementado');
+
+      if(!fs.existsSync("../../dataBank/minigame")) fs.mkdirSync("../../dataBank/minigame");
+
+      if(!fs.existsSync(`../../dataBank/minigame/${user.id}.json`)) fs.writeFileSync(`../../dataBank/minigame/${user.id}.json`, JSON.stringify(botUtils.jsonPull("../../dataBank/minigame/template.json"), null, 2));
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()
@@ -19,17 +27,16 @@ module.exports = {
         user: message.author.id,
         msg: message.id
       }
-      console.log(`=> ${newError(err, "nome do comando", IDs)}`);
+      console.log(`=> ${newError(err, "perfil", IDs)}`);
     }
   },
 
   // Configuração do comando
   config: {
-    name: "nome",
-    noalias: "Sem sinonimos",
-    aliases: [],
-    description: "descrição",
-    usage: "uso",
-    accessableby: "acessibilidade"
+    name: "perfil",
+    aliases: ["p", "profile"],
+    description: "Veja o seu perfil ou o do usuario marcado",
+    usage: "perfil [@user]",
+    accessableby: "Membros"
   }
 }

@@ -34,7 +34,7 @@ module.exports = {
 						.setTitle('Mutado!')
 						.setDescription(`${user} levou mute por ${parseInt(args[1].slice(0,-1))} ${stostr[args[1].slice(-1)]}.\n\nMotivo: ${ reason }`)
 						.setThumbnail(user.user.displayAvatarURL({dynamic: true, format: "png", size: 1024}))
-                        .setTimestamp();
+            .setTimestamp();
 					await channel.send(embed);
                 });
 

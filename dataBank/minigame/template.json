@@ -1,0 +1,85 @@
+{
+  "id": null,
+  "resources": {
+    "blast_compound": {
+      "name": "composto de explosão",
+      "quant": 0
+    },
+    "coal": {
+      "name": "carvão",
+      "quant": 0
+    },
+    "copper": {
+      "name": "cobre",
+      "quant": 0
+    },
+    "graphite": {
+      "name": "grafite",
+      "quant": 0
+    },
+    "lead": {
+      "name": "chumbo",
+      "quant": 0
+    },
+    "metaglass": {
+      "name": "metavidro",
+      "quant": 0
+    },
+    "phase_fabric": {
+      "name": "tecido de fase",
+      "quant": 0
+    },
+    "plastanium": {
+      "name": "plastânio",
+      "quant": 0
+    },
+    "pyratite": {
+      "name": "piratita",
+      "quant": 0
+    },
+    "sand": {
+      "name": "areia",
+      "quant": 0
+    },
+    "scrap": {
+      "name": "sucata",
+      "quant": 0
+    },
+    "silicon": {
+      "name": "sílicio",
+      "quant": 0
+    },
+    "spore_pod": {
+      "name": "cápsula de esporos",
+      "quant": 0
+    },
+    "surge_alloy": {
+      "name": "liga de surto",
+      "quant": 0
+    },
+    "thorium": {
+      "name": "tório",
+      "quant": 0
+    },
+    "titanium": {
+      "name": "titânio",
+      "quant": 0
+    },
+    "cryofluid": {
+      "name": "fluído criogênico",
+      "quant": 0
+    },
+    "oil": {
+      "name": "petróleo",
+      "quant": 0
+    },
+    "slag": {
+      "name": "escória",
+      "quant": 0
+    },
+    "water": {
+      "name": "água",
+      "quant": 0
+    },
+  }
+}

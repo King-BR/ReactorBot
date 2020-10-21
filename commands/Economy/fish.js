@@ -1,12 +1,13 @@
+const fs = require("fs");
 const Discord = require("discord.js");
 
 module.exports = {
-  // Execução do comando
-  run: (client, botUtils, message, args) => {
-    newError = botUtils.newError;
+  run: async (client, botUtils, message, args) => {
 
     try {
-      // Codigo do comando
+      
+      //tira dps
+      return message.reply('ainda não implementado');
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()
@@ -19,17 +20,16 @@ module.exports = {
         user: message.author.id,
         msg: message.id
       }
-      console.log(`=> ${newError(err, "nome do comando", IDs)}`);
+      console.log(`=> ${newError(err, "error", IDs)}`);
     }
   },
 
-  // Configuração do comando
   config: {
-    name: "nome",
-    noalias: "Sem sinonimos",
+    name: "fish",
+    noalias: "sem apelidos",
     aliases: [],
-    description: "descrição",
-    usage: "uso",
-    accessableby: "acessibilidade"
+    description: "Pesca um peixe para vender depois",
+    usage: "fish",
+    accessableby: "Membros"
   }
 }

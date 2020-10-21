@@ -1,3 +1,6 @@
+// Bot online 24/7
+require("./keep_alive.js");
+
 // NPMs
 const Discord = require("discord.js");
 const fs = require("fs");
@@ -26,7 +29,22 @@ source.forEach(foldert => {
   console.log(`\n${foldert}/`);
   sla.forEach(filet => {
     try {
-      if (!filet.endsWith(".js")) return;
+      if (!filet.endsWith(".js")) {
+        if (isDir(`./events/${foldert}/${filet}`) && filet == "utils") {
+          var utilst = fs.readdirSync(`./events/${foldert}/${filet}`);
+          console.log(`- ${filet}/`);
+          utils.forEach(fileutils => {
+            let nameutil = foldert + fileutils.split(".")[0];
+            try {
+              let utilpull = require(`./events/${foldert}/${filet}/${fileutils}`);
+            } catch (err) {
+              console.log(`- - ${utilpull}: ${chalkClient.error('ERROR')}`);
+              console.log(`=> ${newError(err, nameutil)}`);
+            }
+          })
+        }
+        return;
+      }
       let name = filet.split('.')[0];
       console.log(`- ${name}.js: ${chalkClient.ok('OK')}`);
       let exported = require(`./events/${foldert}/${filet}`);
@@ -84,7 +102,7 @@ commandsFolder.forEach(folder => {
   // Config Utils handler
   client.utils[folder.replace("ZZZ", "")] = {};
   client.utilsAliases[folder.replace("ZZZ", "")] = {};
-  
+
   UtilsFolder.forEach(u => {
     console.log(`- ${u}/`);
     var allUtils = fs.readdirSync(`./commands/${folder}/${u}`);

@@ -6,7 +6,7 @@ module.exports = {
 
         try {
 
-            const user = args[0] ? message.mentions.users.cache.first() : message.author;
+            const user = args[0] ? message.mentions.users.first() : message.author;
             const nick = args[0] ? `O ${user.username}` : "Você";
             const bal = botUtils.jsonPull('./dataBank/balance.json')
 
@@ -15,7 +15,7 @@ module.exports = {
                 .setColor("RANDOM")
                 .setTitle("Bufunfa")
                 .setDescription(`${nick} possui: ${bal[user.id] || 0}\$`)
-                .setThumbnail(message.author.displayAvatarURL({dynamic: true, format: "png", size: 1024}));
+                .setThumbnail(user.displayAvatarURL({dynamic: true, format: "png", size: 1024}));
             message.channel.send(emb);
 
         } catch (err) {
