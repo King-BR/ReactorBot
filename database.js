@@ -21,6 +21,10 @@ var Warn = new Schema({
     type: String,
     default: "Sem razão informada"
   },
+  pardon: {
+    type: Boolean,
+    default: false
+  }
   date: {
     type: String,
     default: formatDate(new Date())
@@ -264,9 +268,21 @@ var User = new Schema({
       }
     }
   },
-  money: {
-    type: Number,
-    default: 0
+  economy: {
+    money: {
+      type: Number,
+      default: 0
+    }
+  },
+  levelSystem: {
+    xp: {
+      type: Number,
+      default: 0
+    },
+    level: {
+      type: Number,
+      default: 0
+    }
   },
   warn: {
     quant: {

@@ -33,12 +33,13 @@ source.forEach(foldert => {
         if (isDir(`./events/${foldert}/${filet}`) && filet == "utils") {
           var utilst = fs.readdirSync(`./events/${foldert}/${filet}`);
           console.log(`- ${filet}/`);
-          utils.forEach(fileutils => {
+          utilst.forEach(fileutils => {
             let nameutil = foldert + fileutils.split(".")[0];
             try {
               let utilpull = require(`./events/${foldert}/${filet}/${fileutils}`);
+              console.log(`- - ${fileutils}: ${chalkClient.ok('OK')}`)
             } catch (err) {
-              console.log(`- - ${utilpull}: ${chalkClient.error('ERROR')}`);
+              console.log(`- - ${fileutils}: ${chalkClient.error('ERROR')}`);
               console.log(`=> ${newError(err, nameutil)}`);
             }
           })

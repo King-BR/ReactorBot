@@ -25,11 +25,13 @@ module.exports = async ({ client, botUtils }, message) => {
     }
 
     // Utils
-    if (message.channel.id == "756587320140103690") { // #mini-events
+    if (message.channel.id == "768238015830556693") { // #mini-events
       return require("./utils/minieventos.js")(client, botUtils, message);
-    };
-    require("./utils/mudae.js")(client, botUtils, message);
-
+    }
+    if (message.channel.id == "756587320140103690") { // #mudae-comécio
+      return require("./utils/mudae.js")(client, botUtils, message);
+    }
+    
     // tudo oq n possui prefixo é cancelado
     if (!message.content.startsWith(prefix)) return;
 

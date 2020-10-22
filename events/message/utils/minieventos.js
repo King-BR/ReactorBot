@@ -5,7 +5,7 @@ module.exports = (client, botUtils, message) => {
     if (message.author.bot) return;
 
     botUtils.jsonChange('./dataBank/serverState.json', obj => {
-      if (message.content == obj.eventWin) {
+      if (message.content.toLowerCase() == obj.eventWin) {
 
         message.channel.overwritePermissions([{ id: "700183808783286372", allow: 805829713 }, { id:"755665930159390721", deny: 2112 }, { id: "699823229354639471", allow: 66624, deny: 805763089},]);
         message.react('✅');
@@ -25,6 +25,8 @@ module.exports = (client, botUtils, message) => {
         });
           
         obj.eventWin = null
+      } else if (!obj.eventWin){
+        message.delete()
       } else {
         message.react('❌');
       }

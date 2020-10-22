@@ -2,7 +2,6 @@ const chalk = require("chalk");
 const fs = require("fs");
 const config = require("./config.json");
 const format = require("date-fns/format");
-const Discord = require("discord.js");
 
 // Chalk config
 var chalkClient = {
@@ -27,36 +26,46 @@ var isDir = (path) => {
   }
 };
 
-// Formatar datas
 /**
+ * Formata datas no estilo dd/MM/yyyy HH:mm:SS
  * @param date {Date} Data para formatar
  * @returns {String} Data formatada no estilo dd/MM/yyyy HH:mm:SS
  */
 var formatDate = (date) => {
   return format(date, "dd/MM/yyyy HH:mm:SS");
-} 
+}
+
+/**
+ * Lista todos os erros
+ * @returns {Array} Array com os arquivos dos erros
+ */
+var listErrors = () => {
+  if (!fs.existsSync("./errors")) return [];
+  return fs.readdirSync("./errors");
+}
 
 /**
  * Cria o log de um novo erro
  * @param err {Error} Erro que aconteceu
- * @param [fileName] {String} Nome do arquivo onde que aconteceu o erro
- * @param [IDs] {String|Number} IDs relacionados ao erro
- * @param [IDs.server] {String|Number} ID do server
- * @param [IDs.user] {String|Number} ID do usuario
- * @param [IDs.msg] {String|Number} ID da mensagem
+ * @param [fileName=null] {String} Nome do arquivo onde que aconteceu o erro
+ * @param [IDs=null] {Object} IDs relacionados ao erro
+ * @param [IDs.server=null] {String|Number} ID do server
+ * @param [IDs.user=null] {String|Number} ID do usuario
+ * @param [IDs.msg=null] {String|Number} ID da mensagem
  * @returns {String} String para logar no console
  */
-var newError = (err, fileName, IDs) => {
+var newError = (err, fileName=null, IDs = {server:null, user:null, msg:null}) => {
   if (!err) return;
 
   let folder = fs.existsSync('./errors');
   fileName = fileName.split('.')[0];
-  let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date(), "ddMMyyyy HH:mm:SS")}.json`;
+  let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date(), "ddMMyyyy_HH:mm:SS")}.json`;
   let dados = {
     date: formatDate(new Date()),
     msg: err.message || null,
     stack: err.stack || null,
-    IDs: IDs || null
+    IDs: IDs || null,
+    thisfile: errorFileName
   }
 
   if (!folder) {
@@ -71,20 +80,36 @@ var newError = (err, fileName, IDs) => {
 /**
  * Limpa todos os erros
  */
-var clearErrors = () => {
-  let errorFolder = fs.readdirSync('./errors');
-  if (errorFolder) {
-    errorFolder.forEach(errorFile => {
-      fs.unlink(`./errors/${errorFile}`, (err) => {
-        console.log(newError(err, errorFile));
-      });
+var clearAllErrors = () => {
+  let errorFolder = listErrors();
+
+  errorFolder.forEach(errorFile => {
+    fs.unlink(`./errors/${errorFile}`, (err) => {
+      console.log("\n=>" + newError(err, errorFile));
     });
-  }
+  });
+
+  console.log("\nErrors limpos\n");
+  return;
+}
+
+/**
+ * Deleta um unico arquivo da pasta "errors"
+ * @param file {String} Arquivo para excluir
+ */
+var deleteError = (file) => {
+  let path = `./errors/${file}`
+  if (!file || !fs.existsSync(path)) throw new Error('Arquivo invalido!');
+
+  fs.unlink(path, (err) => {
+    console.log("\n=> " + newError(err, errorFile));
+  });
+  return;
 }
 
 /**
  * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
- * @param {String|Number} ID ID do usuario para checar
+ * @param ID {String|Number} ID do usuario para checar
  * @returns {Boolean}
  */
 var isDev = (ID) => {
@@ -94,8 +119,8 @@ var isDev = (ID) => {
 
 /**
  * transforma um objeto em um .json
- * @param {String} path Caminho para o json a ser criado/substituido
- * @param {object}   
+ * @param path {String} Caminho para o json a ser criado/substituido
+ * @param object {Any}
  */
 var jsonPush = (path, object) => {
   var data = JSON.stringify(object, null, 2)
@@ -107,7 +132,7 @@ var jsonPush = (path, object) => {
 
 /**
  * transforma um .json em um objeto
- * @param {String} path Caminho para o json a ser transformado
+ * @param path {String} Caminho para o json a ser transformado
  * @returns {object} 
  */
 var jsonPull = (path) => {
@@ -117,8 +142,8 @@ var jsonPull = (path) => {
 
 /**
  * Pega um .json e utiliza em uma função
- * @param {String} path Caminho para o json usado
- * @param {function} func função para utilizar o func
+ * @param path {String} Caminho para o json usado
+ * @param func {function} função para utilizar o func
  */
 var jsonChange = (path, func) => {
   let bal = jsonPull(path)
@@ -131,7 +156,8 @@ module.exports = {
   isDir: isDir,
   formatDate: formatDate,
   newError: newError,
-  clearErrors: clearErrors,
+  clearAllErrors: clearAllErrors,
+  deleteError: deleteError,
   isDev: isDev,
   jsonPush: jsonPush,
   jsonPull: jsonPull,
