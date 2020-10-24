@@ -35,7 +35,7 @@ module.exports = {
         user: message.author.id,
         msg: message.id
       }
-      console.log(`=> ${newError(err, "nome do comando", IDs)}`);
+      console.log(`=> ${newError(err, "stats", IDs)}`);
     }
   },
 

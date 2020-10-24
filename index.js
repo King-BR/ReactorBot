@@ -36,7 +36,7 @@ source.forEach(foldert => {
           utilst.forEach(fileutils => {
             let nameutil = foldert + fileutils.split(".")[0];
             try {
-              let utilpull = require(`./events/${foldert}/${filet}/${fileutils}`);
+              require(`./events/${foldert}/${filet}/${fileutils}`);
               console.log(`- - ${fileutils}: ${chalkClient.ok('OK')}`)
             } catch (err) {
               console.log(`- - ${fileutils}: ${chalkClient.error('ERROR')}`);

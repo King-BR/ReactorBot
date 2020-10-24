@@ -25,6 +25,7 @@ module.exports = async ({ client, botUtils }, message) => {
     }
 
     // Utils
+    //if (message.channel.id == "767982805908324411" && !message.author.bot) return message.delete();
     if (message.channel.id == "768238015830556693") { // #mini-events
       return require("./utils/minieventos.js")(client, botUtils, message);
     }

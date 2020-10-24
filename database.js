@@ -22,9 +22,12 @@ var Warn = new Schema({
     default: "Sem razão informada"
   },
   pardon: {
-    type: Boolean,
-    default: false
-  }
+    pardoned: {
+      type: Boolean,
+      default: false
+    },
+    by: String
+  },
   date: {
     type: String,
     default: formatDate(new Date())

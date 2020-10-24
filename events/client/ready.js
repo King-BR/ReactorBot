@@ -13,11 +13,11 @@ module.exports = ({ client, botUtils }) => {
     client.user.setActivity("!ajuda para a lista de comandos", { type: "WATCHING" });
 
     //mute
-    client.setInterval(() => {
+    client.setInterval(async () => {
       const d = new Date();
     
       //verifica se o tempo dos mutes ja esgotaram
-      botUtils.jsonChange('./dataBank/mutedlist.json', muted => {
+      await botUtils.jsonChange('./dataBank/mutedlist.json', muted => {
         for (let userid in muted) {
           if (Math.sign(muted[userid]) * (d.getTime() - muted[userid]) > 0) {
             delete muted[userid];
@@ -36,14 +36,16 @@ module.exports = ({ client, botUtils }) => {
 
         
         if (server.lastEvent < d.getTime()) {
-          server.eventWin = require("./utils/minievents.js")(client, botUtils, server);
-          server.lastEvent = d.getTime() + 60 * 60 * 1000;
+          const ret = require("./utils/minievents.js")(client, botUtils, server);
+          server.eventType = ret[1];
+          server.eventWin = ret[0];
+          server.lastEvent = d.getTime() + Math.floor(( Math.random() + 1 ) * 20 * 60 * 1000);
           return server;
         }
 
       });
 
-    }, 60 * 1000);
+    }, 20 * 1000);
 
   } catch (err) {
     console.log(`=> ${newError(err, "ClientReady")}`);

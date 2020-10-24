@@ -10,18 +10,14 @@ module.exports = {
         try {
 
             const user = message.mentions.users.first()
-            
-            if(!parseInt(args[1] || args[0]))return message.reply('Não foi possivel indentificar a quantia de dinheiro a se informar');
-            if (user && user.bot)return message.reply('Nem vem com essa putaria');
 
             botUtils.jsonChange('./dataBank/balance.json', balance => {
                 const id = user ? user.id : message.author.id;
-                const quant = parseInt(args[1] || args[0]);
-                balance[id] = (balance[id] || 0) + quant;
-                message.channel.send(`Foi adicionado: ${parseInt(args[1] || args[0])}\$, totalizando: ${balance[id]}\$.`);
+                delete balance[id];
+                message.channel.send(`O valor de ${user ? user.username : message.author.username} foi resetado.`);
                 return balance
             });
-            
+
         } catch (err) {
             let embed = new Discord.MessageEmbed()
                 .setTitle("Erro inesperado")
@@ -33,16 +29,16 @@ module.exports = {
                 user: message.author.id,
                 msg: message.id
             }
-            console.log(`=> ${newError(err, "error", IDs)}`);
+            console.log(`=> ${newError(err, "moneyreset", IDs)}`);
         }
     },
 
     config: {
-        name: "moneyadd",
+        name: "moneyreset",
         noalias: "Sem sinonimos",
         aliases: [],
-        description: "adiciona adinheiro na conta de um jogador",
-        usage: "moneyadd [Membro] <Quantia>",
+        description: "Retira todo o dinheiro de tal membro",
+        usage: "moneyreset [Membro]",
         accessableby: "Desenvolvedores"
     }
 }

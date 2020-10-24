@@ -20,7 +20,7 @@ module.exports = {
                 user: message.author.id,
                 msg: message.id
             }
-            console.log(`=> ${newError(err, "warn", IDs)}`);
+            console.log(`=> ${newError(err, "version", IDs)}`);
         }
     },
 

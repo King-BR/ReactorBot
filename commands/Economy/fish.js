@@ -5,7 +5,7 @@ module.exports = {
   run: async (client, botUtils, message, args) => {
 
     try {
-      
+      awfasf
       //tira dps
       return message.reply('ainda não implementado');
 
@@ -20,7 +20,7 @@ module.exports = {
         user: message.author.id,
         msg: message.id
       }
-      console.log(`=> ${newError(err, "error", IDs)}`);
+      console.log(`=> ${newError(err, "fish", IDs)}`);
     }
   },
 

@@ -9,15 +9,13 @@ module.exports = {
 
         try {
 
-            const user = message.mentions.users.first()
+            const user = message.mentions.users.first() || message.author
             
-            if(!parseInt(args[1] || args[0]))return message.reply('Não foi possivel indentificar a quantia de dinheiro a se informar');
-            if (user && user.bot)return message.reply('Nem vem com essa putaria');
+            if(isNaN(parseInt(args[1] || args[0])))return message.reply('Não foi possivel indentificar a quantia de dinheiro a se informar');
 
             botUtils.jsonChange('./dataBank/balance.json', balance => {
-                const id = user ? user.id : message.author.id;
-                balance[id] = parseInt(args[1] || args[0]);
-                message.channel.send(`O valor foi definido como: ${balance[id]}\$.`);
+                balance[user.id] = parseInt(args[1] || args[0]);
+                message.channel.send(`O valor de ${user.tag} foi definido como: ${balance[user.id]}\$.`);
                 return balance
             });
 
@@ -32,7 +30,7 @@ module.exports = {
                 user: message.author.id,
                 msg: message.id
             }
-            console.log(`=> ${newError(err, "error", IDs)}`);
+            console.log(`=> ${newError(err, "moneyset", IDs)}`);
         }
     },
 
@@ -40,7 +38,7 @@ module.exports = {
         name: "moneyset",
         noalias: "Sem sinonimos",
         aliases: [],
-        description: "Retira todo o dinheiro q tal jogador possui",
+        description: "Define a quantidade dinheiro que tal membro possui",
         usage: "moneyset [Membro] <Quantia>",
         accessableby: "Desenvolvedores"
     }

@@ -35,7 +35,7 @@ module.exports = {
                 user: message.author.id,
                 msg: message.id
             }
-            console.log(`=> ${newError(err, "error", IDs)}`);
+            console.log(`=> ${newError(err, "give", IDs)}`);
         }
     },
 
@@ -44,7 +44,7 @@ module.exports = {
         noalias: "sem sinonimos",
         aliases: [],
         description: "Da seu dinheiro para outro jogador",
-        usage: "give <Memnro> <Quantia>",
+        usage: "give <Membro> <Quantia>",
         accessableby: "Membros"
     }
 }

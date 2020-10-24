@@ -1,4 +1,3 @@
-const fs = require("fs");
 const Discord = require("discord.js");
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
     isDir = botUtils.isDir;
 
     try {
-      if(!args[0]) {
+      if (!args[0]) {
         let embed = new Discord.MessageEmbed()
           .setColor("RANDOM")
           .setTimestamp()
@@ -22,14 +21,86 @@ module.exports = {
         return;
       }
 
-      switch(args[0]) {
+      switch (args[0]) {
         case "clear": {
           botUtils.clearAllErrors();
           message.reply(" todos os erros foram limpos");
           break;
         }
         case "delete": {
-          botUtils
+          let errors = botUtils.listErrors();
+          let errorsString = "";
+          let i = 0;
+
+          if (errors.length > 0) {
+            errors.forEach(error => {
+              let pull = require(`../../errors/${error}`);
+              errorsString += `${++i} - ${pull.thisfile}\n`;
+            });
+          } else {
+            let embednerrors = new Discord.MessageEmbed()
+              .setTitle("Não existe erros no momento")
+              .setDescription("Que milagre")
+              .setTimestamp()
+              .setColor("RANDOM")
+            message.channel.send(embednerrors);
+            return;
+          }
+
+          let embederrors = new Discord.MessageEmbed()
+            .setTitle("Escolha o erro a ser deletado")
+            .setDescription(errorsString)
+            .setTimestamp()
+            .setColor("RANDOM")
+          message.channel.send(embederrors)
+            .then(m => {
+              let filter = (msg) => (((!isNaN(msg.content) && parseInt(msg.content)) || (msg.content == "exit" || msg.content == "finish")) && msg.author.id == message.author.id);
+              var collectorDelete = m.channel.createMessageCollector(filter);
+
+              collectorDelete.on("collect", msg => {
+                if ((msg.content == "exit" || msg.content == "finish") && msg.author.id == message.author.id) {
+                  collectorDelete.stop();
+                  m.react("❌");
+                  return;
+                }
+
+                if (typeof parseInt(msg.content) != "number") return;
+
+                botUtils.deleteError(errors[parseInt(msg.content) - 1]);
+                message.channel.send(`\`${errors[parseInt(msg.content) - 1]}\` deletado`);
+                return;
+              })
+            });
+          break;
+        }
+        case "list": {
+          let errors = botUtils.listErrors();
+          let errorsArray = [];
+          let i = 1;
+
+          if (errors.length > 0) {
+            errors.forEach(error => {
+              let pull = require(`../../errors/${error}`);
+              errorsArray.push(pull);
+            });
+          } else {
+            let embednerrors = new Discord.MessageEmbed()
+              .setTitle("Não existe erros no momento")
+              .setDescription("Que milagre")
+              .setTimestamp()
+              .setColor("RANDOM")
+            message.channel.send(embednerrors);
+            return;
+          }
+
+          let embedListErrors = new Discord.MessageEmbed()
+            .setColor("RANDOM")
+            .setTimestamp()
+            .setTitle("Lista de erros");
+
+          errorsArray.forEach(er => { embedListErrors.addField(`${i++} - ${er.thisfile}`, `${er.msg}\n\n${er.date}`); });
+
+          message.channel.send(embedListErrors);
           break;
         }
       }

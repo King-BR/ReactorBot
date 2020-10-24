@@ -9,7 +9,7 @@ var chalkClient = {
   error: chalk.bold.red,
   warn: chalk.bold.keyword('orange'),
   ok: chalk.bold.green
-}
+};
 
 // Handler utils
 /**
@@ -33,7 +33,7 @@ var isDir = (path) => {
  */
 var formatDate = (date) => {
   return format(date, "dd/MM/yyyy HH:mm:SS");
-}
+};
 
 /**
  * Lista todos os erros
@@ -42,7 +42,7 @@ var formatDate = (date) => {
 var listErrors = () => {
   if (!fs.existsSync("./errors")) return [];
   return fs.readdirSync("./errors");
-}
+};
 
 /**
  * Cria o log de um novo erro
@@ -54,19 +54,20 @@ var listErrors = () => {
  * @param [IDs.msg=null] {String|Number} ID da mensagem
  * @returns {String} String para logar no console
  */
-var newError = (err, fileName=null, IDs = {server:null, user:null, msg:null}) => {
+var newError = (err, fileName = null, IDs = { server: null, user: null, msg: null }) => {
   if (!err) return;
 
   let folder = fs.existsSync('./errors');
   fileName = fileName.split('.')[0];
-  let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date(), "ddMMyyyy_HH:mm:SS")}.json`;
+  let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date() - 10800000, "ddMMyyyy_HH:mm:SS")}.json`;
   let dados = {
-    date: formatDate(new Date()),
+    msdate: Number(new Date() - 10800000),
+    date: formatDate(new Date() - 10800000),
     msg: err.message || null,
     stack: err.stack || null,
     IDs: IDs || null,
     thisfile: errorFileName
-  }
+  };
 
   if (!folder) {
     fs.mkdirSync('./errors');
@@ -75,7 +76,7 @@ var newError = (err, fileName=null, IDs = {server:null, user:null, msg:null}) =>
   fs.writeFileSync(`./errors/${errorFileName}`, JSON.stringify(dados, null, 2), { encoding: 'utf8' });
 
   return `${chalkClient.error('Erro detectado!')}\nVeja o log em: ./errors/${errorFileName}`;
-}
+};
 
 /**
  * Limpa todos os erros
@@ -84,28 +85,24 @@ var clearAllErrors = () => {
   let errorFolder = listErrors();
 
   errorFolder.forEach(errorFile => {
-    fs.unlink(`./errors/${errorFile}`, (err) => {
-      console.log("\n=>" + newError(err, errorFile));
-    });
+    fs.unlink(`./errors/${errorFile}`, (err) => { if (err) console.log("=> " + newError(err, errorFile)); });
   });
 
   console.log("\nErrors limpos\n");
   return;
-}
+};
 
 /**
  * Deleta um unico arquivo da pasta "errors"
  * @param file {String} Arquivo para excluir
  */
 var deleteError = (file) => {
-  let path = `./errors/${file}`
+  let path = `./errors/${file}`;
   if (!file || !fs.existsSync(path)) throw new Error('Arquivo invalido!');
 
-  fs.unlink(path, (err) => {
-    console.log("\n=> " + newError(err, errorFile));
-  });
+  fs.unlink(path, (err) => { if (err) console.log("\n=> " + newError(err, file)); });
   return;
-}
+};
 
 /**
  * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
@@ -115,7 +112,7 @@ var deleteError = (file) => {
 var isDev = (ID) => {
   if (config.devsID.includes(ID)) return true;
   return false;
-}
+};
 
 /**
  * transforma um objeto em um .json
@@ -123,12 +120,12 @@ var isDev = (ID) => {
  * @param object {Any}
  */
 var jsonPush = (path, object) => {
-  var data = JSON.stringify(object, null, 2)
+  var data = JSON.stringify(object, null, 2);
   fs.writeFile(path, data, (err) => {
     if (err) throw err;
   });
   return false;
-}
+};
 
 /**
  * transforma um .json em um objeto
@@ -138,7 +135,7 @@ var jsonPush = (path, object) => {
 var jsonPull = (path) => {
   var data = fs.readFileSync(path);
   return JSON.parse(data);
-}
+};
 
 /**
  * Pega um .json e utiliza em uma função
@@ -146,20 +143,22 @@ var jsonPull = (path) => {
  * @param func {function} função para utilizar o func
  */
 var jsonChange = (path, func) => {
-  let bal = jsonPull(path)
+  let bal = jsonPull(path);
   jsonPush(path, func(bal) || bal);
-}
+};
 
 // Exports
 module.exports = {
   chalkClient: chalkClient,
   isDir: isDir,
   formatDate: formatDate,
+  listErrors: listErrors,
   newError: newError,
+  deleteError: deleteError,
   clearAllErrors: clearAllErrors,
   deleteError: deleteError,
   isDev: isDev,
   jsonPush: jsonPush,
   jsonPull: jsonPull,
-  jsonChange: jsonChange
-}
+  jsonChange: jsonChange,
+};
