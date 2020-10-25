@@ -10,9 +10,13 @@ module.exports = {
       if (!args[0])return message.reply('Preciso de escolhas');
 
       const frases = args.join(' ').split('/')
+      let escolha = frases[Math.floor(Math.random()*frases.length )]
+      let nome = message.author.userName
 
-      message.channel.send(frases[Math.floor(Math.random()*frases.length )])
-
+      let embed = new Discord.MessageEmbed()
+      .setTitle("Escolha")
+      .setDescription("Eu escolho... `" + escolha + "`!")
+      .setFooter("Comando usado por " + nome)
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")
