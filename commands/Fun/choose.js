@@ -17,6 +17,7 @@ module.exports = {
       .setTitle("Escolha")
       .setDescription("Eu escolho... `" + escolha + "`!")
       .setFooter("Solicitado por " + nome)
+      .setColor("RANDOM")
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()
