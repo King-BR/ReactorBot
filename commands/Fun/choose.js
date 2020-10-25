@@ -11,12 +11,13 @@ module.exports = {
 
       const frases = args.join(' ').split('/')
       let escolha = frases[Math.floor(Math.random()*frases.length )]
-      let nome = message.author.userName
+      let nome = message.author.tag
 
       let embed = new Discord.MessageEmbed()
       .setTitle("Escolha")
       .setDescription("Eu escolho... `" + escolha + "`!")
-      .setFooter("Comando usado por " + nome)
+      .setFooter("Solicitado por " + nome)
+
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")
