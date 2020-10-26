@@ -10,14 +10,17 @@ module.exports = {
       if (!args[0])return message.reply('Preciso de escolhas');
 
       const frases = args.join(' ').split('/')
+
       let escolha = frases[Math.floor(Math.random()*frases.length )]
       let nome = message.author.tag
 
       let embed = new Discord.MessageEmbed()
-      .setTitle("Escolha")
-      .setDescription("Eu escolho... `" + escolha + "`!")
-      .setFooter("Solicitado por " + nome)
-      .setColor("RANDOM")
+        .setTitle("Escolha")
+        .setDescription("Eu escolho... `" + escolha + "`!")
+        .setFooter("Solicitado por " + nome)
+        .setColor("RANDOM")
+      message.channel.send(embed)
+
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

@@ -46,7 +46,7 @@ module.exports = {
                 user: [message.author.id, user.id],
                 msg: message.id
             }
-            console.log(`=> ${newError(err, "softban", IDs)}`);
+            console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
         }
     },
 

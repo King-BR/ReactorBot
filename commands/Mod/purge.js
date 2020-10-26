@@ -25,7 +25,7 @@ module.exports = {
                 user: message.author.id,
                 msg: message.id
             }
-            console.log(`=> ${newError(err, "purge", IDs)}`);
+            console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
         }
     },
 

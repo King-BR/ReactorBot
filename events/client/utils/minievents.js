@@ -1,8 +1,10 @@
-module.exports = (client, botUtils, server) => {
+module.exports = (client, botUtils, server, editing) => {
   newError = botUtils.newError;
   try {
     const channel = client.channels.cache.get("768238015830556693");
     if (server.eventWin) channel.send('Ninguem respondeu certo u.u');
+
+    //funções do evento
 
     const choose = [
       function() {
@@ -84,15 +86,25 @@ module.exports = (client, botUtils, server) => {
       }
     ];
 
-    const number = Math.floor(Math.random() * choose.length)
-    const quest = choose[number]();
 
-    channel.send('> ' + quest[0]);
-    channel.overwritePermissions([{ id: "700183808783286372", allow: 805829713 }, { id: "755665930159390721", deny: 2112 }, { id: "699823229354639471", allow: 68672, deny: 805761041 }]);
+    // Codigo
 
+
+    //escolhe um evento aleatorio
+    number = Math.floor(Math.random() * choose.length)
+    quest = choose[number]();
+
+    //se estiver no modo de edição (editing true)
+    //o bot n vai mandar mensagens no #miniquiz e nem vai permiter pessoas falarem
+    if (!editing){
+      channel.send('> ' + quest[0]);
+      channel.overwritePermissions([{ id: "700183808783286372", allow: 805829713 }, { id: "755665930159390721", deny: 2112 }, { id: "699823229354639471", allow: 68672, deny: 805761041 }]);
+    }
+
+    //retorna a resposta e o tipo do evento
     return [quest[1], number];
 
   } catch (err) {
-    console.log(`=> ${newError(err, "ready_minievents")}`);
+    console.log(`=> ${newError(err, "ClientReady_Minievents")}`);
   }
 }

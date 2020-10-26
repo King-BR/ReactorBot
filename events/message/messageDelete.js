@@ -18,5 +18,5 @@ module.exports = async ({ client, botUtils }, message) => {
       msg: message.id
     }
     console.log(`=> ${newError(err, "ClientMessageDelete", IDs)}`);
-  } //le o chat garaio
+  }
 }
