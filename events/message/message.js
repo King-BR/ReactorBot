@@ -45,6 +45,9 @@ module.exports = async ({ client, botUtils }, message) => {
       return require('./utils/mudae.js')(client, botUtils, message);
     }
 
+    // Anti trava discord
+    require("./utils/antitrava.js")(client, botUtils, message);
+
     // tudo oq n possui prefixo é ignorado
     if (!message.content.startsWith(prefix)) return;
 

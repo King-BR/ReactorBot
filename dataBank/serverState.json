@@ -1,7 +1,10 @@
 {
-  "nextMiniquiz": 1603733159731,
+  "nextMiniquiz": 1603755971133,
   "nextMsgOfDay": 1603756800000,
-  "nextMsgChange": 1603735200000,
-  "eventType": null,
-  "eventWin": null
+  "nextMsgChange": 1603756800000,
+  "eventType": 2,
+  "eventWin": [
+    -6,
+    -7
+  ]
 }

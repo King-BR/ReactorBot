@@ -1,3 +1,5 @@
+const { Users } = require("../../../database.js");
+
 module.exports = (client, botUtils, message) => {
   newError = botUtils.newError;
   try {
@@ -32,14 +34,46 @@ module.exports = (client, botUtils, message) => {
         const money = Math.floor(Math.random() * 5 + 5);
         const xp = Math.floor(Math.random() * 50 + 100);
 
-        message.channel.send(`Respondeu certo! ganhou nada, pq ainda n fizemos nada kpakpa`);//ganhou ${money}\$ e ${xp}xp`);
+        message.channel.send(`Respondeu certo! ganhou ${money}\$ e ${xp}xp`);
 
         obj.eventWin = null
         obj.eventType = null
 
 
-        //botUtils.updateDBmoney(message.author.id, money);
-        //botUtils.updateDBxp(message.author.id, xp);
+        let XPconfig = require("../../../dataBank/levelSystem.json");
+
+        Users.findById(message.author.id, (err, doc) => {
+          if (err) {
+            console.log("\n=> " + newError(err, "utils_updateDBxp", { user: message.author.id }));
+            return;
+          }
+
+          if (!doc) {
+            let newUser = new Users({
+              _id: message.author.id,
+              money: money,
+              levelSystem: {
+                xp: xp,
+                txp: xp
+              }
+            });
+            newUser.save();
+            return obj;
+          }
+
+          if ((doc.levelSystem.xp + xp) >= XPconfig[doc.levelSystem.level - 1].XPNextLevel) {
+            doc.levelSystem.xp -= XPconfig[doc.levelSystem.level - 1].XPNextLevel;
+            doc.levelSystem.txp += xp;
+            doc.levelSystem.level++;
+          } else {
+            doc.levelSystem.xp += xp;
+            doc.levelSystem.txp += xp;
+          }
+
+          doc.money += money
+
+          doc.save();
+        })
 
         return obj;
       } else {

@@ -259,66 +259,6 @@ var setupXPconfig = (XPconfig = { modPerLVL: 1.2, maxLVL: 50, defaultXPnextLVL: 
 }
 
 //--------------------------------------------------------------------------------------------------//
-// Database utils
-/**
- * @param userID {String} ID do usuario
- * @param money {Number} Quantidade de dinheiro a ser acrescentado
- * @returns {Boolean}
- */
-var updateDBmoney = (userID, money) => {
-  database.Users.findById("M" + userID, (err, doc) => {
-    if (err) {
-      console.log("\n=> " + newError(err, "utils_updateDBmoney", { user: userID }));
-      return;
-    }
-
-    if (!doc) {
-      let newUser = new database.Users({ _id: userID });
-      newUser.save();
-      return;
-    }
-
-    doc.money += money;
-
-    doc.save();
-    return;
-  });
-}
-
-/**
- * @param userID {String} ID do usuario
- * @param XPgain {Number} Quantidade de xp a ser acrescentado
- * @returns {Boolean}
- */
-var updateDBxp = (userID, XPgain) => {
-  let XPconfig = require("./dataBank/levelSystem.json");
-
-  database.Users.findById("M" + userID, (err, doc) => {
-    if (err) {
-      console.log("\n=> " + newError(err, "utils_updateDBxp", { user: userID }));
-      return;
-    }
-
-    if (!doc) {
-      let newUser = new database.Users({ _id: userID });
-      newUser.save();
-      return;
-    }
-
-    if ((doc.levelSystem.xp + XPgain) >= XPconfig[doc.levelSystem.level - 1].XPNextLevel) {
-      doc.levelSystem.xp -= XPconfig[doc.levelSystem.level - 1].XPNextLevel;
-      doc.levelSystem.txp += XPgain;
-      doc.levelSystem.level++;
-    } else {
-      doc.levelSystem.xp += XPgain;
-      doc.levelSystem.txp += XPgain;
-    }
-
-    doc.save();
-    return;
-  });
-}
-
 // Exports
 module.exports = {
   chalkClient: chalkClient,
@@ -334,7 +274,5 @@ module.exports = {
   jsonPush: jsonPush,
   jsonPull: jsonPull,
   jsonChange: jsonChange,
-  setupXPconfig: setupXPconfig,
-  updateDBmoney: updateDBmoney,
-  updateDBxp: updateDBxp
+  setupXPconfig: setupXPconfig
 };

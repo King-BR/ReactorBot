@@ -8,7 +8,7 @@ if(fs.existsSync("./Fonts")) {
 
     var fontsNames = [];
     fonts.forEach((fontFile) => {
-      let fontName = fontFile.split("-")[0];
+      let fontName = fontFile.split(".")[0];
       fontsNames.push(fontName);
       try {
         registerFont(`./Fonts/${fontFile}`, { family: fontName });

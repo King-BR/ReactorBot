@@ -3,24 +3,29 @@ const Canvas = require("canvas");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: async (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
     try {
 
       //Criando constantes
       const messages = botUtils.jsonPull('./dataBank/mesTotal.json').messages;
-      let user = message.mentions.users.first() || message.author;
+      let user = message.mentions.members.first() || message.member;
       const sizeperline = 10;
 
       let msg;
       let max = 1;
       let final = [];
-
+      let cfrom = [125, 255,255];
+      let cto = [255, 255, 255];
+      
       //Verifica se n possui erro na entrada
-      if (!isNaN(parseInt(args[0]))) {
-        user = client.users.cache.get(args[0])
-        if (!user) return message.reply('Não foi possivel indentificar o usuario pelo id: ' + args[0]);
+
+      if (args.length == 6 && !args.some(val =>{
+          return isNaN(parseInt(val)) || parseInt(val) < 0 || parseInt(val) > 255 
+        })) {
+        cfrom = [parseInt(args[0]),parseInt(args[1]),parseInt(args[2])]
+        cto =   [parseInt(args[3]),parseInt(args[4]),parseInt(args[5])]
       };
 
       //Pega a variaveis
@@ -57,11 +62,12 @@ module.exports = {
       const canvas = Canvas.createCanvas(480, 300);
       const ctx = canvas.getContext('2d');
 
-      const displayx = 20;
+      const displayx = 40;
       const displayy = 90;
-      const displayw = 440;
+      const displayw = 420;
       const displayh = 190;
 
+      const lasttime = Math.floor(((new Date()).getHours()-3)/3)*3;
       const cheight = Math.ceil(max/50);
       max = cheight*50;
       const toColor = function(r, g, b) {
@@ -85,11 +91,26 @@ module.exports = {
       //background
       ctx.fillStyle = "#444466";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      //palavras
+      ctx.strokeStyle = "#555555";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+      //lines
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#ffffff22";
+      ctx.beginPath()
+      ctx.font = "14px Roboto-Bold";
+      for (let i = 0; i <= cheight; i++) {
+        ctx.moveTo(displayx, displayy + i * displayh / cheight);
+        ctx.lineTo(displayw + displayx, displayy + i * displayh / cheight);
+        ctx.fillStyle = '#ffffff'
+        ctx.fillText((cheight-i)*50,displayx-ctx.measureText((cheight-i)*50).width-5, 7+displayy+ i * displayh / cheight);
+      }
+      ctx.stroke();
 
       //bars
       ctx.strokeStyle = "#00000055";
+      ctx.font = "8px Roboto-Bold";
       ctx.lineWidth = 3;
       final.forEach((val, index) => {
         //cons
@@ -97,9 +118,6 @@ module.exports = {
         const y = displayy + (1 - val / max) * displayh;
         const w = displayw / 24;
         const h = val / max * displayh;
-
-        const cfrom = [255, 125, 0]
-        const cto = [255, 0, 255]
 
         //set
         ctx.fillStyle = toColor(
@@ -109,26 +127,61 @@ module.exports = {
         );
         ctx.fillRect(x, y, w, h);
         ctx.strokeRect(x, y, w, h);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(
+          (lasttime-index*3+72)%24+'h',
+          displayx+displayw/24*(23-index) - ctx.measureText((lasttime-index*3)%24 +'h').width/2,
+          displayy+displayh+12
+        );
       });
-      ctx.lineWidth = 1;
 
-      //lines
+      //contorno dispplay
+      ctx.lineWidth = 2;
       ctx.strokeStyle = "#ffffff";
       ctx.strokeRect(displayx, displayy, displayw, displayh);
-      ctx.strokeStyle = "#ffffff22";
-      ctx.beginPath()
-      for (let i = 0; i <= cheight; i++) {
-        ctx.moveTo(displayx, displayy + i * displayh / cheight);
-        ctx.lineTo(displayw + displayx, displayy + i * displayh / cheight);
-      }
+
+      //user image
+      ctx.strokeStyle = "#00000055";
+      ctx.save()
+	    ctx.beginPath()
+	    ctx.arc(displayx+displayw-(displayy)/2+5,(displayy)/2,(displayy)/2-5,0, Math.PI * 2, true);
+	    ctx.closePath();
+	    ctx.clip();
+      const avatar = await Canvas.loadImage(user.user.displayAvatarURL({ format: 'jpg' }));
+      ctx.drawImage(avatar, displayx+displayw - displayy +10,5,displayy-10, displayy-10);
+      ctx.restore();
+      ctx.lineWidth = 8;
       ctx.stroke();
 
-      //eafdad
-      ctx.font = "20px Roboto";
-      ctx.fillText('eae', 10, 50);
+      //Text
+      ctx.lineWidth = 2;
+      ctx.font = "30px Roboto-Bold";
+
+      var grd = ctx.createLinearGradient(10, 0, ctx.measureText(user.displayName).width, 0);
+      grd.addColorStop(0,toColor(cfrom));
+      grd.addColorStop(1,toColor(cto));
+      ctx.fillStyle = grd;
+      ctx.fillText(user.displayName, 20, 40);
+      ctx.font = "30px Roboto-bold";
+      ctx.strokeStyle = '#00000066';
+      ctx.strokeText(user.displayName, 20, 40);
+
+      //Text
+      ctx.lineWidth = 2;
+      ctx.font = "20px Roboto-Bold";
+      let numb = 0;
+      final.forEach(num => {numb += num});
+      var grd = ctx.createLinearGradient(10, 0, ctx.measureText(numb+' msgs').width, 0);
+      grd.addColorStop(0,toColor(cfrom));
+      grd.addColorStop(1,toColor(cto));
+      ctx.fillStyle = grd;
+      ctx.fillText(numb+' msgs', 20, 70);
+      ctx.font = "20px Roboto-bold";
+      ctx.strokeStyle = '#00000066';
+      ctx.strokeText(numb+' msgs', 20, 70);
 
       //send
-      const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
+      const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'quem-leu-é-gay.png');
       message.channel.send(attachment);
 
 

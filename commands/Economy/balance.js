@@ -1,23 +1,60 @@
-const fs = require("fs");
 const Discord = require("discord.js");
+const { Users } = require("../../database.js");
 
 module.exports = {
   run: async (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
     try {
-      const user = args[0] ? message.mentions.users.first() : message.author;
-      const nick = args[0] ? user.username : "Você";
-      const bal = botUtils.jsonPull('./dataBank/balance.json')
+    let user = message.mentions.members.first() || client.guilds.cache.get("699823229354639471").members.cache.get(args[0]) || message.member;
+      Users.findById(user.id, (err, doc) => {
+        if (err) {
+          let embed = new Discord.MessageEmbed()
+            .setTitle("Erro inesperado")
+            .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+          message.channel.send(embed);
 
-      let emb = new Discord.MessageEmbed()
-        .setTimestamp()
-        .setColor("RANDOM")
-        .setTitle("Bufunfa")
-        .setDescription(`${nick} possui: ${bal[user.id] || 0}\$`)
-        .setThumbnail(user.displayAvatarURL({ dynamic: true, format: "png", size: 1024 }));
-      message.channel.send(emb);
+          let IDs = {
+            server: message.guild.id,
+            user: message.author.id,
+            msg: message.id
+          }
+          console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
+          return;
+        }
 
+        if (!doc) {
+          let newUser = new Users({
+            _id: user.id
+          });
+          newUser.save();
+          message.channel.send("Tente novamente!");
+          return;
+        }
+
+        try {
+          let embedBal = new Discord.MessageEmbed()
+            .setColor("RANDOM")
+            .setTimestamp()
+            .setTitle(`Carteira do ${user.displayName || user.tag}`)
+            .setDescription(`${doc.money}`);
+          message.channel.send(embedBal);
+        } catch (err) {
+          let embed = new Discord.MessageEmbed()
+            .setTitle("Erro inesperado")
+            .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+          message.channel.send(embed);
+
+          let IDs = {
+            server: message.guild.id,
+            user: message.author.id,
+            msg: message.id
+          }
+          console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
+          return;
+        }
+        return;
+      });
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")
@@ -30,6 +67,7 @@ module.exports = {
         msg: message.id
       }
       console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
+      return;
     }
   },
 

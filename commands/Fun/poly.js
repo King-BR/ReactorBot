@@ -13,8 +13,8 @@ module.exports = {
 
       const pstr = ['⁰','¹','²','³','⁴','⁵','⁶','⁷','⁸','⁹'];
       if (args.some((numb) => { return isNaN(numb) })) return message.reply("todos precisam ser numeros");
-      if (val.length > 5) return message.reply('Quer crashar o server krl?');
-
+      args.forEach(v => {val.push(-parseInt(v));});
+      //if (val.length > 12) return message.reply('Quer crashar o server krl?');
       let trys = 0;
       const f = function(t, arr, p = 1, m = 1) {
         if (t == 0) return [1];
@@ -41,7 +41,7 @@ module.exports = {
         if (numb !== 0) {
           let pot = val.length - t;
           let strpot = '';
-          power = pot.toString().split().forEach((element)=>{strpot += pstr[parseInt(element)];});
+          power = pot.toString().split('').forEach((element)=>{strpot += pstr[parseInt(element)];});
           res += numb > 0 ? ' + ' : ' - ';
           res += (Math.abs(numb) == 1 && pot > 0) ? '' : Math.abs(numb);
           res += pot > 0 ? 'x' : '';
