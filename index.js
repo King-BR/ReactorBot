@@ -7,19 +7,22 @@ const fs = require("fs");
 const Enmap = require("enmap");
 
 // Bot config
-require("dotenv").config()
+require("dotenv").config();
 const config = require("./config.json");
 const botUtils = require("./utils.js");
 const client = new Discord.Client({
-  disableEveryone: true,
+  fetchAllMembers: true,
+  disableMentions: "everyone",
   autoreconnect: true
 });
 client.config = config;
 
 // Utils config
+require("./font_manager.js");
 chalkClient = botUtils.chalkClient;
 newError = botUtils.newError;
 isDir = botUtils.isDir;
+botUtils.setupXPconfig();
 
 // Event handler
 console.log('\n------------------\nEvents');
@@ -54,8 +57,8 @@ source.forEach(foldert => {
       console.log(`- ${filet}: ${chalkClient.error('ERROR')}`);
       console.log(`=> ${newError(err, filet)}`);
     }
-  })
-})
+  });
+});
 
 // Command handler setup
 client.commands = new Discord.Collection();
@@ -134,6 +137,8 @@ commandsFolder.forEach(folder => {
   });
 });
 
+console.log("\n------------------\nFont manager\n");
+
 // Login do bot com a API do discord
-const token = process.env.TOKEN || client.config.token
+const token = process.env.TOKEN || client.config.token;
 client.login(token);

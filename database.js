@@ -1,4 +1,4 @@
-const { formatDate } = require("./utils.js");
+const format = require("date-fns/format");
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema
 
@@ -11,7 +11,7 @@ mongoose.connect(process.env.DATABASEURL, {
     process.exit(1);
     return 1;
   }
-  console.log("Conectado ao banco de dados");
+  console.log("\nConectado ao banco de dados");
   return 0;
 });
 
@@ -30,7 +30,7 @@ var Warn = new Schema({
   },
   date: {
     type: String,
-    default: formatDate(new Date())
+    default: format(new Date(), "dd/MM/yyyy HH:mm:SS")
   }
 
 })
@@ -40,149 +40,88 @@ var User = new Schema({
   mindustryRP: {
     resources: {
       blast_compound: {
-        id: 0,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       coal: {
-        id: 1,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       copper: {
-        id: 2,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       graphite: {
-        id: 3,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       lead: {
-        id: 4,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       metaglass: {
-        id: 5,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       phase_fabric: {
-        id: 6,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       plastanium: {
-        id: 7,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       pyratite: {
-        id: 8,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       sand: {
-        id: 9,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       scrap: {
-        id: 10,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       silicon: {
-        id: 11,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       spore_pod: {
-        id: 12,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       surge_alloy: {
-        id: 13,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       thorium: {
-        id: 14,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       titanium: {
-        id: 15,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       cryofluid: {
-        id: 16,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       oil: {
-        id: 17,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       slag: {
-        id: 18,
-        quant: {
           type: Number,
           default: 0
-        }
       },
       water: {
-        id: 19,
-        quant: {
           type: Number,
           default: 0
-        }
       }
     },
     ships: {
       alpha: {
-        id: 20,
         have: {
           type: Boolean,
           default: true
@@ -193,7 +132,6 @@ var User = new Schema({
         }
       },
       dart: {
-        id: 21,
         have: {
           type: Boolean,
           default: false
@@ -204,7 +142,6 @@ var User = new Schema({
         }
       },
       delta: {
-        id: 22,
         have: {
           type: Boolean,
           default: false
@@ -215,7 +152,6 @@ var User = new Schema({
         }
       },
       glaive: {
-        id: 23,
         have: {
           type: Boolean,
           default: false
@@ -226,7 +162,6 @@ var User = new Schema({
         }
       },
       javelin: {
-        id: 24,
         have: {
           type: Boolean,
           default: false
@@ -237,7 +172,6 @@ var User = new Schema({
         }
       },
       omega: {
-        id: 25,
         have: {
           type: Boolean,
           default: false
@@ -248,7 +182,6 @@ var User = new Schema({
         }
       },
       tau: {
-        id: 26,
         have: {
           type: Boolean,
           default: false
@@ -259,7 +192,6 @@ var User = new Schema({
         }
       },
       trident: {
-        id: 27,
         have: {
           type: Boolean,
           default: false
@@ -271,20 +203,26 @@ var User = new Schema({
       }
     }
   },
-  economy: {
-    money: {
-      type: Number,
-      default: 0
-    }
+  msgtotal: {
+    type: Number,
+    default: 0
+  },
+  money: {
+    type: Number,
+    default: 0
   },
   levelSystem: {
+    txp: {
+      type: Number,
+      default: 0
+    },
     xp: {
       type: Number,
       default: 0
     },
     level: {
       type: Number,
-      default: 0
+      default: 1
     }
   },
   warn: {

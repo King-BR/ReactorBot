@@ -1,11 +1,13 @@
 const fs = require("fs");
 const Discord = require("discord.js");
 
+var self = this
+
 module.exports = {
   run: async (client, botUtils, message, args) => {
+    newError = botUtils.newError;
 
     try {
-      awfasf
       //tira dps
       return message.reply('ainda não implementado');
 
@@ -20,7 +22,7 @@ module.exports = {
         user: message.author.id,
         msg: message.id
       }
-      console.log(`=> ${newError(err, "fish", IDs)}`);
+      console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
     }
   },
 

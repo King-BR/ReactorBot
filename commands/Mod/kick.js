@@ -7,8 +7,9 @@ module.exports = {
         try {
             // Codigo do comando
 			if(!message.member.hasPermission("KICK_MEMBERS", "ADMINISTRATOR")) return message.reply("Você não tem permissão para isso");
+      if (!message.mentions.members.first()) return message.reply("Precisa marcar alguem pra poder kickar ne");
 			
-            const user = message.mentions.members.first();
+      const user = message.mentions.members.first();
 			const channel = message.guild.channels.cache.find(ch => ch.name === 'punição');
 			const reason =  args[1] ? args.slice(1).join(" ") : "[Nenhum motivo foi dado]"
 
@@ -43,7 +44,7 @@ module.exports = {
                 user: [message.author.id, user.id],
                 msg: message.id
             }
-            console.log(`=> ${newError(err, "kick", IDs)}`);
+            console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
         }
     },
 

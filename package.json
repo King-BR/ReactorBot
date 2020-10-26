@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "canvas": "^2.6.1",
     "chalk": "^4.1.0",
     "cpu-stat": "^2.0.1",
     "date-fns": "^2.16.1",

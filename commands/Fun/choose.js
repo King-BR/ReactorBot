@@ -10,8 +10,13 @@ module.exports = {
       if (!args[0])return message.reply('Preciso de escolhas');
 
       const frases = args.join(' ').split('/')
-
-      message.channel.send(frases[Math.floor(Math.random()*frases.length )])
+      let msg = frases[Math.floor(Math.random()*frases.length )].trim();
+      
+      let embed = new Discord.MessageEmbed()
+        .setTitle(message.member.displayName)
+        .setColor(message.member.displayHexColor)
+        .setDescription(msg.replace(/\n/g,' '));
+      message.channel.send(embed)
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

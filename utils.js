@@ -2,7 +2,9 @@ const chalk = require("chalk");
 const fs = require("fs");
 const config = require("./config.json");
 const format = require("date-fns/format");
+const database = require("./database.js");
 
+//--------------------------------------------------------------------------------------------------//
 // Chalk config
 var chalkClient = {
   chalk: chalk,
@@ -11,6 +13,36 @@ var chalkClient = {
   ok: chalk.bold.green
 };
 
+//--------------------------------------------------------------------------------------------------//
+// Mix utils
+/**
+ * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
+ * @param ID {String|Number} ID do usuario para checar
+ * @returns {Boolean}
+ */
+var isDev = (ID) => {
+  if (config.devsID.includes(ID)) return true;
+  return false;
+};
+
+/**
+ * Formata datas no estilo dd/MM/yyyy HH:mm:SS
+ * @param date {Date} Data para formatar
+ * @returns {String} Data formatada no estilo dd/MM/yyyy HH:mm:SS
+ */
+var formatDate = (date) => {
+  return format(date - 10800000, "dd/MM/yyyy HH:mm:ss");
+};
+
+/**
+ * Timer
+ * @param ms {Number} Quantidade de tempo em milisegundos
+ */
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+//--------------------------------------------------------------------------------------------------//
 // Handler utils
 /**
  * Checa se o caminho fornecido é uma pasta/diretorio
@@ -26,23 +58,22 @@ var isDir = (path) => {
   }
 };
 
+//--------------------------------------------------------------------------------------------------//
+// Error handler utils
 /**
- * Formata datas no estilo dd/MM/yyyy HH:mm:SS
- * @param date {Date} Data para formatar
- * @returns {String} Data formatada no estilo dd/MM/yyyy HH:mm:SS
+ * @param [fileName="null"] {String} Arquivo onde ocorreu o erro
+ * @param [IDs] {Object} IDs involvidos
+ * @param [IDs.server=null] {String|Number} ID do server
+ * @param [IDs.user=null] {String,Number} ID do usuario
+ * @param [IDs.msg=null] {String|Number} ID da mensagem
  */
-var formatDate = (date) => {
-  return format(date, "dd/MM/yyyy HH:mm:SS");
-};
+function generateErrorID(fileName = "null", IDs = { server: null, user: null, msg: null }) {
+  if (IDs.server == null) IDs.server = 1;
+  if (IDs.user == null) IDs.user = 1;
+  if (IDs.msg == null) IDs.msg = 1;
 
-/**
- * Lista todos os erros
- * @returns {Array} Array com os arquivos dos erros
- */
-var listErrors = () => {
-  if (!fs.existsSync("./errors")) return [];
-  return fs.readdirSync("./errors");
-};
+  return `${Math.round(Math.random() * 100) * IDs.server * IDs.user * IDs.msg}`;
+}
 
 /**
  * Cria o log de um novo erro
@@ -54,15 +85,16 @@ var listErrors = () => {
  * @param [IDs.msg=null] {String|Number} ID da mensagem
  * @returns {String} String para logar no console
  */
-var newError = (err, fileName = null, IDs = { server: null, user: null, msg: null }) => {
+var newError = (err, fileName = "null", IDs = { server: null, user: null, msg: null }) => {
   if (!err) return;
 
   let folder = fs.existsSync('./errors');
   fileName = fileName.split('.')[0];
-  let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date() - 10800000, "ddMMyyyy_HH:mm:SS")}.json`;
+  let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date() - 10800000, "ddMMyyyy_HH:mm:ss")}.json`;
   let dados = {
+    errorID: generateErrorID(fileName, IDs),
     msdate: Number(new Date() - 10800000),
-    date: formatDate(new Date() - 10800000),
+    date: formatDate(new Date()),
     msg: err.message || null,
     stack: err.stack || null,
     IDs: IDs || null,
@@ -79,6 +111,38 @@ var newError = (err, fileName = null, IDs = { server: null, user: null, msg: nul
 };
 
 /**
+ * Lista todos os erros
+ * @returns {Array} Array com os arquivos dos erros
+ */
+var listErrors = () => {
+  if (!fs.existsSync("./errors")) return [];
+  return fs.readdirSync("./errors");
+};
+
+/**
+ * Procura um erro usando o ID
+ * @param errorID {String|Number} ID do erro
+ * @returns {Object}
+ */
+var searchErrorByID = (errorID) => {
+  let errorFolder = listErrors();
+
+  let errorSearched = errorFolder.filter(errorFile => {
+    let errorData = require(`./errors/${errorFile}`);
+
+    return errorData.errorID == errorID;
+  });
+
+  if (errorSearched.length() > 0) {
+    errorSearched = errorSearched[0];
+  } else {
+    errorSearched = null;
+  }
+
+  return errorSearched;
+}
+
+/**
  * Limpa todos os erros
  */
 var clearAllErrors = () => {
@@ -88,7 +152,6 @@ var clearAllErrors = () => {
     fs.unlink(`./errors/${errorFile}`, (err) => { if (err) console.log("=> " + newError(err, errorFile)); });
   });
 
-  console.log("\nErrors limpos\n");
   return;
 };
 
@@ -104,16 +167,20 @@ var deleteError = (file) => {
   return;
 };
 
+//--------------------------------------------------------------------------------------------------//
+// Math uitls
 /**
- * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
- * @param ID {String|Number} ID do usuario para checar
- * @returns {Boolean}
+ * @param norm {Number}
+ * @param min {Number}
+ * @param max {Number}
+ * @returns {Number}
  */
-var isDev = (ID) => {
-  if (config.devsID.includes(ID)) return true;
-  return false;
-};
+var limp = (norm, min, max) => {
+  return (max - min) * norm + min
+}
 
+//--------------------------------------------------------------------------------------------------//
+// Json utils
 /**
  * transforma um objeto em um .json
  * @param path {String} Caminho para o json a ser criado/substituido
@@ -121,7 +188,7 @@ var isDev = (ID) => {
  */
 var jsonPush = (path, object) => {
   var data = JSON.stringify(object, null, 2);
-  fs.writeFile(path, data, (err) => {
+  fs.writeFileSync(path, data, (err) => {
     if (err) throw err;
   });
   return false;
@@ -142,23 +209,132 @@ var jsonPull = (path) => {
  * @param path {String} Caminho para o json usado
  * @param func {function} função para utilizar o func
  */
-var jsonChange = (path, func) => {
+var jsonChange = async (path, func, min = 0) => {
   let bal = jsonPull(path);
-  jsonPush(path, func(bal) || bal);
+  const ret = func(bal);
+
+  if (typeof ret === 'object' && ret !== null) {
+    if (Object.keys(ret).length >= min) {
+      await jsonPush(path, ret);
+    } else {
+      console.log(`=> ${newError(new Error(`O tamanho do objeto (${Object.keys(ret).length}) foi menor que o esperado (${min})`), "utils_jsonChange")}`);
+    }
+  };
 };
+
+//--------------------------------------------------------------------------------------------------//
+// Level system util
+/**
+ * Configuração do sistema de level
+ * @param [XPconfig] {Object} Opções do sistema de level
+ * @param [XPconfig.modPerLVL=1.2] {Number} Modificador da quantidade de XP por level
+ * @param [XPconfig.maxLVL=50] {Number} Level maximo
+ * @param [XPconfig.defaultXPnextLVL=500] {Number} Quantidade padrao para upar de level
+ * @returns {void}
+ */
+var setupXPconfig = (XPconfig = { modPerLVL: 1.2, maxLVL: 50, defaultXPnextLVL: 500 }) => {
+  if (!fs.existsSync("./dataBank")) fs.mkdirSync("./dataBank");
+  if (!fs.existsSync("./dataBank/levelSystem.json")) fs.writeFileSync("./dataBank/levelSystem.json", "[]", { encoding: "utf8" });
+
+  let XPdataArray = [];
+  let txp = XPconfig.defaultXPnextLVL;
+  let XPNextLevel = XPconfig.defaultXPnextLVL;
+
+  for (let i = 1; i <= XPconfig.maxLVL; i++) {
+    XPdataArray.push({
+      lvl: i,
+      txp: txp,
+      XPNextLevel: XPNextLevel
+    });
+
+    XPNextLevel = Math.round(XPNextLevel * XPconfig.modPerLVL);
+    txp += XPNextLevel;
+  }
+
+  //console.log(XPdataArray);
+
+  if (JSON.stringify(jsonPull("./dataBank/levelSystem.json")) == JSON.stringify(XPdataArray)) return;
+  fs.writeFileSync("./dataBank/levelSystem.json", JSON.stringify(XPdataArray), { encoding: "utf8" });
+  return;
+}
+
+//--------------------------------------------------------------------------------------------------//
+// Database utils
+/**
+ * @param userID {String} ID do usuario
+ * @param money {Number} Quantidade de dinheiro a ser acrescentado
+ * @returns {Boolean}
+ */
+var updateDBmoney = (userID, money) => {
+  database.Users.findById("M" + userID, (err, doc) => {
+    if (err) {
+      console.log("\n=> " + newError(err, "utils_updateDBmoney", { user: userID }));
+      return;
+    }
+
+    if (!doc) {
+      let newUser = new database.Users({ _id: userID });
+      newUser.save();
+      return;
+    }
+
+    doc.money += money;
+
+    doc.save();
+    return;
+  });
+}
+
+/**
+ * @param userID {String} ID do usuario
+ * @param XPgain {Number} Quantidade de xp a ser acrescentado
+ * @returns {Boolean}
+ */
+var updateDBxp = (userID, XPgain) => {
+  let XPconfig = require("./dataBank/levelSystem.json");
+
+  database.Users.findById("M" + userID, (err, doc) => {
+    if (err) {
+      console.log("\n=> " + newError(err, "utils_updateDBxp", { user: userID }));
+      return;
+    }
+
+    if (!doc) {
+      let newUser = new database.Users({ _id: userID });
+      newUser.save();
+      return;
+    }
+
+    if ((doc.levelSystem.xp + XPgain) >= XPconfig[doc.levelSystem.level - 1].XPNextLevel) {
+      doc.levelSystem.xp -= XPconfig[doc.levelSystem.level - 1].XPNextLevel;
+      doc.levelSystem.txp += XPgain;
+      doc.levelSystem.level++;
+    } else {
+      doc.levelSystem.xp += XPgain;
+      doc.levelSystem.txp += XPgain;
+    }
+
+    doc.save();
+    return;
+  });
+}
 
 // Exports
 module.exports = {
   chalkClient: chalkClient,
   isDir: isDir,
   formatDate: formatDate,
+  sleep: sleep,
   listErrors: listErrors,
   newError: newError,
-  deleteError: deleteError,
   clearAllErrors: clearAllErrors,
   deleteError: deleteError,
   isDev: isDev,
+  limp: limp,
   jsonPush: jsonPush,
   jsonPull: jsonPull,
   jsonChange: jsonChange,
+  setupXPconfig: setupXPconfig,
+  updateDBmoney: updateDBmoney,
+  updateDBxp: updateDBxp
 };

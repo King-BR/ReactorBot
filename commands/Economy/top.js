@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 
 module.exports = {
   run: async (client, botUtils, message, args) => {
+    newError = botUtils.newError;
 
     try {
 
@@ -31,6 +32,8 @@ module.exports = {
           let userm = client.users.cache.get(ord[i][0]);
           let name = userm ? userm.username : "Usuario desconhecido";
           let position = i + 1
+
+          if (ord[i][0] == "693473241322225715") name = "biiely";
 
           if (ord[i][0] == user.id) {
             itstop = true;
@@ -73,7 +76,7 @@ module.exports = {
         user: message.author.id,
         msg: message.id
       }
-      console.log(`=> ${newError(err, "top", IDs)}`);
+      console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
     }
   },
 
