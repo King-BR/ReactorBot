@@ -4,6 +4,8 @@ const Discord = require("discord.js");
 module.exports = {
   run: async (client, botUtils, message, args) => {
 
+    if(message.author.id == "318399612060696576") message.channel.send("se crashar tu leva ban");
+    
     newError = botUtils.newError;
     isDir = botUtils.isDir;
 
@@ -14,7 +16,7 @@ module.exports = {
       const pstr = ['⁰','¹','²','³','⁴','⁵','⁶','⁷','⁸','⁹'];
       if (args.some((numb) => { return isNaN(numb) })) return message.reply("todos precisam ser numeros");
       args.forEach(v => {val.push(-parseInt(v));});
-      //if (val.length > 12) return message.reply('Quer crashar o server krl?');
+      if (val.length > 16) return message.reply('Quer crashar o server krl?');
       let trys = 0;
       const f = function(t, arr, p = 1, m = 1) {
         if (t == 0) return [1];

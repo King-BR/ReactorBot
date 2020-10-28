@@ -24,6 +24,12 @@ newError = botUtils.newError;
 isDir = botUtils.isDir;
 botUtils.setupXPconfig();
 
+// Starting Time - by Alstin112
+botUtils.jsonChange('./dataBank/serverState.json', server => {
+  server["serverStarted"] = (new Date()).getTime() - 10800000
+  return server;
+},true)
+
 // Event handler
 console.log('\n------------------\nEvents');
 let source = fs.readdirSync("./events");
@@ -107,6 +113,7 @@ commandsFolder.forEach(folder => {
   client.utils[folder.replace("ZZZ", "")] = {};
   client.utilsAliases[folder.replace("ZZZ", "")] = {};
 
+  
   UtilsFolder.forEach(u => {
     console.log(`- ${u}/`);
     var allUtils = fs.readdirSync(`./commands/${folder}/${u}`);

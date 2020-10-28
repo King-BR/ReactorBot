@@ -27,7 +27,7 @@ module.exports = {
             .addField(`Descrição:`,`${command.config.description || "Sem descrição"}`)
             .addField(`Uso:`,`${prefix}${command.config.usage || "Sem uso definido"}\n\nparametros entre <> são obrigatorios\nparametros entre [] são opcionais`)
             .addField(`Acessivel para:`,`${command.config.accessableby || "Membros"}`)
-            .addField(`Sinonimos:`,`${aliases}`)
+            .addField(`Sinônimos:`,`${aliases}`)
             .setFooter(`Requisitado por: ${message.author.tag}`);
           message.channel.send(embed);
         }
@@ -44,7 +44,6 @@ module.exports = {
 
         let commandsFolder = fs.readdirSync("commands");
         commandsFolder.forEach(folder => {
-          if (folder === "teste") return console.log("Achou a paste de teste");
           if (folder === 'Dev' && (!botUtils.isDev(message.author.id))) return;
           var all = fs.readdirSync(`commands/${folder}`);
           var files = all.filter(f => {

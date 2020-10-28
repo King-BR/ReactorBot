@@ -11,7 +11,7 @@ mongoose.connect(process.env.DATABASEURL, {
     process.exit(1);
     return 1;
   }
-  console.log("\nConectado ao banco de dados");
+  console.log("\nConectado ao banco de dados\n");
   return 0;
 });
 
@@ -203,9 +203,15 @@ var User = new Schema({
       }
     }
   },
-  msgtotal: {
-    type: Number,
-    default: 0
+  activity: {
+    messages: {
+      type: Array,
+      default: [0,0,0,0,0,0,0,0,0]
+    },
+    totalMsg: {
+      type: Number,
+      default: 0
+    }
   },
   money: {
     type: Number,

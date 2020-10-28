@@ -9,7 +9,7 @@ module.exports = {
 
     try {
       //tira dps
-      return message.reply('ainda não implementado');
+      message.reply('ainda não implementado')
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

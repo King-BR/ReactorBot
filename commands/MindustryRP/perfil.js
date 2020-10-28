@@ -12,10 +12,6 @@ module.exports = {
       //tira dps
       return message.reply('ainda não implementado');
 
-      if(!fs.existsSync("../../dataBank/minigame")) fs.mkdirSync("../../dataBank/minigame");
-
-      if(!fs.existsSync(`../../dataBank/minigame/${user.id}.json`)) fs.writeFileSync(`../../dataBank/minigame/${user.id}.json`, JSON.stringify(botUtils.jsonPull("../../dataBank/minigame/template.json"), null, 2));
-
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")

@@ -14,8 +14,9 @@ module.exports = {
           .setTimestamp()
           .setDescription(`${client.config.prefix}error [opção]`)
           .addField("clear", "Limpa todos os erros")
-          .addField("delete", "Apaga um erro especifico")
+          .addField("delete [ID]", "Apaga um erro especifico")
           .addField("list", "Lista todos os erros")
+          .addField("last", "Mostra o ultimo erro")
           .addField("search <ID>", "Procura um erro contendo o id fornecido")
         message.channel.send(embed);
         return;
@@ -31,6 +32,24 @@ module.exports = {
           let errors = botUtils.listErrors();
           let errorsString = "";
           let i = 0;
+
+          if (args[1]) {
+            let deleted = false;
+            errors.forEach(error => {
+              let pull = require(`../../errors/${error}`);
+              if (pull.errorID == args[1]) {
+                botUtils.deleteError(error);
+                message.channel.send("Erro deletado");
+                deleted = true;
+              }
+            });
+
+            if (!deleted) {
+              message.channel.send("Nenhum erro encontrado com esse ID");
+            }
+            return;
+          }
+
 
           if (errors.length > 0) {
             errors.forEach(error => {
@@ -98,9 +117,69 @@ module.exports = {
             .setTimestamp()
             .setTitle("Lista de erros");
 
-          errorsArray.forEach(er => { embedListErrors.addField(`${i++} - ${er.thisfile}`, `${er.msg}\n\n${er.date}`); });
+          errorsArray.forEach(er => { embedListErrors.addField(`${i++} - ${er.thisfile}`, `${er.msg}\n\nData: ${er.date}\nID: ${er.errorID}`); });
 
           message.channel.send(embedListErrors);
+          break;
+        }
+        case "last": {
+          let errors = botUtils.listErrors();
+          let er = {
+            file: "",
+            ms: 0
+          }
+
+          if (errors.length == 0) {
+            let embednerrors = new Discord.MessageEmbed()
+              .setTitle("Não existe erros no momento")
+              .setDescription("Que milagre")
+              .setTimestamp()
+              .setColor("RANDOM")
+            message.channel.send(embednerrors);
+            return;
+          }
+
+          errors.forEach(error => {
+            let pull = require(`../../errors/${error}`);
+
+            if (pull.msdate > er.ms) {
+              er.ms = pull.msdate;
+              er.file = pull.thisfile;
+            }
+          });
+
+          let pull = require(`../../errors/${er.file}`);
+
+          let embedLastError = new Discord.MessageEmbed()
+            .setTitle(pull.thisfile)
+            .setDescription(`ID: ${pull.errorID}`)
+            .addField(pull.msg, pull.stack.split("\n").slice(1, 3).join("\n"))
+            .setColor("RED")
+            .setTimestamp(pull.msdate)
+            .setFooter(`Data: ${pull.date}`);
+          message.channel.send(embedLastError);
+          break;
+        }
+        case "search": {
+          if (args[1]) {
+            let error = botUtils.searchErrorByID(args[1]);
+
+            if (error) {
+              let pull = require(`../../errors/${error}`);
+
+              let embedError = new Discord.MessageEmbed()
+                .setTitle(pull.thisfile)
+                .setDescription(`ID: ${pull.errorID}`)
+                .addField(pull.msg, pull.stack.split("\n").slice(1, 3).join("\n"))
+                .setColor("RED")
+                .setTimestamp(pull.msdate)
+                .setFooter(`Data: ${pull.date}`);
+              message.channel.send(embedError);
+              return;
+            }
+          } else {
+            message.channel.send("Nenhum erro encontrado com esse ID");
+          }
           break;
         }
       }

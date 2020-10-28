@@ -1,0 +1,58 @@
+{
+  "crafting": {
+    "alloy_smelter": {
+      "solid": true,
+      "health": 60,
+      "size": 3,
+      "buildTime": 3.28,
+      "buildCost": [
+        {
+          "name": "lead",
+          "quant": 80
+        },
+        {
+          "name": "thorium",
+          "quant": 70
+        },
+        {
+          "name": "silicon",
+          "quant": 80
+        }
+      ],
+      "power": 24,
+      "itemCapacity": 10,
+      "input": [
+        {
+          "name": "pyratite",
+          "quant": 1
+        },
+        {
+          "name": "spore_pod",
+          "quant": 1
+        }
+      ],
+      "output": [
+        {
+          "name": "blast_compound",
+          "quant": 1
+        }
+      ]
+    },
+    "blast_mixer": {
+      "solid": true,
+      "health": 60,
+      "size": 2,
+      "buildTime": 0.68,
+      "buildCost": [
+        {
+          "name": "lead",
+          "quant": 30
+        },
+        {
+          "name": "titanium",
+          "quant": 20
+        }
+      ]
+    }
+  }
+}

@@ -39,14 +39,14 @@ module.exports = async ({ client, botUtils }, message) => {
     // Utils
     if (message.channel.id == '768238015830556693') {
       // #mini-events
-      return require('./utils/minieventos.js')(client, botUtils, message);
+      return require('./Utils/minieventos.js')(client, botUtils, message);
     } else if (message.channel.id == '756587320140103690') {
       // #mudae-comécio
-      return require('./utils/mudae.js')(client, botUtils, message);
+      return require('./Utils/mudae.js')(client, botUtils, message);
     }
 
     // Anti trava discord
-    require("./utils/antitrava.js")(client, botUtils, message);
+    require("./Utils/antitrava.js")(client, botUtils, message);
 
     // tudo oq n possui prefixo é ignorado
     if (!message.content.startsWith(prefix)) return;

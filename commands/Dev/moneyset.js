@@ -1,5 +1,6 @@
 const fs = require("fs");
 const Discord = require("discord.js");
+const { Users } = require("../../database.js");
 
 module.exports = {
   run: async (client, botUtils, message, args) => {
@@ -11,8 +12,8 @@ module.exports = {
 
       if (isNaN(parseInt(args[1] || args[0]))) return message.reply('Não foi possivel indentificar a quantia de dinheiro a se informar');
 
-      let money = isNaN(parseInt(args[1] || args[0]));
-      let user = message.mentions.users[0] || message.author;
+      let money = parseInt(args[1] || args[0])
+      let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
 
       Users.findById(user.id, (err, doc) => {
         if (err) {
@@ -40,40 +41,25 @@ module.exports = {
               var reactionCollector = msg.createReactionCollector(filter, { time: 30000 });
 
               reactionCollector.on('collect', (r, u) => {
-                try {
-                  msg.reactions.removeAll();
-                  switch (r.emoji.name) {
-                    case "✅": {
-                      doc.money = money;
-                      doc.save();
+                msg.reactions.removeAll();
+                switch (r.emoji.name) {
+                  case "✅": {
+                    doc.money = money;
+                    doc.save();
 
-                      let embedReset = new Discord.MessageEmbed()
-                        .setDescription(`Dinheiro de ${user.tag || "`desconhecido`"} foi setado`);
-                      msg.edit(embedReset);
-                      reactionCollector.stop();
-                      break;
-                    }
-                    case "❌": {
-                      let embedCancelado = new Discord.MessageEmbed()
-                        .setDescription(`Set do dinheiro de ${user.tag || "`desconhecido`"} cancelado`);
-                      msg.edit(embedCancelado);
-                      reactionCollector.stop();
-                      break;
-                    }
+                    let embedReset = new Discord.MessageEmbed()
+                      .setDescription(`Dinheiro de ${user.tag || "`desconhecido`"} foi setado`);
+                    msg.edit(embedReset);
+                    reactionCollector.stop();
+                    break;
                   }
-
-                } catch (err3) {
-                  let embed = new Discord.MessageEmbed()
-                    .setTitle("Erro inesperado")
-                    .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
-                  message.channel.send(embed);
-
-                  let IDs = {
-                    server: message.guild.id,
-                    user: message.author.id,
-                    msg: message.id
+                  case "❌": {
+                    let embedCancelado = new Discord.MessageEmbed()
+                      .setDescription(`Set do dinheiro de ${user.tag || "`desconhecido`"} cancelado`);
+                    msg.edit(embedCancelado);
+                    reactionCollector.stop();
+                    break;
                   }
-                  console.log(`=> ${newError(err3, module.exports.config.name, IDs)}`);
                 }
               });
             });

@@ -26,7 +26,6 @@ module.exports = {
   // Configuração do comando
   config: {
     name: "nome",
-    noalias: "Sem sinonimos",
     aliases: [],
     description: "descrição",
     usage: "uso",

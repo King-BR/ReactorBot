@@ -8,7 +8,7 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
-      let user = message.mentions.users[0] || client.users.cache.get(args[0]) || message.author;
+      let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
 
       Users.findById(user.id, (err, doc) => {
         if (err) {
@@ -26,7 +26,7 @@ module.exports = {
 
         try {
           let embedConfirm = new Discord.MessageEmbed()
-            .setTitle(`Tem certeza que quer resetar o dinheiro de ${user.tag || "`desconhecido`"}?`)
+            .setTitle(`Tem certeza que quer resetar o dinheiro de ${user.displayName || "`desconhecido`"}?`)
             .setDescription("Reaja com ✅ para confirmar\nReaja com ❌ para cancelar")
           message.channel.send(embedConfirm).then(msg => {
             msg.react("✅").then(() => {
@@ -44,14 +44,14 @@ module.exports = {
                       doc.save();
 
                       let embedReset = new Discord.MessageEmbed()
-                        .setDescription(`Dinheiro de ${user.tag || "`desconhecido`"} foi resetado`);
+                        .setDescription(`Dinheiro de ${user.displayName || "`desconhecido`"} foi resetado`);
                       msg.edit(embedReset);
                       reactionCollector.stop();
                       break;
                     }
                     case "❌": {
                       let embedCancelado = new Discord.MessageEmbed()
-                        .setDescription(`Reset do dinheiro de ${user.tag || "`desconhecido`"} cancelado`);
+                        .setDescription(`Reset do dinheiro de ${user.displayName || "`desconhecido`"} cancelado`);
                       msg.edit(embedCancelado);
                       reactionCollector.stop();
                       break;
