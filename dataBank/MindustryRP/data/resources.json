@@ -1,5 +1,5 @@
 {
-  "resources": {
+  "itens": {
     "blast_compound": {
       "name": "Composto de explosão",
       "flammability": 40,
@@ -45,7 +45,19 @@
         "crawler_factory"
       ],
       "usedToBuild": []
-    },
-    "etc...": {}
+    }
+  },
+  "liquids": {
+    "name": {
+      "name": "Nome",
+      "flammability": 0,
+      "explosivennes": 0,
+      "radioactivity": 0,
+      "natural": true,
+      "hardness": 0,
+      "producedIn": [],
+      "requiredFor": [],
+      "usedToBuild": []
+    }
   }
 }

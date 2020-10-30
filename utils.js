@@ -72,7 +72,24 @@ module.exports = {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
 
+  /**
+   * Coleta reações
+   * @param emoji {string} O emoji que será usado
+   * @param pessoa {number} O id da pessoa
+   * @param message {objeto} A mensagem
+   * @returns callback {código} Retorna {}
+   */
+  reactionCollector: (emoji, pessoa, message, callback) => {
+    let filtro = (reaction, user) =>
+      reaction.emoji.name === emoji && user.id === pessoa;
+    const coletor = message.createReactionCollector(filtro);
 
+    collector.on('collect', (reaction, user) => {
+      if (typeof callback === 'function') {
+        callback(reaction, user);
+      }
+    });
+  },
   //--------------------------------------------------------------------------------------------------//
   // Handler utils
 
@@ -272,7 +289,7 @@ module.exports = {
   },
 
   hexToRgb: (str) => {
-    
+
 
     if (typeof str == "string") {
 
@@ -282,12 +299,12 @@ module.exports = {
       if (str.length == 1) str = str[0];
 
       if (Array.isArray(str)) {
-        
+
         return module.exports.hexToRgb(str)
 
       } else if (str.toLowerCase() == 'random') {
 
-        return [Math.floor(Math.random()*256),Math.floor(Math.random()*256),Math.floor(Math.random()*256)]
+        return [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)]
 
       } else {
 

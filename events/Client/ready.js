@@ -1,6 +1,3 @@
-const format = require("date-fns/format");
-const Discord = require("discord.js")
-
 module.exports = ({ client, botUtils }) => {
   newError = botUtils.newError;
   try {
@@ -8,7 +5,7 @@ module.exports = ({ client, botUtils }) => {
 
     //log no console
     console.log(`\nBot foi logado como ${client.user.tag}`)
-    console.log("Iniciado em " + format(new Date(), "dd/MM/yyyy HH:mm:SS"));
+    console.log("Iniciado em " + botUtils.formatDate(new Date()));
 
 
     // Tempo q o bot levou pra começar

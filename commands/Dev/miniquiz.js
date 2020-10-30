@@ -11,43 +11,17 @@ module.exports = {
 
       const funcs = [
         function(){
-          
-          const rand = (length,types) => {
-            let letters = '';
-            let resp = '';
+          const resp = client.emojis.cache.random()
 
-            for(let i = 0;i < types;i++){letters += i.toString(types)}
-            for(let i = 0;i < length;i++){
-              let letter = letters[Math.floor(Math.random()*letters.length)];
-              letters = letters.replace(letter,'');
-              resp += letter;
-            }
-
-            return resp
-          }
-
-          const larg = 6
-          const size = 10
-
-          const resp = rand(larg,size)
-          let quest = 'Decubra o codigo `'+('_ ').repeat(larg).slice(1,-2)+'`\n'
-
-          let numbs = [];
-
-          for(let i = 0;i < 3;i++){
-            numbs[i] = rand(larg,size)
-
-            n
-          }
-
-          return [resp,resp]
+          let str = `Mande o emoji: ${resp}`
+          return [str,resp]
         }
       ]
 
       const quest = funcs[0]()
 
       message.channel.send('> '+quest[0])
-      message.channel.send("\`"+quest[1]+"\`")
+      message.channel.send("||"+quest[1]+"||")
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

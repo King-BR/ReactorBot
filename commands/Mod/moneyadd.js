@@ -53,6 +53,6 @@ module.exports = {
     aliases: [],
     description: "adiciona adinheiro na conta de um jogador",
     usage: "moneyadd [Membro] <Quantia>",
-    accessableby: "Desenvolvedores"
+    accessableby: "STAFF"
   }
 }

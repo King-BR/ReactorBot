@@ -8,35 +8,39 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
-      // Codigo do comando
-      let img = message.attachments.first()
-      result.colors = '';
+      let img = message.attachments.first();
       let ended = '';
-      //não tá não
-      //eu to usando no image exists e to salvando ela no config.json
+      let conf = botUtils.jsonPull('./dataBank/config.json');
+      conf.players[message.member.id] = conf.players[message.member.id] || {};
 
-      botUtils.jsonChange('./dataBank/config.json', conf => {
-        conf.players[message.member.id] = conf.players[message.member.id] || {};
-      }, true);
-
+      //detecta função
       const config = args.length ? args.shift() : 'help';
       switch (config) {
-        case 'background':
+        //background
+        case 'bg':
+        case 'background': {
           let imagem = args[0];
 
           if (imagem && !imageExists(imagem) && !img) return message.channel.send("img invalida");
 
           result.background = args[0] || (img && img.url) || null;
 
-          if (!result.background) message.reply("seu fundo foi restaurado");
-          botUtils.jsonChange('./dataBank/config.json', conf => {
-            conf.players[message.member.id].background = result.background;
-            return conf;
-          }, true);
+          conf.players[message.member.id].background = result.background;
           break;
+        }
+        //Definir tipo
+        case 'type': {
+          if (!args[0]) return message.reply("cade o tipo caramba");
 
-        case 'color':
-          
+          let type = args[0].toLowerCase()
+
+          if (!(type == 'ascii' || type == 'barra' || type == 'linha' || type == 'bezier' || type == 'linhacor' || type == 'beziercor')) return message.reply("tipo n reconhecido");
+
+          conf.players[message.member.id].type = type
+          break;
+        }
+        //Definir Cor
+        case 'color': {
           let cor = '';
           args.forEach((name, index) => {
             name = name.toLowerCase();
@@ -44,36 +48,47 @@ module.exports = {
             let result = /(\d{1,3})+%([dl])/i.exec(name)
 
 
-            if (result && parseInt(result[1]) <= 100){
-              
+            if (result && parseInt(result[1]) <= 100 && index) {
+
               cor += result[0]
 
             } else if (botUtils.hexToRgb(name)) {
+
               cor += name
-            } else {
-              ended = "Não foi possivel entender a configuração de cores que você deseja."
-            }
+
+            } else {ended = "Não foi possivel entender a configuração de cores que você deseja."}
+
             cor += ' '
           });
 
           if (ended) return message.reply(ended);
 
-          botUtils.jsonChange('./dataBank/config.json', conf => {
-            conf.players[message.member.id].colors = cor;
-            return conf;
-          }, true);
-
+          conf.players[message.member.id].colors = cor;
           break;
+        }
         default:
-          return message.reply('configuração desconhecida')
+          message.reply('configuração desconhecida, olha novamente o ajuda, mas agr com atenção');
         case 'help':
-        case 'ajuda':
-          let embed = new Discord.MessageEmbed()
+        case 'ajuda': {
+          let conf = botUtils.jsonPull('./dataBank/config.json');
+          let player = conf.players[message.author.id]
+          //let bg = player.background
+          const embed = new Discord.MessageEmbed()
             .setTitle("Config Ajuda")
-            .setDescription("**ma config background [imagem/link da imagem]**: para definir o plano de fundo, caso deseja remover envie somente `ma config background`\n**ma config color <cor>**:envia cores temas pro seu perfil, pode tbm adicionar mais de uma cor, e se deseja uma cor aleatoria escreva `random`");
+            .addField("ma config color <cor>", "Envia cores tema pro seu perfil. Também pode ser adicionado mais de uma cor. Se deseja uma cor aleatória use `random` com a cor.")
+            .addField("ma config background <link/img>", "Use para definir o plano de fundo. Caso deseje remover seeu plano de fundo, use `config background`.")
+            .addField("ma config type <type>", "Escolha o tipo de grafico q vai ser mostrado (`ascii`,`barra`,`linha`,`linhacor`,`bezier`,`beziercor`)");
+            //.setImage(bg);
           return message.channel.send(embed);
+        }
 
       }
+
+      //adicionando no config.json
+      botUtils.jsonPush('./dataBank/config.json', conf);
+
+
+      // fim, comaçando erro
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")

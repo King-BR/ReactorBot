@@ -7,11 +7,11 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
-      
+
       //error testing
 
       //color
-      if (result.colors.some((el) => {return !el})) {
+      if (result.colors.some((el) => { return !el })) {
         console.log(`=> ${newError(new Error("A entrada de Cores esta errada"), 'profImage')}`)
       };
       //stating
@@ -88,34 +88,89 @@ module.exports = {
       }
       ctx.stroke();
 
-      //bars
-      ctx.strokeStyle = '#00000055';
-      ctx.lineWidth = 3;
-      result.msgs.forEach((val, index) => {
-        //cons
-        const x = displayx + (index * displayw) / 24;
-        const y = displayy + (1 - val / cheight / sizePL) * displayh;
-        const w = displayw / 24;
-        const h = (val / cheight / sizePL) * displayh;
+      //show
+      if (result.type == "barra") {
 
-        const mn =
-          result.colors[
-          Math.floor((val / cheight / sizePL) * (result.colors.length - 1))
-          ];
-        const mx =
-          result.colors[
-          Math.ceil((val / cheight / sizePL) * (result.colors.length - 1))
-          ];
+        //bars
+        ctx.strokeStyle = '#00000055';
+        ctx.lineWidth = 3;
+        result.msgs.forEach((val, index) => {
+          //cons
+          const x = displayx + (index * displayw) / 24;
+          const y = displayy + (1 - val / cheight / sizePL) * displayh;
+          const w = displayw / 24;
+          const h = (val / cheight / sizePL) * displayh;
 
-        //set
-        ctx.fillStyle = toColor(
-          botUtils.limp(val / cheight / sizePL, mn[0], mx[0]),
-          botUtils.limp(val / cheight / sizePL, mn[1], mx[1]),
-          botUtils.limp(val / cheight / sizePL, mn[2], mx[2])
-        );
-        ctx.fillRect(x, y, w, h);
-        ctx.strokeRect(x, y, w, h);
-      });
+          const mn =
+            result.colors[
+            Math.floor((val / cheight / sizePL) * (result.colors.length - 1))
+            ];
+          const mx =
+            result.colors[
+            Math.ceil((val / cheight / sizePL) * (result.colors.length - 1))
+            ];
+
+          //set
+          ctx.fillStyle = toColor(
+            botUtils.limp(val / cheight / sizePL, mn[0], mx[0]),
+            botUtils.limp(val / cheight / sizePL, mn[1], mx[1]),
+            botUtils.limp(val / cheight / sizePL, mn[2], mx[2])
+          );
+          ctx.fillRect(x, y, w, h);
+          ctx.strokeRect(x, y, w, h);
+        });
+      } else if (result.type == 'linha' || result.type == 'linhacor') {
+        //Linha
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = result.type.endsWith('cor') ? 2 : 3;
+        ctx.beginPath();
+        ctx.moveTo(displayx, displayy + displayh);
+        ctx.lineTo(displayx, displayy + displayh * (1 - result.msgs[0] / cheight / sizePL));
+        result.msgs.forEach((val, index) => {
+          ctx.lineTo(displayx + (1 + 2 * index) * displayw / 48, displayy + displayh * (1 - val / cheight / sizePL));
+
+        });
+        ctx.lineTo(displayx + displayw, displayy + displayh * (1 - result.msgs[23] / cheight / sizePL));
+        ctx.lineTo(displayx + displayw, displayy + displayh);
+        ctx.closePath();
+        ctx.stroke()
+        if (result.type.endsWith('cor')) {
+          ctx.fillStyle = botUtils.newGradient(ctx, 0, displayy + displayh, 0, displayy, botUtils.toColor(result.colors));
+          ctx.fill();
+        };
+      } else if (result.type == 'bezier' || result.type == 'beziercor') {
+        //Bezier
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2
+        ctx.beginPath();
+        ctx.moveTo(displayx, displayy + displayh);
+        ctx.lineTo(displayx, displayy + displayh * (1 - result.msgs[0] / cheight / sizePL));
+        result.msgs.forEach((val, index) => {
+
+          if (index && index != 23) {
+
+            ctx.bezierCurveTo(
+              displayx + (2 * index) * displayw / 48,
+              displayy + displayh * (1 - result.msgs[index - 1] / cheight / sizePL),
+
+              displayx + (2 * index) * displayw / 48,
+              displayy + displayh * (1 - val / cheight / sizePL),
+
+              displayx + (1 + 2 * index) * displayw / 48,
+              displayy + displayh * (1 - val / cheight / sizePL)
+            );
+          }
+
+        });
+        ctx.lineTo(displayx + displayw, displayy + displayh * (1 - result.msgs[23] / cheight / sizePL));
+        ctx.lineTo(displayx + displayw, displayy + displayh);
+        ctx.closePath();
+        ctx.stroke();
+        if (result.type.endsWith('cor')) {
+          ctx.fillStyle = botUtils.newGradient(ctx, 0, displayy + displayh, 0, displayy, botUtils.toColor(result.colors));
+          ctx.fill();
+        };
+      }
 
       //contorno dispplay
       ctx.lineWidth = 2;

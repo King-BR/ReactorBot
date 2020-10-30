@@ -30,7 +30,7 @@ var Warn = new Schema({
   },
   date: {
     type: String,
-    default: format(new Date(), "dd/MM/yyyy HH:mm:SS")
+    default: format(new Date() - 10800000, "dd/MM/yyyy HH:mm:SS")
   }
 
 })
@@ -39,88 +39,92 @@ var User = new Schema({
   _id: String,
   mindustryRP: {
     resources: {
-      blast_compound: {
+      items: {
+        blast_compound: {
           type: Number,
           default: 0
+        },
+        coal: {
+          type: Number,
+          default: 0
+        },
+        copper: {
+          type: Number,
+          default: 0
+        },
+        graphite: {
+          type: Number,
+          default: 0
+        },
+        lead: {
+          type: Number,
+          default: 0
+        },
+        metaglass: {
+          type: Number,
+          default: 0
+        },
+        phase_fabric: {
+          type: Number,
+          default: 0
+        },
+        plastanium: {
+          type: Number,
+          default: 0
+        },
+        pyratite: {
+          type: Number,
+          default: 0
+        },
+        sand: {
+          type: Number,
+          default: 0
+        },
+        scrap: {
+          type: Number,
+          default: 0
+        },
+        silicon: {
+          type: Number,
+          default: 0
+        },
+        spore_pod: {
+          type: Number,
+          default: 0
+        },
+        surge_alloy: {
+          type: Number,
+          default: 0
+        },
+        thorium: {
+          type: Number,
+          default: 0
+        },
+        titanium: {
+          type: Number,
+          default: 0
+        }
       },
-      coal: {
+      liquids: {
+        cryofluid: {
           type: Number,
           default: 0
-      },
-      copper: {
+        },
+        oil: {
           type: Number,
           default: 0
-      },
-      graphite: {
+        },
+        slag: {
           type: Number,
           default: 0
-      },
-      lead: {
+        },
+        water: {
           type: Number,
           default: 0
-      },
-      metaglass: {
-          type: Number,
-          default: 0
-      },
-      phase_fabric: {
-          type: Number,
-          default: 0
-      },
-      plastanium: {
-          type: Number,
-          default: 0
-      },
-      pyratite: {
-          type: Number,
-          default: 0
-      },
-      sand: {
-          type: Number,
-          default: 0
-      },
-      scrap: {
-          type: Number,
-          default: 0
-      },
-      silicon: {
-          type: Number,
-          default: 0
-      },
-      spore_pod: {
-          type: Number,
-          default: 0
-      },
-      surge_alloy: {
-          type: Number,
-          default: 0
-      },
-      thorium: {
-          type: Number,
-          default: 0
-      },
-      titanium: {
-          type: Number,
-          default: 0
-      },
-      cryofluid: {
-          type: Number,
-          default: 0
-      },
-      oil: {
-          type: Number,
-          default: 0
-      },
-      slag: {
-          type: Number,
-          default: 0
-      },
-      water: {
-          type: Number,
-          default: 0
+        }
       }
     },
-    ships: {
+    mechs: {
       alpha: {
         have: {
           type: Boolean,
@@ -203,16 +207,6 @@ var User = new Schema({
       }
     }
   },
-  activity: {
-    messages: {
-      type: Array,
-      default: [0,0,0,0,0,0,0,0,0]
-    },
-    totalMsg: {
-      type: Number,
-      default: 0
-    }
-  },
   money: {
     type: Number,
     default: 0
@@ -237,6 +231,17 @@ var User = new Schema({
       default: 0
     },
     history: [Warn]
+  },
+  config: {
+    colors: {
+      type: Array,
+      default: []
+    },
+    background: String,
+    type: {
+      type: String,
+      default: "barra"
+    }
   }
 })
 

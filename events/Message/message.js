@@ -13,7 +13,7 @@ module.exports = async ({ client, botUtils }, message) => {
     // Ignora mensagens na dm
     if (message.channel.type === 'dm') return;
     
-    // adiciona na tabela de frequencia
+    // Adiciona na tabela de frequencia
     botUtils.jsonChange('./dataBank/mesTotal.json', obj => {
       obj.messages[0] = obj.messages[0] || {};
       obj.messages[0][message.author.id] = (obj.messages[0][message.author.id] || 0) + 1;

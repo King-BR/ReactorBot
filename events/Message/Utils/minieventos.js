@@ -16,7 +16,7 @@ module.exports = (client, botUtils, message) => {
 
 				let correct = false;
 
-				if (obj.eventType == 2) {
+				if (Array.isArray(obj.eventWin)) {
 					const values = message.content.match(/\-?\d+/g);
 
 					if (values && values.length == obj.eventWin.length) {
