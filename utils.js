@@ -3,9 +3,6 @@ const chalk = require("chalk");
 const fs = require("fs");
 const format = require("date-fns/format");
 
-// Files requires
-const config = require("./config.json");
-
 
 //--------------------------------------------------------------------------------------------------//
 // Error handler private utils
@@ -44,16 +41,6 @@ module.exports = {
 
   //--------------------------------------------------------------------------------------------------//
   // Mix utils
-
-  /**
-   * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
-   * @param ID {String|Number} ID do usuario para checar
-   * @returns {Boolean}
-   */
-  isDev: (ID) => {
-    if (config.devsID.includes(ID)) return true;
-    return false;
-  },
 
   /**
    * Formata datas no estilo dd/MM/yyyy HH:mm:SS
@@ -255,11 +242,6 @@ module.exports = {
   },
 
   /**
-   * @param red {Number}
-   * @param green {Number}
-   * @param blue {Number}
-   * @param alpha {Number}
-   * @returns {string}
    */
   newGradient: (ctx, x1, y1, x2, y2, arr) => {
 
@@ -336,9 +318,10 @@ module.exports = {
   // Math utils
 
   /**
-   * @param norm {Number}
-   * @param min {Number}
-   * @param max {Number}
+   * Transforma um numero entre 0 e 1 em outro entre o minimo e maximo informado
+   * @param norm {Number} Um valor entre 0 e 1
+   * @param min {Number} o valor minimo
+   * @param max {Number} o valor maximo
    * @returns {Number}
    */
   limp: (norm, min, max) => {
@@ -367,6 +350,7 @@ module.exports = {
    * @returns {object} 
    */
   jsonPull: (path) => {
+    if (!(typeof path == "string" && path.endsWith('.json') && fs.existsSync(path))) return null;
     var data = fs.readFileSync(path);
     return JSON.parse(data);
   },
@@ -381,6 +365,9 @@ module.exports = {
    */
   jsonChange: async (path, func, min = 0) => {
     let bal = module.exports.jsonPull(path);
+
+    if(!bal) return console.log(`=> ${module.exports.newError(new Error('Não foi encontrado um json no caminho inserido'), "utils_jsonChange")}`);;
+
     const ret = func(bal);
     min = (typeof min == 'boolean' && min) ? Object.keys(bal).length : min;
 
