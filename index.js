@@ -1,8 +1,11 @@
-const dotenv = require("dotenv");
+// NPMs require
+require("dotenv");
 const express = require('express');
-const utils = require("./utils");
 const os = require('os');
 const cpuStat = require("cpu-stat");
+
+// Files require
+const utils = require("./utils.js");
 
 
 const app = express();
