@@ -1,58 +1,152 @@
-// NPMs require
-require("dotenv");
-const express = require('express');
-const os = require('os');
-const cpuStat = require("cpu-stat");
+// Bot online 24/7
+require("./keep_alive.js");
 
-// Files require
-const utils = require("./utils.js");
+// NPMs
+const Discord = require("discord.js");
+const fs = require("fs");
+const Enmap = require("enmap");
 
-
-const app = express();
-
-app.get('/', (req, res) => {
-  let data = {
-    online: true,
-    userSize: Object.keys(utils.jsonPull('./usersConfig.json').players).length
-  };
-
-  return res.send(data);
+// Bot config
+require("dotenv").config();
+const config = require("./config.json");
+const botUtils = require("./utils.js");
+const client = new Discord.Client({
+  fetchAllMembers: true,
+  disableMentions: "everyone",
+  autoreconnect: true
 });
+client.config = config;
 
-app.get('/stats', (req, res) => {
-  cpuStat.usagePercent(function(err, percent, seconds) {
-    if (err) {
-      console.log(err);
-      return res.send({ error: err });
+// Utils config
+require("./font_manager.js");
+chalkClient = botUtils.chalkClient;
+newError = botUtils.newError;
+isDir = botUtils.isDir;
+botUtils.clearAllErrors();
+//botUtils.setupXPconfig();
+
+// Starting Time - by Alstin112
+botUtils.jsonChange('./dataBank/serverState.json', server => {
+  server["serverStarted"] = (new Date()).getTime() - 10800000
+  return server;
+},true)
+
+// Event handler
+console.log('\n------------------\nEvents');
+let source = fs.readdirSync("./events");
+source.forEach(foldert => {
+  var sla = fs.readdirSync(`./events/${foldert}`);
+  console.log(`\n${foldert}/`);
+  sla.forEach(filet => {
+    try {
+      if (!filet.endsWith(".js")) {
+        if (isDir(`./events/${foldert}/${filet}`) && filet == "utils") {
+          var utilst = fs.readdirSync(`./events/${foldert}/${filet}`);
+          console.log(`- ${filet}/`);
+          utilst.forEach(fileutils => {
+            let nameutil = foldert + fileutils.split(".")[0];
+            try {
+              require(`./events/${foldert}/${filet}/${fileutils}`);
+              console.log(`- - ${fileutils}: ${chalkClient.ok('OK')}`)
+            } catch (err) {
+              console.log(`- - ${fileutils}: ${chalkClient.error('ERROR')}`);
+              console.log(`=> ${newError(err, nameutil)}`);
+            }
+          })
+        }
+        return;
+      }
+      let name = filet.split('.')[0];
+      console.log(`- ${name}.js: ${chalkClient.ok('OK')}`);
+      let exported = require(`./events/${foldert}/${filet}`);
+      client.on(name, exported.bind(null, { client, botUtils }));
+    } catch (err) {
+      console.log(`- ${filet}: ${chalkClient.error('ERROR')}`);
+      console.log(`=> ${newError(err, filet)}`);
     }
-
-    let data = {
-      error: false,
-      memory: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} / ${(os.totalmem() / 1024 / 1024).toFixed(2)} MB`,
-      platform: `${os.platform()} ${os.arch()}`,
-      cpu: `${os.cpus().map(i => `${i.model}`)[0]}`,
-      cpuUsed: `${percent.toFixed(2)}%`
-    }
-
-    return res.send(data);
   });
 });
 
-app.get('/info/:userID', (req, res) => {
-  if(!req.query || !req.query.key || req.query.key != process.env.KEY) return res.send({ error: "Sem autorização"});
+// Command handler setup
+client.commands = new Discord.Collection();
+client.commands = new Enmap();
+client.aliases = new Discord.Collection();
+let commandsFolder = fs.readdirSync("commands");
+
+// Config Utils handler setup
+client.utils = {}
+client.utilsAliases = {}
+
+// Command handler
+console.log('\n------------------\nCommands');
+commandsFolder.forEach(folder => {
+  if (folder === "teste") return console.log("Achou a pasta teste");
+  var all = fs.readdirSync(`./commands/${folder}`);
+  var files = all.filter(f => {
+    let dirCheck = isDir(`./commands/${folder}/${f}`);
+    return f.split(".").slice(-1)[0] === "js" && !dirCheck;
+  });
+  var UtilsFolder = all.filter(u => {
+    let dirCheck = isDir(`./commands/${folder}/${u}`);
+    return u === "Utils" && dirCheck;
+  });
+
+  console.log(`\n${folder.replace("ZZZ", "")}/`);
+  files.forEach(f => {
+    try {
+      let pull = require(`./commands/${folder}/${f}`);
+      console.log(`- ${pull.config.name}.js: ${chalkClient.ok('OK')}`);
+      client.commands.set(pull.config.name, pull);
+      pull.config.aliases.forEach(alias => {
+        client.aliases.set(alias, pull.config.name);
+      });
+    } catch (err) {
+      /*
+      Caso aconteça algum erro
+      Cria um arquivo chamado "<nome do arquivo com erro>_Error.log"
+      */
+      console.log(`- ${f}: ${chalkClient.error('ERROR')}`);
+      console.log(`=> ${newError(err, f)}`);
+    }
+  });
+
+  // Config Utils handler
+  client.utils[folder.replace("ZZZ", "")] = {};
+  client.utilsAliases[folder.replace("ZZZ", "")] = {};
+
   
-  let user = req.params.userID;
-  let data = utils.jsonPull('./usersConfig.json');
-  let userData = data.players[user];
+  UtilsFolder.forEach(u => {
+    console.log(`- ${u}/`);
+    var allUtils = fs.readdirSync(`./commands/${folder}/${u}`);
+    var UtilsFiles = allUtils.filter(uf => {
+      let dirCheck = isDir(`./commands/${folder}/${u}/${uf}`);
+      return uf.split(".").slice(-1)[0] === "js" && !dirCheck;
+    });
 
-  if(userData) {
-    userData.found = true;
-    return res.send(userData);
-  }
+    UtilsFiles.forEach(uf => {
+      try {
+        let pull = require(`./commands/${folder}/${u}/${uf}`);
+        console.log(`- - ${pull.config.name}.js: ${chalkClient.ok('OK')}`);
 
-  return res.send({ found: false });
+        client.utils[folder.replace("ZZZ", "")][pull.config.name] = pull
+
+        pull.config.aliases.forEach(alias => {
+          client.utilsAliases[folder.replace("ZZZ", "")][alias] = pull
+        });
+      } catch (err) {
+        /*
+        Caso aconteça algum erro
+        Cria um arquivo chamado "<nome do arquivo com erro>Error.log"
+        */
+        console.log(`- - ${uf}: ${chalkClient.error('ERROR')}`);
+        console.log(`= => ${newError(err, `Utils_${uf}`)}`);
+      }
+    });
+  });
 });
 
-app.listen(3000, () => {
-  console.log('Canvas module started');
-});
+console.log("\n------------------\nFont manager\n");
+
+// Login do bot com a API do discord
+const token = process.env.TOKEN || client.config.token;
+client.login(token);

@@ -3,6 +3,9 @@ const chalk = require("chalk");
 const fs = require("fs");
 const format = require("date-fns/format");
 
+// Files requires
+const config = require("./config.json");
+
 
 //--------------------------------------------------------------------------------------------------//
 // Error handler private utils
@@ -43,6 +46,16 @@ module.exports = {
   // Mix utils
 
   /**
+   * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
+   * @param ID {String|Number} ID do usuario para checar
+   * @returns {Boolean}
+   */
+  isDev: (ID) => {
+    if (config.devsID.includes(ID)) return true;
+    return false;
+  },
+
+  /**
    * Formata datas no estilo dd/MM/yyyy HH:mm:SS
    * @param date {Date} Data para formatar
    * @returns {String} Data formatada no estilo dd/MM/yyyy HH:mm:SS
@@ -59,24 +72,6 @@ module.exports = {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
 
-  /**
-   * Coleta reações
-   * @param emoji {string} O emoji que será usado
-   * @param pessoa {number} O id da pessoa
-   * @param message {objeto} A mensagem
-   * @returns callback {código} Retorna {}
-   */
-  reactionCollector: (emoji, pessoa, message, callback) => {
-    let filtro = (reaction, user) =>
-      reaction.emoji.name === emoji && user.id === pessoa;
-    const coletor = message.createReactionCollector(filtro);
-
-    collector.on('collect', (reaction, user) => {
-      if (typeof callback === 'function') {
-        callback(reaction, user);
-      }
-    });
-  },
   //--------------------------------------------------------------------------------------------------//
   // Handler utils
 
@@ -364,9 +359,10 @@ module.exports = {
    * e nunca vai remover algo dele coloca no lugar de min o booleano true.
    */
   jsonChange: async (path, func, min = 0) => {
+    //console.log(path);
     let bal = module.exports.jsonPull(path);
 
-    if(!bal) return console.log(`=> ${module.exports.newError(new Error('Não foi encontrado um json no caminho inserido'), "utils_jsonChange")}`);;
+    if (!bal) return console.log(`=> ${module.exports.newError(new Error('Não foi encontrado um json no caminho inserido'), "utils_jsonChange")}`);;
 
     const ret = func(bal);
     min = (typeof min == 'boolean' && min) ? Object.keys(bal).length : min;
@@ -384,6 +380,57 @@ module.exports = {
   },
 
   //--------------------------------------------------------------------------------------------------//
+  // Rewarding system utils
+
+  userGive: (userID, money = 0, xp = 0, fileName = '???') => {
+    //criando função de erro
+    const newError = (desc,fileName,obj) => {
+      console.log(`=> ${module.exports.newError(new Error(desc), fileName+"_userGive",obj)}`);
+    }
+
+    return newError("Esperando a verificação do king no meu codigo, pra ver se eu n fiz nenhuma merda :P",'???');
+
+    //fazendo os ifs
+    if(typeof fileName != "string")return newError("O nome do arquivo não é uma string","???");
+    if(isNaN(userID))return newError("O id do usuario é um valor estranho",fileName);
+    if(isNaN(money))return newError("O dinheiro precisa ser um numero",fileName,{user:userID});
+    if(isNaN(xp))return newError("A experiencia precisa ser um numero",fileName,{user:userID});
+
+    //programa
+    Users.findById(message.author.id, (err, doc) => {
+      //caso tenha erro seja mostrado
+      if (err) {
+        console.log(
+          '\n=> ' +
+          newError(err, fileName, { user: userID })
+        );
+        return;
+      }
+
+      //se não existe um usuario, ele vai ser criado
+      if (!doc) {
+        let newUser = new Users({
+          _id: userID,
+          money: money,
+          levelSystem: {
+            xp: xp,
+            txp: xp
+          }
+        });
+        newUser.save();
+        return obj;
+      }
+
+      //adicionando dinheiro/xp
+      doc.money += money;
+      doc.levelSystem.xp += xp;
+      doc.levelSystem.txp += txp;
+
+      doc.save();
+    });
+  }
+
+  //--------------------------------------------------------------------------------------------------//
   // Level system utils
 
   /**
@@ -393,7 +440,7 @@ module.exports = {
    * @param [XPconfig.maxLVL=50] {Number} Level maximo
    * @param [XPconfig.defaultXPnextLVL=500] {Number} Quantidade padrao para upar de level
    * @returns {void}
-   */
+   *
   setupXPconfig: (XPconfig = { modPerLVL: 1.2, maxLVL: 50, defaultXPnextLVL: 500 }) => {
     if (!fs.existsSync("./dataBank")) fs.mkdirSync("./dataBank");
     if (!fs.existsSync("./dataBank/levelSystem.json")) fs.writeFileSync("./dataBank/levelSystem.json", "[]", { encoding: "utf8" });
@@ -419,4 +466,5 @@ module.exports = {
     fs.writeFileSync("./dataBank/levelSystem.json", JSON.stringify(XPdataArray), { encoding: "utf8" });
     return;
   }
+  */
 }
