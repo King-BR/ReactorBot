@@ -5,6 +5,7 @@ const { Users } = require("../../database.js");
 module.exports = {
   run: async (client, botUtils, message, args) => {
     if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
+    if (botUtils.isDev(message.author.id)) return message.reply("Comando em desenvolvimento, use o `!moneyadd` por enquanto");
 
     newError = botUtils.newError;
 
@@ -31,7 +32,7 @@ module.exports = {
 
         try {
           let embedConfirm = new Discord.MessageEmbed()
-            .setTitle(`Tem certeza que quer setar o dinheiro de ${user.tag || "`desconhecido`"}?`)
+            .setTitle(`Tem certeza que quer setar o dinheiro de ${user.displayName || "`desconhecido`"}?`)
             .setDescription("Reaja com ✅ para confirmar\nReaja com ❌ para cancelar")
           message.channel.send(embedConfirm).then(msg => {
             msg.react("✅").then(() => {
@@ -48,14 +49,14 @@ module.exports = {
                     doc.save();
 
                     let embedReset = new Discord.MessageEmbed()
-                      .setDescription(`Dinheiro de ${user.tag || "`desconhecido`"} foi setado`);
+                      .setDescription(`Dinheiro de ${user.displayName || "`desconhecido`"} foi setado`);
                     msg.edit(embedReset);
                     reactionCollector.stop();
                     break;
                   }
                   case "❌": {
                     let embedCancelado = new Discord.MessageEmbed()
-                      .setDescription(`Set do dinheiro de ${user.tag || "`desconhecido`"} cancelado`);
+                      .setDescription(`Set do dinheiro de ${user.displayName || "`desconhecido`"} cancelado`);
                     msg.edit(embedCancelado);
                     reactionCollector.stop();
                     break;

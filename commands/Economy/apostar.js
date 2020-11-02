@@ -52,7 +52,7 @@ module.exports = {
           return;
         }
 
-        Users.findById(user.id, (errReciever, reciever) => {
+        Users.findById(user.id, async (errReciever, reciever) => {
           if (errReciever) {
             let embed = new Discord.MessageEmbed()
               .setTitle("Erro inesperado")
@@ -72,9 +72,7 @@ module.exports = {
             let newUser2 = new Users({
               _id: user.id
             });
-            newUser2.save();
-            message.channel.send("Tente novamente!");
-            return;
+            await newUser2.save();
           }
 
           try {
@@ -126,11 +124,10 @@ module.exports = {
   },
 
   config: {
-    name: 'give',
-    noalias: 'sem sinonimos',
+    name: 'apostar',
     aliases: [],
-    description: 'Da seu dinheiro para outro jogador',
-    usage: 'give <Membro> <Quantia>',
+    description: 'Aposta uma quantia com alguem ou msm com varias pessoas',
+    usage: 'apostar <valor> <membro1/all> [membro2] [membro3] ...',
     accessableby: 'Membros'
   }
 };

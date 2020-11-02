@@ -72,24 +72,6 @@ module.exports = {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
 
-  /**
-   * Coleta reações
-   * @param emoji {string} O emoji que será usado
-   * @param pessoa {number} O id da pessoa
-   * @param message {objeto} A mensagem
-   * @returns callback {código} Retorna {}
-   */
-  reactionCollector: (emoji, pessoa, message, callback) => {
-    let filtro = (reaction, user) =>
-      reaction.emoji.name === emoji && user.id === pessoa;
-    const coletor = message.createReactionCollector(filtro);
-
-    collector.on('collect', (reaction, user) => {
-      if (typeof callback === 'function') {
-        callback(reaction, user);
-      }
-    });
-  },
   //--------------------------------------------------------------------------------------------------//
   // Handler utils
 
@@ -255,11 +237,6 @@ module.exports = {
   },
 
   /**
-   * @param red {Number}
-   * @param green {Number}
-   * @param blue {Number}
-   * @param alpha {Number}
-   * @returns {string}
    */
   newGradient: (ctx, x1, y1, x2, y2, arr) => {
 
@@ -336,9 +313,10 @@ module.exports = {
   // Math utils
 
   /**
-   * @param norm {Number}
-   * @param min {Number}
-   * @param max {Number}
+   * Transforma um numero entre 0 e 1 em outro entre o minimo e maximo informado
+   * @param norm {Number} Um valor entre 0 e 1
+   * @param min {Number} o valor minimo
+   * @param max {Number} o valor maximo
    * @returns {Number}
    */
   limp: (norm, min, max) => {
@@ -367,6 +345,7 @@ module.exports = {
    * @returns {object} 
    */
   jsonPull: (path) => {
+    if (!(typeof path == "string" && path.endsWith('.json') && fs.existsSync(path))) return null;
     var data = fs.readFileSync(path);
     return JSON.parse(data);
   },
@@ -381,6 +360,9 @@ module.exports = {
    */
   jsonChange: async (path, func, min = 0) => {
     let bal = module.exports.jsonPull(path);
+
+    if (!bal) return console.log(`=> ${module.exports.newError(new Error('Não foi encontrado um json no caminho inserido'), "utils_jsonChange")}`);;
+
     const ret = func(bal);
     min = (typeof min == 'boolean' && min) ? Object.keys(bal).length : min;
 
@@ -397,6 +379,57 @@ module.exports = {
   },
 
   //--------------------------------------------------------------------------------------------------//
+  // Rewarding system utils
+
+  userGive: (userID, money = 0, xp = 0, fileName = '???') => {
+    //criando função de erro
+    const newError = (desc,fileName,obj) => {
+      console.log(`=> ${module.exports.newError(new Error(desc), fileName+"_userGive",obj)}`);
+    }
+
+    return newError("Esperando a verificação do king no meu codigo, pra ver se eu n fiz nenhuma merda :P",'???');
+
+    //fazendo os ifs
+    if(typeof fileName != "string")return newError("O nome do arquivo não é uma string","???");
+    if(isNaN(userID))return newError("O id do usuario é um valor estranho",fileName);
+    if(isNaN(money))return newError("O dinheiro precisa ser um numero",fileName,{user:userID});
+    if(isNaN(xp))return newError("A experiencia precisa ser um numero",fileName,{user:userID});
+
+    //programa
+    Users.findById(message.author.id, (err, doc) => {
+      //caso tenha erro seja mostrado
+      if (err) {
+        console.log(
+          '\n=> ' +
+          newError(err, fileName, { user: userID })
+        );
+        return;
+      }
+
+      //se não existe um usuario, ele vai ser criado
+      if (!doc) {
+        let newUser = new Users({
+          _id: userID,
+          money: money,
+          levelSystem: {
+            xp: xp,
+            txp: xp
+          }
+        });
+        newUser.save();
+        return obj;
+      }
+
+      //adicionando dinheiro/xp
+      doc.money += money;
+      doc.levelSystem.xp += xp;
+      doc.levelSystem.txp += txp;
+
+      doc.save();
+    });
+  }
+
+  //--------------------------------------------------------------------------------------------------//
   // Level system utils
 
   /**
@@ -406,7 +439,7 @@ module.exports = {
    * @param [XPconfig.maxLVL=50] {Number} Level maximo
    * @param [XPconfig.defaultXPnextLVL=500] {Number} Quantidade padrao para upar de level
    * @returns {void}
-   */
+   *
   setupXPconfig: (XPconfig = { modPerLVL: 1.2, maxLVL: 50, defaultXPnextLVL: 500 }) => {
     if (!fs.existsSync("./dataBank")) fs.mkdirSync("./dataBank");
     if (!fs.existsSync("./dataBank/levelSystem.json")) fs.writeFileSync("./dataBank/levelSystem.json", "[]", { encoding: "utf8" });
@@ -432,4 +465,5 @@ module.exports = {
     fs.writeFileSync("./dataBank/levelSystem.json", JSON.stringify(XPdataArray), { encoding: "utf8" });
     return;
   }
+  */
 }

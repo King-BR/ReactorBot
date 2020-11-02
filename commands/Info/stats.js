@@ -1,15 +1,16 @@
 const Discord = require("discord.js");
 const os = require('os');
 const cpuStat = require("cpu-stat");
+const fetch = require("node-superfetch");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: async (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
     try {
       // Codigo do comando
-      cpuStat.usagePercent(function(err, percent, seconds) {
+      cpuStat.usagePercent(async function(err, percent, seconds) {
         if (err) {
           return console.log(err);
         }
@@ -22,7 +23,7 @@ module.exports = {
           .addField("• Plataforma", `\`\`${os.platform()} ${os.arch()}\`\``, true)
           .addField("• CPU", `\`\`\`md\n${os.cpus().map(i => `${i.model}`)[0]}\`\`\``)
           .addField("• CPU usada", `\`${percent.toFixed(2)}%\``, true)
-        message.channel.send(embedStats)
+        message.channel.send(embedStats);
       })
     } catch (err) {
       let embed = new Discord.MessageEmbed()

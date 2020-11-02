@@ -8,20 +8,11 @@ module.exports = {
 
     try {
 
+      return message.channel.send("não implementado");
+
       if (isNaN(parseInt(args[1] || args[0]))) return message.reply('Não foi possivel indentificar a quantia de dinheiro a se informar');
       if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
 
-      const user = message.mentions.users.first() || message.author
-      let log;
-
-
-      botUtils.jsonChange('./dataBank/balance.json', balance => {
-        const quant = parseInt(args[1] || args[0]);
-        balance[user.id] = (balance[user.id] || 0) + quant;
-        message.channel.send(`Foi adicionado: ${quant}\$, totalizando: ${balance[user.id]}\$.`);
-        log = `O Membro ${user ? user.tag : message.author.tag} recebeu ${quant}\$ totalizando ${balance[user.id]}\$`;
-        return balance
-      });
 
       let emb = new Discord.MessageEmbed()
         .setColor('RANDOM')

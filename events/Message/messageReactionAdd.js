@@ -2,8 +2,8 @@ module.exports = ({ client, botUtils }, messageReaction, user) => {
   newError = botUtils.newError;
 
   try {
-    
-    if (messageReaction.emoji.toString() == '⭐'&& !messageReaction.me) {
+
+    if (messageReaction.emoji.toString() == '⭐' && !messageReaction.me) {
 
       const guild = messageReaction.message.guild
       let number = 0;
@@ -12,14 +12,14 @@ module.exports = ({ client, botUtils }, messageReaction, user) => {
         if (memb && !memb.roles.cache.get("756585458263392376")) number++;
       })
 
-      if (number >= 5){
+      if (number >= 5) {
         const m = messageReaction.message;
         m.react('⭐');
-        client.channels.cache.get("738471925004632104").send(`"${m.content}"\n\n-${m.member}`);
+        client.channels.cache.get("771914110979407906").send(`"${m.content}"\n\n-${m.member}`);
       }
     }
 
   } catch (err) {
-    console.log(`=> ${newError(err, "nome do evento")}`);
+    console.log(`=> ${newError(err, "messageReaction")}`);
   }
 }

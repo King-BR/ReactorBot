@@ -15,6 +15,7 @@
       "output": {},
       "productionTime": 0
     }
+
   // defense
     "name": {
       "solid": true,

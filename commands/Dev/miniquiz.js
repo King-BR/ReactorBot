@@ -7,21 +7,51 @@ module.exports = {
 
     try {
       // Codigo do comando
-      if (message.channel.id != "729230699416125440") return message.reply("não estrague minha surpresa :P");
+      if (message.channel.id != "729230699416125440") return message.reply("não estrague minha surpresa :P\nuse no teste-bot");
+      
 
       const funcs = [
-        function(){
-          const resp = client.emojis.cache.random()
+        function() {
+          const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
+          const resp = palavras[Math.floor(Math.random() * palavras.length)];
+          const quant = Math.floor((1-Math.log10(1 - Math.random()))*resp.length/4);
 
-          let str = `Mande o emoji: ${resp}`
-          return [str,resp]
+          const mutate = (str) => {
+
+            let op = Math.floor(Math.random() * 3)
+            let letter = Math.floor(Math.random() * 26 + 10).toString(36)
+            let arr = quest.split("");
+
+            if (op == 0) {
+              arr.splice(Math.random() * arr.length, 1, letter);
+            } else if (op == 1) {
+              arr.splice(Math.random() * arr.length, 0, letter);
+            } else if (op == 2) {
+              arr.splice(Math.random() * arr.length, 1);
+            }
+
+            return arr.join("");
+          }
+
+          let quest = resp
+
+          for (let i = 0; i < quant; i++) {quest = mutate(quest)}
+
+          quest = `Deu um erro no arquivo(${quant}x), descubra a palavra:\`${quest}\``
+
+          return [quest, resp.toLowerCase()];
         }
       ]
 
-      const quest = funcs[0]()
+      let times = parseInt(args[0])
+      times = (!isNaN(times) && times > 0)? times : 1
+      
+      for (let i = 0; i < times; i++) {
+        const quest = funcs[0]()
 
-      message.channel.send('> '+quest[0])
-      message.channel.send("||"+quest[1]+"||")
+        message.channel.send('> ' + quest[0])
+        message.channel.send("||" + quest[1] + "||")
+      }
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()
@@ -45,6 +75,6 @@ module.exports = {
     aliases: [],
     description: "descrição",
     usage: "miniquiz",
-    accessableby: "Dev"
+    accessableby: "Desenvolvedores"
   }
 }

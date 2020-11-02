@@ -200,8 +200,7 @@ module.exports = {
 
   config: {
     name: "error",
-    noalias: "Sem sinonimos",
-    aliases: [],
+    aliases: ["err", "e"],
     description: "Cheque os erros salvos pelo handler de erros",
     usage: "error",
     accessableby: "Desenvolvedores"

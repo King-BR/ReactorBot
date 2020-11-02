@@ -18,15 +18,7 @@ module.exports = (client, botUtils, server, editing) => {
         return [quest, resp];
       }, function() {
 
-        const palavras = [
-          "Mindustry", "Anuke", "Núcleo", "Cofre", "Muro", "Muralha", "Porta", "Esteira-Ponte", "Roteador", "Bateria", "Reparador", "Esteira", "Incinerador", "Pulverisador",
-          "Magma", "Piche",
-          "Fusão", "Espectro", "Ciclone", "Ondulação", "Enxame", "Salvo", "Onda", "Queimada", "Dupla", "Dispersão", "Granizo", "Lançador",
-          "Revenã", "Tridente", "Lich", "Erradicador", "Fortaleza", "Titã", "Omega", "Alfa", "Delta", "Tau", "Javelin", "Glaive", "Eruptor",
-          "Cobre", "Chumbo", "Metavidro", "Grafite", "Areia", "Carvão", "Titânio", "Tório", "Sucata", "Silício", "Plastânio", "Surto", "Esporos", "Piratita",
-          "Escória", "Petróleo", "Água"
-        ];
-
+        const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
         const resp = palavras[Math.floor(Math.random() * palavras.length)];
 
         let word = resp.split("");
@@ -81,7 +73,7 @@ module.exports = (client, botUtils, server, editing) => {
         }
         res = res.slice(2);
 
-        return [`Quais são as raises de \`${res}\``, val];
+        return [`Quais são as raízes de \`${res}\``, val];
       }, function() {
         const resp = [Math.floor(Math.random() * 20 - 10), Math.floor(Math.random() * 20 - 10)]
 
@@ -100,7 +92,8 @@ module.exports = (client, botUtils, server, editing) => {
         do {
           mx2 = Math.floor(Math.random() * 3 + 1) * (Math.random() < 0.5 ? -1 : 1)
           my2 = Math.floor(Math.random() * 3 + 1) * (Math.random() < 0.5 ? -1 : 1)
-        } while (mx1 == mx2 && my1 == my2)
+
+        } while (mx1 / mx2 == my1 / my2)
 
         str += `${mx2 < 0 ? '-' : ''}${Math.abs(mx2) == 1 ? '' : Math.abs(mx2)}x `
         str += `${my2 < 0 ? '-' : '+'} ${Math.abs(my2) == 1 ? '' : Math.abs(my2)}y `
@@ -108,6 +101,35 @@ module.exports = (client, botUtils, server, editing) => {
 
         str += '```'
         return [str, resp]
+      }, function() {
+        const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
+        const resp = palavras[Math.floor(Math.random() * palavras.length)];
+        const quant = Math.floor((1 - Math.log10(1 - Math.random())) * resp.length / 4);
+
+        const mutate = (str) => {
+
+          let op = Math.floor(Math.random() * 3)
+          let letter = Math.floor(Math.random() * 26 + 10).toString(36)
+          let arr = quest.split("");
+
+          if (op == 0) {
+            arr.splice(Math.random() * arr.length, 1, letter);
+          } else if (op == 1) {
+            arr.splice(Math.random() * arr.length, 0, letter);
+          } else if (op == 2) {
+            arr.splice(Math.random() * arr.length, 1);
+          }
+
+          return arr.join("");
+        }
+
+        let quest = resp
+
+        for (let i = 0; i < quant; i++) { quest = mutate(quest) }
+
+        quest = `Deu um erro no arquivo(${quant}x), descubra a palavra:\`${quest}\``
+
+        return [quest, resp.toLowerCase()];
       }
     ];
 

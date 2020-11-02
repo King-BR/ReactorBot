@@ -10,6 +10,8 @@ module.exports = {
     try {
       // Codigo do comando
       if (!message.member.hasPermission("KICK_MEMBERS", "BAN_MEMBERS", "ADMINISTRATOR")) return message.reply("Você não tem permissão para isso");
+      if(!message.mentions.users.first()) return message.reply("marca alguem pow");
+
       const user = message.mentions.users.first();
       const channel = message.guild.channels.cache.find(ch => ch.id === '764634049163427840');
       let embed = new Discord.MessageEmbed()
@@ -52,7 +54,7 @@ module.exports = {
         }
 
         try {
-          doc.warn.quant++;
+          doc.warn.quant++; //deu um erro aqui
           doc.warn.history.push({
             _id: 0,
             reason: args[1] ? args.slice(1).join(" ") : "Sem razão informada"

@@ -66,31 +66,6 @@ module.exports = ({ client, botUtils }) => {
           server.nextMsgOfDay = Math.floor(d.getTime() / (12 * 60 * 60 * 1000) + 2) * 12 * 60 * 60 * 1000;
         }
 
-        if (server.nextMsgChange < d.getTime()) {
-
-          botUtils.jsonChange('./dataBank/mesTotal.json', obj => {
-            obj.messages.pop();
-            obj.messages.unshift({});
-            return obj;
-          });
-
-          server.nextMsgChange = Math.floor(d.getTime() / (3 * 60 * 60 * 1000) + 1) * 3 * 60 * 60 * 1000;
-
-          guild.members.cache.each(member => {
-            const messages = botUtils.jsonPull('./dataBank/mesTotal.json').messages
-            let number = 0;
-            const active = messages.some(per => {
-              number += per[member.user.id] || 0
-              return number > 10
-            })
-            if (active) {
-              member.roles.add("769938641338236968")
-            } else if (member.roles.cache.get("769938641338236968")) {
-              member.roles.remove("769938641338236968")
-            }
-          });
-        }
-
         return server;
       }, 5);
 

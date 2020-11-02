@@ -1,13 +1,16 @@
 {
+  "memberChanging": [],
   "teams": [
     {
-      "members": ["298822483060981760"],
-      "moints": 0,
-      "id": "eae"
-    },
-    {
-      "members": ["699824957118611569","341234123412341"],
-      "points": 0
+      "members": [
+        "616042440058732544"
+      ],
+      "name": "unknown",
+      "points": 0,
+      "id": "KGVO3PQ1"
     }
-  ]
+  ],
+  "config": {
+    "maxTeamSize": 5
+  }
 }

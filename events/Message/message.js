@@ -3,66 +3,59 @@ const Discord = require('discord.js');
 prefix = config.prefix;
 
 module.exports = async ({ client, botUtils }, message) => {
-  newError = botUtils.newError;
+	newError = botUtils.newError;
 
-  try {
-    let messageArray = message.content.split(/ +/);
-    let cmd = messageArray[0].toLowerCase();
-    let args = messageArray.slice(1);
-    
-    // Ignora mensagens na dm
-    if (message.channel.type === 'dm') return;
-    
-    // Adiciona na tabela de frequencia
-    botUtils.jsonChange('./dataBank/mesTotal.json', obj => {
-      obj.messages[0] = obj.messages[0] || {};
-      obj.messages[0][message.author.id] = (obj.messages[0][message.author.id] || 0) + 1;
-      return obj;
-    }, 1);
+	try {
+		let messageArray = message.content.split(/ +/);
+		let cmd = messageArray[0].toLowerCase();
+		let args = messageArray.slice(1);
 
-    // Ignora mensagens de bot
-    if (message.author.bot) return;
+		// Ignora mensagens na dm, mas retorna um evento
+		if (message.channel.type === 'dm') return require('./Utils/correio.js')(client, botUtils, message, args);
 
-    // Detecta se foi mencionado
-    let mentioned = cmd.includes(client.user) || cmd.includes(client.user.id);
-    
-    if (mentioned && !args.length) {
-      message.channel.send(
-        `Opa tudo bem ? | Meu prefixo atual é: \`${prefix}\`. Use \`${prefix}ajuda\` para mais informações!`
-      );
-      return;
-    } else if (mentioned && args.length > 0) {
-      message.reply(Math.random() < 0.5 ? 'Sim' : 'Não');
-      return;
-    }
+		// Ignora mensagens de bot
+		if (message.author.bot) return;
 
-    // Utils
-    if (message.channel.id == '768238015830556693') {
-      // #mini-events
-      return require('./Utils/minieventos.js')(client, botUtils, message);
-    } else if (message.channel.id == '756587320140103690') {
-      // #mudae-comécio
-      return require('./Utils/mudae.js')(client, botUtils, message);
-    }
+		// Detecta se foi mencionado
+		let mentioned = cmd.includes(client.user) || cmd.includes(client.user.id);
 
-    // Anti trava discord
-    require("./Utils/antitrava.js")(client, botUtils, message);
+		if (mentioned && !args.length) {
+			message.channel.send(
+				`Opa tudo bem ? | Meu prefixo atual é: \`${prefix}\`. Use \`${prefix}ajuda\` para mais informações!`
+			);
+			return;
+		} else if (mentioned && args.length > 0) {
+			message.reply(Math.random() < 0.5 ? 'Sim' : 'Não');
+			return;
+		}
 
-    // tudo oq n possui prefixo é ignorado
-    if (!message.content.startsWith(prefix)) return;
+		// Utils
+		if (message.channel.id == '768238015830556693') {
+			// #mini-events
+			return require('./Utils/minieventos.js')(client, botUtils, message);
+		} else if (message.channel.id == '756587320140103690') {
+			// #mudae-comécio
+			return require('./Utils/mudae.js')(client, botUtils, message);
+		}
 
-    // gambiarra do king
-    let commandfile =
-      client.commands.get(cmd.slice(prefix.length)) ||
-      client.commands.get(client.aliases.get(cmd.slice(prefix.length)));
+		// Anti trava discord
+		require('./Utils/antitrava.js')(client, botUtils, message);
 
-    if (commandfile) commandfile.run(client, botUtils, message, args);
-  } catch (err) {
-    let IDs = {
-      server: message.guild.id,
-      user: message.author.id,
-      msg: message.id
-    };
-    console.log(`=> ${newError(err, 'ClientMessage', IDs)}`);
-  }
+		// tudo oq n possui prefixo é ignorado
+		if (!message.content.startsWith(prefix)) return;
+
+		// gambiarra do king
+		let commandfile =
+			client.commands.get(cmd.slice(prefix.length)) ||
+			client.commands.get(client.aliases.get(cmd.slice(prefix.length)));
+
+		if (commandfile) commandfile.run(client, botUtils, message, args);
+	} catch (err) {
+	  let IDs = {
+			server: message.server.id,
+			user: message.author.id,
+			msg: message.id
+		};
+		console.log(`=> ${newError(err, 'ClientMessage', IDs)}`);
+	}
 };

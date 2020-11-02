@@ -22,7 +22,7 @@ require("./font_manager.js");
 chalkClient = botUtils.chalkClient;
 newError = botUtils.newError;
 isDir = botUtils.isDir;
-botUtils.setupXPconfig();
+//botUtils.setupXPconfig();
 
 // Starting Time - by Alstin112
 botUtils.jsonChange('./dataBank/serverState.json', server => {

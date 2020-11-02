@@ -45,6 +45,7 @@ module.exports = {
         let commandsFolder = fs.readdirSync("commands");
         commandsFolder.forEach(folder => {
           if (folder === 'Dev' && (!botUtils.isDev(message.author.id))) return;
+          if (folder === 'Dm' && (message.channel.type != 'dm')) return; 
           var all = fs.readdirSync(`commands/${folder}`);
           var files = all.filter(f => {
             let dirCheck = isDir(`commands/${folder}/${f}`);
