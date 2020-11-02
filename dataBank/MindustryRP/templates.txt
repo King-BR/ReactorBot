@@ -18,6 +18,7 @@
 
   // defense
     "name": {
+      "name": "",
       "solid": true,
       "health": 0,
       "size": 0,

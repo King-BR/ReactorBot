@@ -15,7 +15,7 @@ module.exports = ({ client, botUtils }, messageReaction, user) => {
       if (number >= 5) {
         const m = messageReaction.message;
         m.react('⭐');
-        client.channels.cache.get("771914110979407906").send(`"${m.content}"\n\n-${m.member}`);
+        client.channels.cache.get("738471925004632104").send(`"${m.content}"\n\n-${m.member}`);
       }
     }
 

@@ -360,6 +360,7 @@
   },
   "defense": {
     "copper_wall_large": {
+      "name": "Parede de cobre grande",
       "solid": true,
       "health": 1280,
       "size": 2,
@@ -369,6 +370,7 @@
       }
     },
     "copper_wall": {
+      "name": "Parede de cobre",
       "solid": true,
       "health": 320,
       "size": 1,
@@ -378,6 +380,7 @@
       }
     },
     "door_large": {
+      "name": "Porta grande",
       "solid": false,
       "health": 1600,
       "size": 2,
@@ -388,6 +391,7 @@
       }
     },
     "door": {
+      "name": "Porta",
       "solid": false,
       "health": 400,
       "size": 1,
@@ -396,6 +400,72 @@
         "graphite": 6,
         "silicon": 4
       }
+    },
+    "phase_wall_large": {
+      "name": "Parede de fase grande",
+      "solid": true,
+      "health": 2400,
+      "size": 2,
+      "buildTime": 2.6,
+      "buildCost": {
+        "phase_fabric": 24
+      }
+    },  
+    "phase_wall": {
+      "name": "Parede de fase",
+      "solid": true,
+      "health": 600,
+      "size": 1,
+      "buildTime": 0.65,
+      "buildCost": {
+        "phase_fabric": 6
+      }
+    },
+    "plastanium_wall_large": {
+      "name": "Parede de plastânio grande",
+      "solid": true,
+      "health": 3040,
+      "size": 2,
+      "buildTime": 3.17,
+      "buildCost": {
+        "metaglass": 8,
+        "plastanium": 20
+      }
+    },
+    "plastanium_wall": {
+      "name": "Parede de plastânio",
+      "solid": true,
+      "health": 760,
+      "size": 1,
+      "buildTime": 0.79,
+      "buildCost": {
+        "metaglass": 2,
+        "plastanium": 5
+      }
+    },
+    "scrap_wall_gigantic": {
+      "name": "Muro gigante de sucata",
+      "solid": true,
+      "health": 3840,
+      "size": 4,
+      "buildTime": 0,
+      "buildCost": {}
+    },
+    "scrap_wall_huge": {
+      "name": "Muro enorme de sucata",
+      "solid": true,
+      "health": 2160,
+      "size": 3,
+      "buildTime": 0,
+      "buildCost": {}
+    },
+    "scrap_wall_large": {
+      "name": "Muro grande de sucata",
+      "solid": true,
+      "health": 960,
+      "size": 2,
+      "buildTime": 0,
+      "buildCost": {}
     }
   }
 }
