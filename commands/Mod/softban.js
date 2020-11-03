@@ -8,7 +8,7 @@ module.exports = {
     newError = botUtils.newError;
     try {
       // Codigo do comando
-      if (!message.member.hasPermission("BAN_MEMBERS", "ADMINISTRATOR")) return message.reply("Você não tem permissão para isso");
+      if (!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.reply("Você não tem permissão para isso");
 
       const user = message.mentions.members.first();
       const channel = message.guild.channels.cache.find(ch => ch.name === 'punição');

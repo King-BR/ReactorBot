@@ -60,7 +60,7 @@ module.exports = ({ client, botUtils }) => {
 
           if (!editing) {
             const message = require("./utils/messageofday.js")(client, botUtils, server);
-            channel.send('"' + message + '"\n\n-ReactorBot')
+            //channel.send('"' + message + '"\n\n-ReactorBot')
           }
 
           server.nextMsgOfDay = Math.floor(d.getTime() / (12 * 60 * 60 * 1000) + 2) * 12 * 60 * 60 * 1000;

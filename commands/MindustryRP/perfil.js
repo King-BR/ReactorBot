@@ -8,8 +8,6 @@ module.exports = {
 
     try {
       // Codigo do comando
-
-      //tira dps
       return message.reply('ainda não implementado');
 
     } catch (err) {

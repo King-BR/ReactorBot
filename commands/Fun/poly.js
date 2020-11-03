@@ -16,7 +16,7 @@ module.exports = {
       const pstr = ['⁰','¹','²','³','⁴','⁵','⁶','⁷','⁸','⁹'];
       if (args.some((numb) => { return isNaN(numb) })) return message.reply("todos precisam ser numeros");
       args.forEach(v => {val.push(-parseInt(v));});
-      if (val.length > 16) return message.reply('Quer crashar o server krl?');
+      if (val.length > 16) return message.reply('Quer crashar o bot krl?');
       let trys = 0;
       const f = function(t, arr, p = 1, m = 1) {
         if (t == 0) return [1];

@@ -8,6 +8,7 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
+      awfwfw
       //tira dps
       message.reply('ainda não implementado')
 

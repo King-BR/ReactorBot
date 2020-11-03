@@ -2,6 +2,7 @@
 const chalk = require("chalk");
 const fs = require("fs");
 const format = require("date-fns/format");
+const md5 = require("md5");
 
 // Files requires
 const config = require("./config.json");
@@ -12,19 +13,13 @@ const config = require("./config.json");
 /**
  * @param [fileName="null"] {String} Arquivo onde ocorreu o erro
  * @param [IDs] {Object} IDs involvidos
- * @param [IDs.server=null] {String|Number} ID do server
- * @param [IDs.user=null] {String,Number} ID do usuario
- * @param [IDs.msg=null] {String|Number} ID da mensagem
+ * @param [IDs.server=0] {String|Number} ID do server
+ * @param [IDs.user=0] {String|Number} ID do usuario
+ * @param [IDs.msg=0] {String|Number} ID da mensagem
  */
-function generateErrorID(fileName = "null", IDs = { server: null, user: null, msg: null }) {
-  if (IDs.server == null) IDs.server = 1;
-  if (IDs.user == null) IDs.user = 1;
-  if (IDs.msg == null) IDs.msg = 1;
-
-  let errorID = `${Math.round(Math.random() * 10000) * IDs.server * IDs.user * IDs.msg * new Date().getTime()}`
-  errorID = errorID.slice(2, 15);
-
-  //console.log(errorID);
+function generateErrorID(fileName = "null", IDs = { server: 0, user: 0, msg: 0 }) {
+  let errorID = `${fileName}_${module.exports.formatDate(new Date())}_${IDs.server}_${IDs.user}_${IDs.msg}`;
+  errorID = md5(errorID);
   return errorID;
 }
 
@@ -109,7 +104,7 @@ module.exports = {
     let errorFileName = `${fileName ? fileName + "_" : ""}${format(new Date() - 10800000, "dd:MM:yyyy_HH:mm:ss")}.json`;
     let dados = {
       errorID: generateErrorID(fileName, IDs),
-      msdate: Number(new Date() - 10800000),
+      msdate: Number(new Date()),
       date: module.exports.formatDate(new Date()),
       msg: err.message || null,
       stack: err.stack || null,
@@ -383,17 +378,17 @@ module.exports = {
 
   userGive: (userID, money = 0, xp = 0, fileName = '???') => {
     //criando função de erro
-    const newError = (desc,fileName,obj) => {
-      console.log(`=> ${module.exports.newError(new Error(desc), fileName+"_userGive",obj)}`);
+    const newError = (desc, fileName, obj) => {
+      console.log(`=> ${module.exports.newError(new Error(desc), fileName + "_userGive", obj)}`);
     }
 
-    return newError("Esperando a verificação do king no meu codigo, pra ver se eu n fiz nenhuma merda :P",'???');
+    return newError("Esperando a verificação do king no meu codigo, pra ver se eu n fiz nenhuma merda :P", '???');
 
     //fazendo os ifs
-    if(typeof fileName != "string")return newError("O nome do arquivo não é uma string","???");
-    if(isNaN(userID))return newError("O id do usuario é um valor estranho",fileName);
-    if(isNaN(money))return newError("O dinheiro precisa ser um numero",fileName,{user:userID});
-    if(isNaN(xp))return newError("A experiencia precisa ser um numero",fileName,{user:userID});
+    if (typeof fileName != "string") return newError("O nome do arquivo não é uma string", "???");
+    if (isNaN(userID)) return newError("O id do usuario é um valor estranho", fileName);
+    if (isNaN(money)) return newError("O dinheiro precisa ser um numero", fileName, { user: userID });
+    if (isNaN(xp)) return newError("A experiencia precisa ser um numero", fileName, { user: userID });
 
     //programa
     Users.findById(message.author.id, (err, doc) => {

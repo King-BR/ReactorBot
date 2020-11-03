@@ -8,7 +8,7 @@ module.exports = {
     newError = botUtils.newError;
     try {
       // Codigo do comando
-      if(!message.member.hasPermission("MANAGE_MESSAGES", "ADMINISTRATOR")) return message.channel.send("Você não tem permissão para isso");
+      if(!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) return message.channel.send("Você não tem permissão para isso");
       if(typeof parseInt(args[0]) != "number") return message.channel.send("Quantidade invalida");
       if(parseInt(args[0]) < 1) return message.channel.send("O numero precisa ser maior que 0");
 

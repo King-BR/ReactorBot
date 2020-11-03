@@ -8,7 +8,7 @@ module.exports = {
     newError = botUtils.newError;
     try {
       // Codigo do comando
-			if(!message.member.hasPermission("KICK_MEMBERS", "ADMINISTRATOR")) return message.reply("Você não tem permissão para isso");
+			if(!message.member.hasPermission(["KICK_MEMBERS", "ADMINISTRATOR"])) return message.reply("Você não tem permissão para isso");
       if (!message.mentions.members.first()) return message.reply("Precisa marcar alguem pra poder kickar ne");
 			
       const user = message.mentions.members.first();

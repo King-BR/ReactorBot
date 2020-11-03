@@ -18,7 +18,7 @@ const client = new Discord.Client({
 client.config = config;
 
 // Utils config
-require("./font_manager.js");
+//require("./font_manager.js");
 chalkClient = botUtils.chalkClient;
 newError = botUtils.newError;
 isDir = botUtils.isDir;
@@ -143,8 +143,6 @@ commandsFolder.forEach(folder => {
     });
   });
 });
-
-console.log("\n------------------\nFont manager\n");
 
 // Login do bot com a API do discord
 const token = process.env.TOKEN || client.config.token;

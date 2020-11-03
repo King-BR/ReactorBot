@@ -1,3 +1,4 @@
+/*
 const fs = require("fs");
 const { registerFont } = require('canvas');
 const { newError } = require("./utils.js");
@@ -20,3 +21,4 @@ if(fs.existsSync("./Fonts")) {
     console.log("^ Ignora esse aviso em cima ^\nFontes registradas:\n" + fontsNames.join("\n"));
   });
 }
+*/

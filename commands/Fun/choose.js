@@ -40,10 +40,9 @@ module.exports = {
   // Configuração do comando
   config: {
     name: "choose",
-    noalias: "c",
     aliases: ['c'],
     description: "pega uma frase aleatoria (separado por /)",
     usage: "choose <frase1>[/frase2][/frase3]...",
-    accessableby: "Members"
+    accessableby: "Membross"
   }
 }
