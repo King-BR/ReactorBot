@@ -199,7 +199,8 @@ module.exports = {
 
         let team = {};
         team.members = [];
-        team.name = "unknown";
+        team.name = "Nameless";
+        team.color = "RANDOM";
         team.points = 0;
         team.id = (new Date()).getTime().toString(36).toUpperCase();
 

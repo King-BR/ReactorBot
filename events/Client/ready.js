@@ -10,16 +10,20 @@ module.exports = ({ client, botUtils }) => {
 
     // Tempo q o bot levou pra começar
     botUtils.jsonChange('./dataBank/serverState.json', server => {
-      
+
       const dTime = (new Date()).getTime() - server.serverStarted - 10800000
       console.log(`Demorou ${Math.floor(dTime / 60000)}:${(Math.floor(dTime / 1000) % 60).toString().padStart(2, '0')}  para iniciar\n`);
 
     }, true);
 
+    // Reactor reaction
+    require('./utils/reactionRole')(client, botUtils, guild)
 
     //atividade do bot
     client.user.setActivity("!ajuda para a lista de comandos", { type: "WATCHING" });
 
+
+    //Tempos
     client.setInterval(async () => {
       const d = new Date();
 
@@ -48,7 +52,7 @@ module.exports = ({ client, botUtils }) => {
         if (server.nextMiniquiz < d.getTime()) {
 
           //pega as respostas e o tipo do evento
-          const ret = require("./utils/minievents.js")(client, botUtils, server, editing);
+          const ret = require("./utils/minievents.js")(client, botUtils, server);
           server.eventType = ret[1];
           server.eventWin = ret[0];
 

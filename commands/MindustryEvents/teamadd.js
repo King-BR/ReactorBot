@@ -28,6 +28,19 @@ module.exports = {
       })
 
       if (canCreate.length) return message.reply(`Os participantes \`${canCreate.join('`,`')}\` ja participam de algum time`);
+      
+
+      //verifica se alguem dos membros ja ta em outra confirmação
+      canCreate = []
+      message.mentions.members.each(mentioned => {
+        if (event.memberChanging.includes(mentioned.id)) canCreate.push(mentioned.user.tag)
+      })
+
+      if (canCreate.length) return message.reply(`Os participantes \`${canCreate.join('`,`')}\` precisam ja estam no meio de outra confirmação de time, espere eles terminarem para pedir novamente`);
+
+      //coloca no message changing
+      message.mentions.members.each(mentioned => {event.memberChanging.push(mentioned.id)})
+
 
       const confirm = (msg) => {
 
@@ -94,21 +107,26 @@ module.exports = {
       }
 
       const creatingTeam = () => {
+        
+        console.log()
 
-        let index = event.teams.findIndex(t => {t.id == team.id})
+        let index = event.teams.findIndex(t => t.id == time.id)
 
-        message.mentions.member.each(member=> {event.teams[index].members.push(member.id)})
+        if(index == -1) return console.log(`=> ${newError(new Error('Não foi encontrado o time:'+time.id), module.exports.config.name)}`);
+
+        //console.log(message)
+        message.mentions.members.each(member => {event.teams[index].members.push(member.id)});
         botUtils.jsonPush('./dataBank/mindustryEvent.json', event)
 
         let msg = ''
 
-        team.members.forEach(member => {msg += client.users.cache.get(member).tag + "\n"});
+        time.members.forEach(member => {msg += client.users.cache.get(member).tag + "\n"});
 
         let embed = new Discord.MessageEmbed()
           .setTitle("Membro adicionado com sucesso")
           .setColor("RANDOM")
           .setDescription(msg)
-          .setFooter("ID: "+team.id);
+          .setFooter("ID: "+time.id);
           
         message.channel.send(embed)
       }
@@ -145,7 +163,7 @@ module.exports = {
   // Configuração do comando
   config: {
     name: "teamadd",
-    aliases: [],
+    aliases: ['timeadd'],
     description: "descrição",
     usage: "teamadd [membro1] [membro2] ...",
     accessableby: "Membros"

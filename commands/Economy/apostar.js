@@ -7,6 +7,7 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
+      return message.reply('ainda em progresso...');
       let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
       let money = args[1];
 

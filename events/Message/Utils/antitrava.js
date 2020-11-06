@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = (client, botUtils, message) => {
 
-  let canal = client.channels.cache.get("754052289752203286");
+  let canal = client.channels.cache.get("767982805908324411");
   let travas = botUtils.jsonPull("./dataBank/travas.json");
 
   travas.forEach(trava => {

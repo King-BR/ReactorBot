@@ -1,7 +1,15 @@
+const Discord = require("discord.js");
+
 module.exports = ({ client, botUtils }, messageReaction, user) => {
   newError = botUtils.newError;
 
   try {
+
+    const rolesW = {
+      "699823332484317194": 4, //dono
+      "700182152481996881": 3, //adm
+      "755603968180093089": 2  //mod
+    }
 
     if (messageReaction.emoji.toString() == '⭐' && !messageReaction.me) {
 
@@ -9,13 +17,22 @@ module.exports = ({ client, botUtils }, messageReaction, user) => {
       let number = 0;
       messageReaction.users.cache.each(user => {
         const memb = guild.members.cache.get(user.id);
-        if (memb && !memb.roles.cache.get("756585458263392376")) number++;
+        if (memb && !memb.roles.cache.get("756585458263392376")) {
+          number += Math.max.apply(null,Object.entries(rolesW).map(v => {
+            return memb.roles.cache.get(v[0])?v[1]:1
+          }));
+        }
       })
 
-      if (number >= 5) {
+      if (number > 5) {
         const m = messageReaction.message;
         m.react('⭐');
-        client.channels.cache.get("738471925004632104").send(`"${m.content}"\n\n-${m.member}`);
+        let embed = new Discord.MessageEmbed()
+          .setTitle("Mensagem Foda")
+					.setAuthor(m.author.tag,m.author.displayAvatarURL())
+					.setColor("RANDOM")
+          .setDescription(m.content);
+        client.channels.cache.get("738471925004632104").send(embed);
       }
     }
 

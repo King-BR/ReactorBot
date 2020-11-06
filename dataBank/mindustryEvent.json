@@ -1,13 +1,24 @@
 {
-  "memberChanging": [],
+  "memberChanging": [
+    "291693225411084289"
+  ],
   "teams": [
     {
       "members": [
         "616042440058732544"
       ],
-      "name": "unknown",
+      "name": "reis do pvp",
       "points": 0,
       "id": "KGVO3PQ1"
+    },
+    {
+      "members": [
+        "318399612060696576",
+        "291693225411084289"
+      ],
+      "name": "Os Pika Blindada",
+      "points": 0,
+      "id": "KH2JCFIJ"
     }
   ],
   "config": {

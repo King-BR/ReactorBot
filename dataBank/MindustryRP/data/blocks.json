@@ -13,7 +13,7 @@
       },
       "power": 24,
       "itemCapacity": 10,
-      "liquidCapacity": 0,
+      "liquidCapacity": null,
       "input": {
         "copper": 3,
         "lead": 4,
@@ -37,7 +37,7 @@
       },
       "power": 24,
       "itemCapacity": 10,
-      "liquidCapacity": 0,
+      "liquidCapacity": null,
       "input": {
         "pyratite": 1,
         "spore_pod": 1
@@ -102,9 +102,9 @@
         "copper": 75,
         "lead": 30
       },
-      "power": 0,
+      "power": null,
       "itemCapacity": 10,
-      "liquidCapacity": 0,
+      "liquidCapacity": null,
       "input": {
         "coal": 2
       },
@@ -124,11 +124,11 @@
         "graphite": 5
       },
       "power": 30,
-      "itemCapacity": 0,
+      "itemCapacity": null,
       "liquidCapacity": 10,
       "input": {},
       "output": {},
-      "productionTime": 0
+      "productionTime": null
     },
     "kiln": {
       "name": "Forno para metavidro",
@@ -143,7 +143,7 @@
       },
       "power": 36,
       "itemCapacity": 10,
-      "liquidCapacity": 0,
+      "liquidCapacity": null,
       "input": {
         "lead": 1,
         "sand": 1
@@ -212,7 +212,7 @@
       },
       "power": 300,
       "itemCapacity": 20,
-      "liquidCapacity": 0,
+      "liquidCapacity": null,
       "input": {
         "thorium": 4,
         "sand": 10
@@ -258,7 +258,7 @@
       },
       "power": 30,
       "itemCapacity": 10,
-      "liquidCapacity": 0,
+      "liquidCapacity": null,
       "input": {
         "scrap": 1
       },
@@ -279,7 +279,7 @@
       },
       "power": 12,
       "itemCapacity": 10,
-      "liquidCapacity": 0,
+      "liquidCapacity": null,
       "input": {
         "coal": 1,
         "lead": 2,
@@ -326,7 +326,7 @@
       },
       "power": 30,
       "itemCapacity": 10,
-      "liquidCapacity": 0,
+      "liquidCapacity": null,
       "input": {
         "coal": 1,
         "sand": 2
@@ -448,7 +448,7 @@
       "solid": true,
       "health": 3840,
       "size": 4,
-      "buildTime": 0,
+      "buildTime": null,
       "buildCost": {}
     },
     "scrap_wall_huge": {
@@ -456,7 +456,7 @@
       "solid": true,
       "health": 2160,
       "size": 3,
-      "buildTime": 0,
+      "buildTime": null,
       "buildCost": {}
     },
     "scrap_wall_large": {
@@ -464,8 +464,285 @@
       "solid": true,
       "health": 960,
       "size": 2,
-      "buildTime": 0,
+      "buildTime": null,
       "buildCost": {}
+    },
+    "scrap_wall": {
+      "name": "Muro de sucata",
+      "solid": true,
+      "health": 240,
+      "size": 1,
+      "buildTime": null,
+      "buildCost": {}
+    },
+    "surge_wall_large": {
+      "name": "Parede de surto grande",
+      "solid": true,
+      "health": 3680,
+      "size": 2,
+      "buildTime": 2,
+      "buildCost": {
+        "surge_alloy": 24
+      }
+    },
+    "surge_wall": {
+      "name": "Parede de surto",
+      "solid": true,
+      "health": 920,
+      "size": 1,
+      "buildTime": 0.5,
+      "buildCost": {
+        "surge_alloy": 6
+      }
+    },
+    "thorium_wall_large": {
+      "name": "Parede de torio grande",
+      "solid": true,
+      "health": 3200,
+      "size": 2,
+      "buildTime": 2.2,
+      "buildCost": {
+        "thorium": 24
+      }
+    },
+    "thorium_wall": {
+      "name": "Parede de torio",
+      "solid": true,
+      "health": 800,
+      "size": 1,
+      "buildTime": 0.55,
+      "buildCost": {
+        "thorium": 6
+      }
+    },
+    "titanium_wall_large": {
+      "name": "Parede de titanio grande",
+      "solid": true,
+      "health": 1760,
+      "size": 2,
+      "buildTime": 2,
+      "buildCost": {
+        "titanium": 24
+      }
+    },
+    "titanium_wall": {
+      "name": "Parede de titanio",
+      "solid": true,
+      "health": 440,
+      "size": 1,
+      "buildTime": 0.5,
+      "buildCost": {
+        "titanium": 6
+      }
+    }
+  },
+  "distribution": {
+    "armored_conveyor": {
+      "name": "Esteira armadurada",
+      "solid": false,
+      "health": 180,
+      "size": 1,
+      "buildTime": 0.06,
+      "buildCost": {
+       "metaglass": 1,
+       "thorium": 1,
+       "plastanium": 1 
+      },
+      "power": null,
+      "itemCapacity": 4,
+      "moveSpeed": 10
+    },
+    "bridge_conveyor": {
+      "name": "Esteira-ponte",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": 0.08,
+      "buildCost": {
+        "copper": 4,
+        "lead": 4
+      },
+      "power": null,
+      "itemCapacity": 10,
+      "moveSpeed": null
+    },
+    "conveyor": {
+      "name": "Esteira",
+      "solid": false,
+      "health": 45,
+      "size": 1,
+      "buildTime": 0.01,
+      "buildCost": {
+        "copper": 1
+      },
+      "power": null,
+      "itemCapacity": 4,
+      "moveSpeed": 4.2
+    },
+    "distributor": {
+      "name": "distribuidor",
+      "solid": true,
+      "health": 160,
+      "size": 2,
+      "buildTime": 0.08,
+      "buildCost": {
+        "copper": 4,
+        "lead": 4
+      },
+      "power": null,
+      "itemCapacity": 1,
+      "moveSpeed": null
+    },
+    "inverted_sorter": {
+      "name": "Ordenador invertido",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": 0.12,
+      "buildCost": {
+        "copper": 2,
+        "lead": 2
+      },
+      "power": null,
+      "itemCapacity": null,
+      "moveSpeed": null
+    },
+    "item_source": {
+      "name": "Criador de itens",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": null,
+      "buildCost": {},
+      "power": null,
+      "itemCapacity": 10,
+      "moveSpeed": null
+    },
+    "item_void": {
+      "name": "Destruidor de itens",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": null,
+      "buildCost": {},
+      "power": null,
+      "itemCapacity": null,
+      "moveSpeed": null
+    },
+    "junction": {
+      "name": "Junção",
+      "solid": true,
+      "health": 30,
+      "size": 1,
+      "buildTime": 0.1,
+      "buildCost": {
+        "copper": 2
+      },
+      "power": null,
+      "itemCapacity": null,
+      "moveSpeed": null
+    },
+    "mass_driver": {
+      "name": "Catapulta eletromagnética",
+      "solid": true,
+      "health": 360,
+      "size": 3,
+      "buildTime": 5.46,
+      "buildCost": {
+        "lead": 125,
+        "titanium": 125,
+        "thorium": 50,
+        "silicon": 75
+      },
+      "power": 105,
+      "itemCapacity": 120,
+      "moveSpeed": null
+    },
+    "overflow_gate": {
+      "name": "Prtão sobrecarregado",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": 0.17,
+      "buildCost": {
+        "copper": 4,
+        "lead": 2
+      },
+      "power": null,
+      "itemCapacity": 10,
+      "moveSpeed": null
+    },
+    "phase_conveyor": {
+      "name": "Transportador de fase",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": 0.49,
+      "buildCost": {
+        "lead": 10,
+        "graphite": 10,
+        "silicon": 7,
+        "phase_fabric": 5
+      },
+      "power": 18,
+      "itemCapacity": 10,
+      "moveSpeed": null
+    },
+    "router": {
+      "name": "Roteador",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": 0.05,
+      "buildCost": {
+        "copper": 3
+      },
+      "power": null,
+      "itemCapacity": 1,
+      "moveSpeed": null
+    },
+    "sorter": {
+      "name": "Ordenador",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": 0.12,
+      "buildCost": {
+        "copper": 2,
+        "lead": 2
+      },
+      "power": null,
+      "itemCapacity": null,
+      "moveSpeed": null
+    },
+    "titanium_conveyor": {
+      "name": "Esteira de titanio",
+      "solid": false,
+      "health": 65,
+      "size": 1,
+      "buildTime": 0.04,
+      "buildCost": {
+        "copper": 1,
+        "lead": 1,
+        "titanium": 1
+      },
+      "power": null,
+      "itemCapacity": 4,
+      "moveSpeed": 10
+    },
+    "underflow_gate": {
+      "name": "Portão sobrecarregado invertido",
+      "solid": true,
+      "health": 40,
+      "size": 1,
+      "buildTime": 0.17,
+      "buildCost": {
+        "copper": 4,
+        "lead": 2
+      },
+      "power": null,
+      "itemCapacity": 10,
+      "moveSpeed": null
     }
   }
 }

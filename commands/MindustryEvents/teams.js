@@ -1,15 +1,22 @@
-const fs = require("fs");
 const Discord = require("discord.js");
 
-var self = this
-
 module.exports = {
-  run: async (client, botUtils, message, args) => {
+  // Execução do comando
+  run: (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
     try {
-      //tira dps
-      message.reply('ainda não implementado')
+      // Codigo do comando
+      teams = botUtils.jsonPull('./dataBank/mindustryEvent.json').teams
+      
+      let embed = new Discord.MessageEmbed()
+        .setTitle("Equipes")
+        .setColor("RANDOM");
+
+      teams.forEach(team => {
+        embed.addField(team.id,team.members.join('\n'),true)
+      });
+      message.channel.send(embed);
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()
@@ -26,12 +33,12 @@ module.exports = {
     }
   },
 
+  // Configuração do comando
   config: {
-    name: "fish",
-    noalias: "sem apelidos",
-    aliases: [],
-    description: "Pesca um peixe para vender depois",
-    usage: "fish",
+    name: "teams",
+    aliases: ['times'],
+    description: "vê os times",
+    usage: "times",
     accessableby: "Membros"
   }
 }

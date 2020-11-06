@@ -48,16 +48,105 @@
     }
   },
   "liquids": {
-    "name": {
-      "name": "Nome",
+    "cryofluid": {
+      "name": "Fluído criogênico",
       "flammability": 0,
       "explosivennes": 0,
-      "radioactivity": 0,
-      "natural": true,
-      "hardness": 0,
-      "producedIn": [],
-      "requiredFor": [],
-      "usedToBuild": []
+      "heatCapacity": 90,
+      "producedIn": [
+        "cryofluidmixer"
+      ],
+      "requiredFor": [
+        "force_projector",
+        "differential_generator",
+        "thorium_reactor",
+        "impact_reactor",
+        "duo",
+        "scatter",
+        "scorch",
+        "hail",
+        "wave",
+        "lancer",
+        "arc",
+        "swarmer",
+        "salvo",
+        "fuse",
+        "ripple",
+        "cyclone",
+        "spectre",
+        "meltdown"
+      ]
+    },
+    "oil": {
+      "name": "Petróleo",
+      "flammability": 120,
+      "explosivennes": 120,
+      "heatCapacity": 70,
+      "producedIn": [
+        "spore_press",
+        "mechanical_pump",
+        "rotary_pump",
+        "thermal_pump",
+        "water_extractor",
+        "oil_extractor"
+      ],
+      "requiredFor": [
+        "plastanium_compressor",
+        "coal_centrifuge",
+        "wave"
+      ]
+    },
+    "slag": {
+      "name": "Escória",
+      "flammability": 0,
+      "explosivennes": 0,
+      "heatCapacity": 50,
+      "producedIn": [
+        "melter"
+      ],
+      "requiredFor": [
+        "separator",
+        "wave"
+      ]
+    },
+    "water": {
+      "name": "Agua",
+      "flammability": 0,
+      "explosivennes": 0,
+      "heatCapacity": 40,
+      "producedIn": [
+        "mechanical_pump",
+        "rotary_pump",
+        "thermal_pump",
+        "water_extractor",
+        "oil_extractor"
+      ],
+      "requiredFor": [
+        "multi_press",
+        "cryofluidmixer",
+        "force_projector",
+        "turbine_generator",
+        "mechanical_drill",
+        "pneumatic_drill",
+        "laser_drill",
+        "blast_drill",
+        "cultivator",
+        "oil_extractor",
+        "duo",
+        "scatter",
+        "scorch",
+        "hail",
+        "wave",
+        "lancer",
+        "arc",
+        "swarmer",
+        "salvo",
+        "fuse",
+        "ripple",
+        "cyclone",
+        "spectre",
+        "meltdown"
+      ]
     }
   }
 }

@@ -36,6 +36,9 @@ module.exports = async ({ client, botUtils }, message) => {
 		} else if (message.channel.id == '756587320140103690') {
 			// #mudae-comécio
 			return require('./Utils/mudae.js')(client, botUtils, message);
+		} else if (message.channel.id == '700147119465431050') {
+			// #sugestão
+			return require('./Utils/sugestao.js')(client, botUtils, message);
 		}
 
 		// Anti trava discord

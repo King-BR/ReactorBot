@@ -11,7 +11,6 @@ module.exports = {
         if (err) {
 
         } else {
-
           //iniciando variaveis
           let pos = 0;
           let last = [0, Number.MAX_VALUE]

@@ -26,7 +26,21 @@
       "buildCost": {}
     }
 
+  // distribution
+    "name": {
+      "name": "",
+      "solid": false,
+      "health": 0,
+      "size": 0,
+      "buildTime": 0,
+      "buildCost": {},
+      "power": 0,
+      "itemCapacity": 0,
+      "moveSpeed": 0
+    }
+
 // Resources
+  // Items
     "name": {
       "name": "Nome",
       "flammability": 0,
@@ -37,4 +51,13 @@
       "producedIn": [],
       "requiredFor": [],
       "usedToBuild": []
+    }
+  // Liquids
+    "name": {
+      "name": "nome",
+      "flammability": 0,
+      "explosivennes": 0,
+      "heatCapacity": 0,
+      "producedIn": [],
+      "requiredFor": []
     }

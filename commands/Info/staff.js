@@ -7,7 +7,7 @@ module.exports = {
 
     try {
       // Codigo do comando
-      if(message.mentions.members.size || message.mentions.roles.size) message.reply('Qual foi, marca os outros n, só manda o id.');
+      if (message.mentions.members.size || message.mentions.roles.size) return message.reply('Qual foi, marca os outros n, só manda o id.');
       const guild = client.guilds.cache.get("699823229354639471")
       let rolesid = [
         "699823332484317194",
@@ -17,17 +17,20 @@ module.exports = {
         "699977451010261172",
         "758839581512302611"
       ]
-      
-      if(args[0] && guild.roles.cache.get(args[0])) {
-        
-        rolesid = args.filter(id => guild.roles.cache.get(id))
-          
-      }
 
+
+      nroles = args.map(telled => {
+        let id = guild.roles.cache.get(args[0]) && telled
+        let role = guild.roles.cache.find(role => role.name.toLowerCase().replace(/[ @]+/g, '') == telled.toLowerCase())
+        id = id || role && role.id
+
+        return id
+      }).filter(r => r)
+      rolesid = nroles.length ? nroles : rolesid
 
       let embed = new Discord.MessageEmbed()
         .setTitle("Staff")
-        .setColor("RANDOM");
+        .setColor(guild.roles.cache.get(rolesid[0]).hexColor);
 
       rolesid.forEach(id => {
 
@@ -35,18 +38,18 @@ module.exports = {
         let size = 0
         let more = false
         const role = guild.roles.cache.get(id)
-        
+
         role.members.each(member => {
           size += member.user.tag.length + 1
-          if( size < 1022){
+          if (size < 1022) {
             str.push(member.user.tag);
-          } else { more = true}
+          } else { more = true }
         });
-        
-        if(!str.length) str.push('­')
-        if(more) str.push('...­')
 
-        embed.addField(role.name,'```'+str.join('\n')+'```',true)
+        if (!str.length) str.push('­')
+        if (more) str.push('...­')
+
+        embed.addField(role.name, '```' + str.join('\n') + '```', true)
 
       });
 

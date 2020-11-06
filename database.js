@@ -1,20 +1,25 @@
-const format = require("date-fns/format");
+const { formatDate } = require("./utils.js");
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema
 
+// Tentar conectar na database
 mongoose.connect(process.env.DATABASEURL, {
   useUnifiedTopology: true,
   useNewUrlParser: true
 }, error => {
+  // Caso aconteça erro ao tentar conectar
   if (error) {
     console.log(`Erro: ${error}`);
     process.exit(1);
-    return 1;
+    return;
   }
+
+  // Caso tenha sucesso ao conectar informa no console
   console.log("\nConectado ao banco de dados\n");
-  return 0;
+  return;
 });
 
+// Cria o Schema de warn
 var Warn = new Schema({
   _id: String,
   reason: {
@@ -30,11 +35,11 @@ var Warn = new Schema({
   },
   date: {
     type: String,
-    default: format(new Date() - 10800000, "dd/MM/yyyy HH:mm:SS")
+    default: formatDate(new Date())
   }
+});
 
-})
-
+// Cria o Schema de usuarios
 var User = new Schema({
   _id: String,
   mindustryRP: {
@@ -231,19 +236,37 @@ var User = new Schema({
       default: 0
     },
     history: [Warn]
-  },
-  config: {
-    colors: {
-      type: Array,
-      default: []
-    },
-    background: String,
-    type: {
-      type: String,
-      default: "barra"
-    }
   }
-})
+});
 
-var Users = mongoose.model('Users', User)
-exports.Users = Users
+// Cria o Schema de times
+var Team = new Schema({
+  _id: String,
+  name: {
+    type: String,
+    default: "Sem nome"
+  },
+  members: {
+    type: Array,
+    default: []
+  },
+  role: String,
+  channel: {
+    text: String,
+    voice: String
+  },
+  points: {
+    type: Number,
+    default: 0
+  }
+});
+
+// Cria os models na database
+var Users = mongoose.model('Users', User);
+var Teams = mongoose.model('Teams', Team);
+
+// Exporta os models para uso nos codigos
+module.exports = {
+  Users: Users,
+  Teams: Teams
+}

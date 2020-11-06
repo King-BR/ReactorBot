@@ -78,4 +78,5 @@ module.exports = {
     usage: "poly [n1] [n2] [n3] ...",
     accessableby: "Membro"
   }
+
 }

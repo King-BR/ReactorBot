@@ -5,7 +5,8 @@ const { Users } = require("../../database.js");
 module.exports = {
   run: async (client, botUtils, message, args) => {
     if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
-    if (botUtils.isDev(message.author.id)) return message.reply("Comando em desenvolvimento, use o `!moneyadd` por enquanto");
+
+    if (!botUtils.isDev(message.author.id)) return message.reply("Comando indisponivel por enquanto");
 
     newError = botUtils.newError;
 

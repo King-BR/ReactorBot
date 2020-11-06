@@ -7,11 +7,9 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
-
-      return message.channel.send("não implementado");
+      if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
 
       if (isNaN(parseInt(args[1] || args[0]))) return message.reply('Não foi possivel indentificar a quantia de dinheiro a se informar');
-      if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
 
 
       let emb = new Discord.MessageEmbed()

@@ -104,7 +104,7 @@ module.exports = (client, botUtils, server, editing) => {
       }, function() {
         const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
         const resp = palavras[Math.floor(Math.random() * palavras.length)];
-        const quant = Math.floor((1 - Math.log10(1 - Math.random())) * resp.length / 4);
+        const quant = Math.max(Math.floor((1 - Math.log10(1 - Math.random())) * resp.length / 4),1);
 
         const mutate = (str) => {
 
