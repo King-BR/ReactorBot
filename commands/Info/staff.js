@@ -9,6 +9,7 @@ module.exports = {
       // Codigo do comando
       if (message.mentions.members.size || message.mentions.roles.size) return message.reply('Qual foi, marca os outros n, só manda o id.');
       const guild = client.guilds.cache.get("699823229354639471")
+      let title = 'Staff'
       let rolesid = [
         "699823332484317194",
         "770430903117545473",
@@ -26,7 +27,10 @@ module.exports = {
 
         return id
       }).filter(r => r)
-      rolesid = nroles.length ? nroles : rolesid
+      if (nroles.length) {
+        rolesid = nroles;
+        title = 'Roles'
+      }
 
       let embed = new Discord.MessageEmbed()
         .setTitle("Staff")

@@ -1,0 +1,34 @@
+{
+  "482": [
+    {
+      "msg": "Only the host can research items.",
+      "author": "defalt",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Somente o host pode pesquisar itens",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "1242": [
+    {
+      "msg": "Infinitivamente da energia. Apenas caixa de areia.",
+      "author": "defalt",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Gera quantidades infinitas de energia. Apenas no criativo.",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ]
+}

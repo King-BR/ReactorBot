@@ -7,7 +7,7 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
-      let Leaderboard = await Users.find({}).sort({ money: -1 }).exec(function(err, total) {
+      await Users.find({}).sort({ money: -1 }).exec(function(err, total) {
         if (err) {
 
         } else {

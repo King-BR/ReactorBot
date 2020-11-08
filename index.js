@@ -18,11 +18,9 @@ const client = new Discord.Client({
 client.config = config;
 
 // Utils config
-//require("./font_manager.js");
 chalkClient = botUtils.chalkClient;
 newError = botUtils.newError;
 isDir = botUtils.isDir;
-//botUtils.setupXPconfig();
 
 // Starting Time - by Alstin112
 botUtils.jsonChange('./dataBank/serverState.json', server => {

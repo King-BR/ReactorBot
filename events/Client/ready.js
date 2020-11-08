@@ -59,6 +59,7 @@ module.exports = ({ client, botUtils }) => {
           server.nextMiniquiz = d.getTime() + Math.floor((Math.random() + 1) * 20 * 60 * 1000);
         }
 
+        // Mensagem do dia/Intervalo24h 
         if (server.nextMsgOfDay < d.getTime()) {
           const channel = guild.channels.cache.get("738471925004632104");
 
@@ -66,6 +67,8 @@ module.exports = ({ client, botUtils }) => {
             const message = require("./utils/messageofday.js")(client, botUtils, server);
             //channel.send('"' + message + '"\n\n-ReactorBot')
           }
+
+          const message = require("./utils/dayInterval.js")(client, botUtils, server, guild);
 
           server.nextMsgOfDay = Math.floor(d.getTime() / (12 * 60 * 60 * 1000) + 2) * 12 * 60 * 60 * 1000;
         }

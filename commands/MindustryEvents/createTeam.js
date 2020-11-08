@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { Clans, Users } = require("../../database.js");
 
 module.exports = {
   // Execução do comando

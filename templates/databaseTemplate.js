@@ -1,4 +1,4 @@
-const { Users } = require("../database.js");
+const { Users, Clans } = require("../database.js");
 const botUtils = require("../utils.js");
 
 newError = botUtils.newError;

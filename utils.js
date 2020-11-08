@@ -18,7 +18,7 @@ const config = require("./config.json");
  * @param [IDs.msg=0] {String|Number} ID da mensagem
  */
 function generateErrorID(fileName = "null", IDs = { server: 0, user: 0, msg: 0 }) {
-  let errorID = `${fileName}_${module.exports.formatDate(new Date())}_${IDs.server}_${IDs.user}_${IDs.msg}`;
+  let errorID = `${fileName}_${module.exports.formatDate(new Date())}_${IDs.server}-${IDs.user}-${IDs.msg}`;
   errorID = md5(errorID);
   return errorID;
 }
@@ -51,6 +51,16 @@ module.exports = {
   },
 
   /**
+   * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
+   * @param ID {String|Number} ID do usuario para checar
+   * @returns {Boolean}
+   */
+  isTester: (ID) => {
+    if (config.testersID.includes(ID)) return true;
+    return false;
+  },
+
+  /**
    * Formata datas no estilo dd/MM/yyyy HH:mm:SS
    * @param date {Date} Data para formatar
    * @returns {String} Data formatada no estilo dd/MM/yyyy HH:mm:SS
@@ -65,6 +75,104 @@ module.exports = {
    */
   sleep: (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
+  },
+
+
+  /**
+   * Retorna as mudanças entre para a array1 virar a array2
+   * @param {array} tabela original
+   * @param {array} tabela modificada
+   * @returns {array} mudanças necessarias para a transformação
+   */
+  arrDiference: (arr1, arr2) => {
+
+    const err = (desc) => {
+      return console.log("=> " + newError(new Error(desc), 'utils_arrDiference'));
+    }
+
+    if (!Array.isArray(arr1)) return err('arr1 não é uma array');
+    if (!Array.isArray(arr2)) return err('arr2 não é uma array');
+
+    let t1 = arr1.map(t => t.toString().trim())
+    let t2 = arr2.map(t => t.toString().trim())
+
+    let matriz = []
+
+    //criando a matriz
+    for (let x = 0; x <= t1.length; x++) {
+      matriz[x] = []
+      for (let y = 0; y <= t2.length; y++) {
+        matriz[x][y] = '??'
+      }
+    }
+
+    //colocando os numeros
+    matriz[0][0] = '0m'
+    t1.forEach((t, i) => { matriz[i + 1][0] = i + 1 + 'm' })
+    t2.forEach((t, i) => { matriz[0][i + 1] = i + 1 + 'm' })
+
+    let equal = true;
+
+    //calculando
+    for (let x = 1; x <= t1.length; x++) {
+      for (let y = 1; y <= t2.length; y++) {
+        let score = t1[x - 1] == t2[y - 1] ? 0 : 1
+
+        let numbers = [
+          parseInt(matriz[x - 1][y]) + 1,
+          parseInt(matriz[x][y - 1]) + 1,
+          parseInt(matriz[x - 1][y - 1]) + score
+        ]
+        let min = Math.min.apply(null, numbers)
+
+        matriz[x][y] = min + (['d', 'i', t1[x - 1] == t2[y - 1] ? 'm' : 's'])[numbers.findIndex(n => n == min)]
+
+      }
+    }
+
+    //calculando resultado
+    let changes = []
+    let x = t1.length - 1
+    let y = t2.length - 1
+    let cont;
+    do {
+
+      cont = x + y > 0
+
+      switch (matriz[x + 1][y + 1].slice(-1)) {
+        case 'd':
+          changes.push([y + 1 + '-', t1[x]]);
+          x--;
+          break;
+        case 'i':
+          changes.push([y + 1 + '+', t2[y]]);
+          y--;
+          break;
+        case 's':
+          changes.push([y + 1 + '+', t2[y]]);
+          changes.push([y + 1 + '-', t1[x]]);
+        case 'm':
+          x--;
+          y--;
+          break;
+      }
+    } while (cont)
+
+    return changes.reverse()
+  },
+
+  //--------------------------------------------------------------------------------------------------//
+  // Clan utils
+
+  /**
+   * Gera um ID para o clã
+   * @param foundersID {String[]} Array com o ID dos fundadores do clã
+   * @returns {String} ID do clã
+   */
+  generateClanID: (foundersID) => {
+    let clanID = `${module.exports.formatDate(new Date())}_${foundersID.join("-")}`;
+    clanID = md5(clanID);
+    return clanID.slice(0, 10);
   },
 
   //--------------------------------------------------------------------------------------------------//
@@ -422,7 +530,7 @@ module.exports = {
 
       doc.save();
     });
-  }
+  },
 
   //--------------------------------------------------------------------------------------------------//
   // Level system utils
@@ -434,7 +542,7 @@ module.exports = {
    * @param [XPconfig.maxLVL=50] {Number} Level maximo
    * @param [XPconfig.defaultXPnextLVL=500] {Number} Quantidade padrao para upar de level
    * @returns {void}
-   *
+   */
   setupXPconfig: (XPconfig = { modPerLVL: 1.2, maxLVL: 50, defaultXPnextLVL: 500 }) => {
     if (!fs.existsSync("./dataBank")) fs.mkdirSync("./dataBank");
     if (!fs.existsSync("./dataBank/levelSystem.json")) fs.writeFileSync("./dataBank/levelSystem.json", "[]", { encoding: "utf8" });
@@ -460,5 +568,4 @@ module.exports = {
     fs.writeFileSync("./dataBank/levelSystem.json", JSON.stringify(XPdataArray), { encoding: "utf8" });
     return;
   }
-  */
 }

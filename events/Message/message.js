@@ -16,6 +16,9 @@ module.exports = async ({ client, botUtils }, message) => {
 		// Ignora mensagens de bot
 		if (message.author.bot) return;
 
+    // 5% de chance de reagir com emoji caso mencionado
+    if(message.mentions.members.get(client.user.id) && Math.random() < 0.05) message.react('755627522330329238');
+
 		// Detecta se foi mencionado
 		let mentioned = cmd.includes(client.user) || cmd.includes(client.user.id);
 
@@ -55,7 +58,7 @@ module.exports = async ({ client, botUtils }, message) => {
 		if (commandfile) commandfile.run(client, botUtils, message, args);
 	} catch (err) {
 	  let IDs = {
-			server: message.server.id,
+			server: message.guild.id,
 			user: message.author.id,
 			msg: message.id
 		};

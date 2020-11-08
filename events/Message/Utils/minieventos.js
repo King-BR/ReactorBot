@@ -40,7 +40,7 @@ module.exports = (client, botUtils, message) => {
 					const money = Math.floor(Math.random() * 5 + 5);
 					const xp = Math.floor(Math.random() * 50 + 100);
 
-					message.channel.send(`Respondeu certo! ganhou ${money}\$ e ${xp}xp`);
+					message.channel.send(`Respondeu certo! ganhou ${money}\$ e ${xp} xp`);
 
 					obj.eventWin = null;
 					obj.eventType = null;
@@ -73,8 +73,7 @@ module.exports = (client, botUtils, message) => {
 							doc.levelSystem.xp + xp >=
 							XPconfig[doc.levelSystem.level - 1].XPNextLevel
 						) {
-							doc.levelSystem.xp -=
-								XPconfig[doc.levelSystem.level - 1].XPNextLevel;
+							doc.levelSystem.xp = doc.levelSystem.xp + xp - XPconfig[doc.levelSystem.level - 1].XPNextLevel;
 							doc.levelSystem.txp += xp;
 							doc.levelSystem.level++;
 						} else {
