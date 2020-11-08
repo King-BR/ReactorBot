@@ -12,6 +12,8 @@ module.exports = async ({ client, botUtils }, message) => {
 
     // Adiciona na tabela de frequencia
     botUtils.jsonChange('./dataBank/mesTotal.json', obj => {
+      if(message.guild.id != "699823229354639471") return obj;
+
       obj.messages[0] = obj.messages[0] || {};
       obj.messages[0][message.author.id] =
         (obj.messages[0][message.author.id] || 0) + 1;
