@@ -19,7 +19,8 @@ module.exports = {
       };
 
       const aliases = {
-        "import": []
+        "proposal": ['proposta','propor'],
+        "proposals": ['propostas']
       }
 
       let folder = fs.readdirSync(`./commands/Dev/Traduct`);
@@ -48,7 +49,7 @@ module.exports = {
   config: {
     name: "traduct",
     noalias: "Sem sinonimos",
-    aliases: ['traduction', 'tradução', 'translate'],
+    aliases: ['traduction', 'tradução', 'translate','tdc'],
     description: "!! ESSE COMANDO PODE CAUSAR MTO LAG !!",
     usage: "traduct <opção>",
     accessableby: "Desenvolvedores"

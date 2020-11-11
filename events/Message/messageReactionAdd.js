@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const isImageUrl = require("is-image-url");
 
 module.exports = ({ client, botUtils }, messageReaction, user) => {
   newError = botUtils.newError;
@@ -24,7 +25,7 @@ module.exports = ({ client, botUtils }, messageReaction, user) => {
         }
       })
 
-      if (number > 5) {
+      if (number >= 5) {
         const m = messageReaction.message;
         m.react('⭐');
         let embed = new Discord.MessageEmbed()
@@ -32,6 +33,11 @@ module.exports = ({ client, botUtils }, messageReaction, user) => {
 					.setAuthor(m.author.tag,m.author.displayAvatarURL())
 					.setColor("RANDOM")
           .setDescription(m.content);
+
+        if(m.attachments.first() && isImageUrl(m.attachments.first().url)) {
+          embed.setImage(m.attachments.first().url);
+        }
+
         client.channels.cache.get("738471925004632104").send(embed);
       }
     }

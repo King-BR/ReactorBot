@@ -13,7 +13,7 @@ module.exports = {
       let embed = new Discord.MessageEmbed()
         .setTitle("Ajuda")
         .setColor("RANDOM");
-      let folder = fs.readdirSync(`./commands/Dev/Traduct`);
+      let folder = fs.readdirSync(`./commands/Dev/Traduct`).filter(t => t.endsWith('.js'));
       folder.forEach(t => {
         embed.addField('traduct '+t.slice(0,-3),details[t.slice(0,-3)] || "Não especificado")
       })

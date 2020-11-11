@@ -21,9 +21,7 @@ module.exports = {
       let str = ''
       let title = "Comandos de " + cat
 
-      console.log(cat)
       if (typeof cat != 'string') {
-        console.log('certo')
 
         if (args[0]) message.reply("Não conheço essa categoria, tenta ler dnv :P");
         const folder = fs.readdirSync('commands');
@@ -36,7 +34,6 @@ module.exports = {
         });
 
       } else {
-        console.log('errado')
 
         if (cat == "Dev" && !botUtils.isDev(message.author.id)) return message.reply("Oi ?");
 

@@ -1,14 +1,199 @@
 {
-  "482": [
+  "23": [
     {
-      "msg": "Only the host can research items.",
+      "msg": "[accent]v6[] está atualmente em [accent]alpha[].\\n[lightgray]Isso significa:[]\\n[scarlet]- A campanha está inacabada[]\\n- Está faltando conteúdo\\n - A maioria das [scarlet]IAs das unidades[] não funciona adequadamente\\n- A maioria das unidades estão inacabadas\\n- Tudo o que você ver está sujeito a mudanças ou remoção.\\n\\nReporte bugs ou crashes em [accent]Github[].",
       "author": "defalt",
       "likes": 0,
       "mUp": [],
       "mDown": []
     },
     {
-      "msg": "Somente o host pode pesquisar itens",
+      "msg": "[accent]v6[] está atualmente em [accent]alpha[].\\n[lightgray]Isso significa:[]\\n[scarlet]- A campanha está inacabada[]\\n- Está faltando conteúdo\\n - A maioria das [scarlet]IAs das unidades[] não funciona adequadamente\\n- A maioria das unidades estão inacabadas\\n- Tudo o que você ver está sujeito a mudanças ou remoção.\\n\\nReporte bugs ou crashes no [accent]Github[].",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "342": [
+    {
+      "msg": "Escudo/Horda",
+      "author": "defalt",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Escudos/Horda",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "423": [
+    {
+      "msg": "Path To Spawn",
+      "author": "defalt",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Caminho até o núcleo",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "482": [
+    {
+      "msg": "Only the host can research items.",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Somente o host pode pesquisar itens.",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "1054": [
+    {
+      "msg": "Lanceiro",
+      "author": "defalt",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Lança",
+      "author": "318399612060696576",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Lançador",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "1108": [
+    {
+      "msg": "Morteiro",
+      "author": "defalt",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Ondulação",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "1141": [
+    {
+      "msg": "Tesla",
+      "author": "defalt",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176",
+        "680393595173601531"
+      ],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Arco elétrico",
+      "author": "291693225411084289",
+      "likes": 1,
+      "mUp": [
+        "291693225411084289"
+      ],
+      "mDown": []
+    }
+  ],
+  "1145": [
+    {
+      "msg": "Foreshadow",
+      "author": "defalt",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Profeta",
+      "author": "690302307350741032",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Premonição",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Sombra",
+      "author": "318399612060696576",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Visagem",
+      "author": "375462796697010176",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Prefiguradora",
+      "author": "680393595173601531",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    }
+  ],
+  "1241": [
+    {
+      "msg": "Destroi qualquer energia que entre dentro. Apenas caixa de areia.",
+      "author": "defalt",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Destrói qualquer tipo de energia. Apenas no modo criativo.",
+      "author": "690302307350741032",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Um bloco que consome uma quantidade imensa de energia. Apenas no criativo.",
       "author": "291693225411084289",
       "likes": 0,
       "mUp": [],
@@ -24,7 +209,43 @@
       "mDown": []
     },
     {
-      "msg": "Gera quantidades infinitas de energia. Apenas no criativo.",
+      "msg": "Um gerador capaz de fornecer energia infinita. Apenas no criativo.",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "1243": [
+    {
+      "msg": "Infinivamente da itens. Apenas caixa de areia.",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Gera itens infinitos. Apenas sandbox.",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    },
+    {
+      "msg": "Gera itens infinitos. Apenas criativo.",
+      "author": "375462796697010176",
+      "likes": 0,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Gera quantidades infinitas de itens. Apenas no criativo.",
       "author": "291693225411084289",
       "likes": 0,
       "mUp": [],

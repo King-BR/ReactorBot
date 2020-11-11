@@ -253,7 +253,11 @@ var Clan = new Schema({
   },
   level: {
     type: Number,
-    default: 0
+    default: 1
+  },
+  maxMembers: {
+    type: Number,
+    default: 10
   },
   founders: {
     type: Array,

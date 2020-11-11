@@ -16,9 +16,6 @@ module.exports = {
 
       //Definindo valores
       const eng = fs.readFileSync(helpers.filePath + 'english.txt', 'utf8').split('\n')
-      let embed = new Discord.MessageEmbed()
-        .setColor("RANDOM")
-        .setTimestamp();
 
       // transformando a lista de objetos text em apenas seus caminhos
       let pathBR = helpers.textBR.map(t => t.replace(/^([^=]*).+$/i, '$1').trim())
@@ -27,16 +24,19 @@ module.exports = {
       //vendo se a busca possui uma descrição, caso tenha retorna ela
       if (args[0].trim() && pathBR.some((t, i) => {
         if (t == args[0]) {
-          embed.addField('linhaBR:', i+1)
+          let embed = new Discord.MessageEmbed()
+            .setColor("RANDOM")
+            .setTimestamp();
+          embed.addField('linhaBR:', i + 1)
           embed.addField('TextoBR:', '`' + helpers.textBR[i].replace(/^.+=(.+)$/i, '$1').trim() + '`')
           pathEN.some((t, i) => {
             if (t == args[0]) {
-              embed.addField('linhaEN:', i+1)
+              embed.addField('linhaEN:', i + 1)
               embed.addField('TextoEN:', '`' + helpers.textEN[i].replace(/^.+=(.+)$/i, '$1').trim() + '`')
               return true;
             };
           })
-          embed.addField('Childs:',pathBR.some(t => t.startsWith(args[0]+'.')))
+          embed.addField('Childs:', pathBR.some(t => t.startsWith(args[0] + '.')))
           message.channel.send(embed)
           return true;
         };
@@ -52,14 +52,16 @@ module.exports = {
       //caso n foi achado
       if (!pathBR.length) return message.reply('Não foi achado nada');
 
-      //reduz a arr somente para o tamanho da pagina
-      let page = (args[1] || 1) + '/' + Math.ceil(pathBR.length / 10);
-      pathBR = pathBR.filter((t, i) => i < args[1] * 10 && i >= (args[1] - 1) * 10)
-
       //envia os valores para o usuario
-      embed.setTitle(args[0].replace(/\\/g, '').slice(0, -1) + (pathBR.length > 9 ? ' ' + page : ''))
-      embed.setDescription(pathBR.join('\n'))
-      message.channel.send(embed)
+      botUtils.createPage(message.channel, Math.ceil(pathBR.length / 10), (page) => {
+        let embed = new Discord.MessageEmbed()
+          .setColor("RANDOM")
+          .setTitle(`${page}/${Math.ceil(pathBR.length / 10)} ${args[0]}`)
+          .setDescription(pathBR.slice((page - 1) * 10, page * 10).join('\n'))
+          .setTimestamp();
+        return embed
+      })
+      //message.channel.send(embed)
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

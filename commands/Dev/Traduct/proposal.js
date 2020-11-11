@@ -7,7 +7,6 @@ module.exports = {
       // Execução do comando
 
       const line = parseInt(args.shift())
-      const text = 'helpers.textBR'
 
       if (isNaN(line)) return message.reply('preciso saber a linha.');
       if (!args[0]) return message.reply('Eu preciso saber o que voce deseja por no lugar');
@@ -28,11 +27,13 @@ module.exports = {
             mUp: [],
             mDown: []
           }]
+        } else if (lines[line].some(obj => obj.author == message.author.id)  ) {
+          lines[line].splice(lines[line].findIndex(obj => obj.author == message.author.id),1)
         }
 
         lines[line].push({
           msg: prop,
-          author: message.author.id.toString(),
+          author: message.author.id,
           likes: 0,
           mUp: [],
           mDown: []
@@ -45,9 +46,19 @@ module.exports = {
         .setColor("RANDOM")
         .addField('Atual:', '```' + trad + '```')
         .addField('Original:', eng ? '```' + eng + '```' : '_Não foi achado_')
-        .addField('Sua Proposta:', '```' + (trad ? trad.replace(helpers.regSep, '$1').trim() + ' = ' : '') + (prop || 'Oh no') + '```')
+        .addField('Sua proposta:', '```' + (trad ? trad.replace(helpers.regSep, '$1').trim() + ' = ' : '') + (prop || 'Oh no') + '```')
         .setTimestamp();
       message.channel.send(embed);
+
+      let nembed = new Discord.MessageEmbed()
+        .setTitle(`Linha: \`${line}\`, Nova proposta`)
+				.setAuthor(message.author.tag,message.author.displayAvatarURL())
+        .setColor("RANDOM")
+        .addField('Atual:', '```' + trad + '```')
+        .addField('Original:', eng ? '```' + eng + '```' : '_Não foi achado_')
+        .addField('Proposta:', '```' + (trad ? trad.replace(helpers.regSep, '$1').trim() + ' = ' : '') + (prop || 'Oh no') + '```')
+        .setTimestamp();
+      client.channels.cache.get("775957550038384670").send(nembed);
 
 
     } catch (err) {

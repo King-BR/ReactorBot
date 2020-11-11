@@ -77,7 +77,6 @@ module.exports = {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
 
-
   /**
    * Retorna as mudanças entre para a array1 virar a array2
    * @param {array} tabela original
@@ -93,47 +92,47 @@ module.exports = {
     if (!Array.isArray(arr1)) return err('arr1 não é uma array');
     if (!Array.isArray(arr2)) return err('arr2 não é uma array');
 
-    let t1 = arr1.map(t => t.toString().trim())
-    let t2 = arr2.map(t => t.toString().trim())
+    let t1 = arr1.map(t => t.toString().trim());
+    let t2 = arr2.map(t => t.toString().trim());
 
-    let matriz = []
+    let matriz = [];
 
     //criando a matriz
     for (let x = 0; x <= t1.length; x++) {
-      matriz[x] = []
+      matriz[x] = [];
       for (let y = 0; y <= t2.length; y++) {
-        matriz[x][y] = '??'
+        matriz[x][y] = '??';
       }
     }
 
     //colocando os numeros
-    matriz[0][0] = '0m'
-    t1.forEach((t, i) => { matriz[i + 1][0] = i + 1 + 'm' })
-    t2.forEach((t, i) => { matriz[0][i + 1] = i + 1 + 'm' })
+    matriz[0][0] = '0m';
+    t1.forEach((t, i) => { matriz[i + 1][0] = i + 1 + 'm' });
+    t2.forEach((t, i) => { matriz[0][i + 1] = i + 1 + 'm' });
 
     let equal = true;
 
     //calculando
     for (let x = 1; x <= t1.length; x++) {
       for (let y = 1; y <= t2.length; y++) {
-        let score = t1[x - 1] == t2[y - 1] ? 0 : 1
+        let score = t1[x - 1] == t2[y - 1] ? 0 : 1;
 
         let numbers = [
           parseInt(matriz[x - 1][y]) + 1,
           parseInt(matriz[x][y - 1]) + 1,
           parseInt(matriz[x - 1][y - 1]) + score
         ]
-        let min = Math.min.apply(null, numbers)
+        let min = Math.min.apply(null, numbers);
 
-        matriz[x][y] = min + (['d', 'i', t1[x - 1] == t2[y - 1] ? 'm' : 's'])[numbers.findIndex(n => n == min)]
+        matriz[x][y] = min + (['d', 'i', t1[x - 1] == t2[y - 1] ? 'm' : 's'])[numbers.findIndex(n => n == min)];
 
       }
     }
 
     //calculando resultado
-    let changes = []
-    let x = t1.length - 1
-    let y = t2.length - 1
+    let changes = [];
+    let x = t1.length - 1;
+    let y = t2.length - 1;
     let cont;
     do {
 
@@ -158,9 +157,56 @@ module.exports = {
       }
     } while (cont)
 
-    return changes.reverse()
+    return changes.reverse();
   },
 
+  /**
+   * Retorna uma pagina
+   * @param channel {Channel} o canal onde vai ser enviado 
+   * @param size {Number} quantidade de paginas
+   * @param func {Function} a função realizada por pagina 
+   */
+  createPage: (channel, size, func) => {
+    let page = 1;
+
+    channel.send(func(1) || 'nill').then(msg => {
+      if(size == 1) return;
+      msg.react('➡️').catch(err => console.log(err))
+
+      const filter = (reaction, user) => {
+        return ['➡️', '⬅️'].includes(reaction.emoji.name) && !user.bot
+      };
+
+      let collector = msg.createReactionCollector(filter, {idle: 30000});
+
+            collector.on("collect", (r, u) => {
+              if (r.emoji.name == '➡️') {
+                page++;
+                msg.edit(func(page) || 'nill');
+                msg.reactions.removeAll().then(() =>{
+                  msg.react('⬅️').then(() => {
+                    if(page < size) msg.react('➡️').catch(err => console.log(err));
+                  }).catch(err => console.log(err));
+                }).catch(err => console.log(err));
+              } else {
+                page--;
+                msg.edit(func(page) || 'nill');
+                msg.reactions.removeAll().then(() =>{
+                  Promise.all(page > 1?[msg.react('⬅️')]:[]).then(() => {
+                    msg.react('➡️').catch(err => console.log(err));
+                  }).catch(err => console.log(err))
+                }).catch(err => console.log(err));
+              }
+            })
+
+            collector.on("end", collected => {
+              if (collected.size > 0) return;
+              msg.reactions.removeAll();
+            });
+
+    })
+
+  },
   //--------------------------------------------------------------------------------------------------//
   // Clan utils
 
@@ -290,19 +336,19 @@ module.exports = {
     let str;
 
     if (Array.isArray(red) && !isNaN(red[0])) {
-      green = parseInt(red[1])
-      blue = parseInt(red[2])
-      alpha = parseInt(red[3])
-      red = parseInt(red[0])
+      green = parseInt(red[1]);
+      blue = parseInt(red[2]);
+      alpha = parseInt(red[3]);
+      red = parseInt(red[0]);
     }
 
     if (!isNaN(red)) {
       str = '';
       //transforma os valores em numeros
-      red = parseInt(red)
-      green = parseInt(green)
-      blue = parseInt(blue)
-      alpha = parseInt(alpha)
+      red = parseInt(red);
+      green = parseInt(green);
+      blue = parseInt(blue);
+      alpha = parseInt(alpha);
       //arredonda os numeros pros campos legiveis
       if (!isNaN(red)) red = Math.min(Math.max(0, red), 255);
       if (!isNaN(green)) green = Math.min(Math.max(0, green), 255);
@@ -311,41 +357,39 @@ module.exports = {
 
       // red,blue => escala de cinza e alpha
       if (isNaN(blue)) {
-        str += red.toString(16).padStart(2, '0')
-        str += red.toString(16).padStart(2, '0')
-        str += red.toString(16).padStart(2, '0')
+        str += red.toString(16).padStart(2, '0');
+        str += red.toString(16).padStart(2, '0');
+        str += red.toString(16).padStart(2, '0');
         if (!isNaN(green)) str += green.toString(16).padStart(2, '0');
       } else {
-        str += red.toString(16).padStart(2, '0')
-        str += green.toString(16).padStart(2, '0')
-        str += blue.toString(16).padStart(2, '0')
+        str += red.toString(16).padStart(2, '0');
+        str += green.toString(16).padStart(2, '0');
+        str += blue.toString(16).padStart(2, '0');
         if (!isNaN(alpha)) str += alpha.toString(16).padStart(2, '0');
       }
 
-      str = '#' + str.toUpperCase()
+      str = '#' + str.toUpperCase();
 
     } else if (Array.isArray(red)) {
 
-      str = []
+      str = [];
 
       for (let ar of red) {
-        str.push(module.exports.toColor(ar))
+        str.push(module.exports.toColor(ar));
       }
 
     } else {
       str = '#' + Math.floor(Math.random() * (2 ** 24 - 1)).toString(16).padStart(6, '0').toUpperCase();
     }
 
-    return str
+    return str;
   },
 
-  /**
-   */
   newGradient: (ctx, x1, y1, x2, y2, arr) => {
-
     const er = (cont) => {
       console.log(`=> ${module.exports.newError(new Error(cont), "Utils_newGradient")}`)
     }
+
     if (!ctx && !isNaN(ctx)) return er('Canvas não foi detectado');
     if (isNaN(x1)) return er('A posição x1 precisa ser um numero');
     if (isNaN(y1)) return er('A posição y1 precisa ser um numero');
@@ -369,46 +413,35 @@ module.exports = {
   },
 
   hexToRgb: (str) => {
-
-
     if (typeof str == "string") {
-
       str = str.trim()
-
       str = str.split(" ")
       if (str.length == 1) str = str[0];
 
       if (Array.isArray(str)) {
-
-        return module.exports.hexToRgb(str)
+        return module.exports.hexToRgb(str);
 
       } else if (str.toLowerCase() == 'random') {
-
-        return [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)]
+        return [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
 
       } else {
-
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(str);
         return result ? [
           parseInt(result[1], 16),
           parseInt(result[2], 16),
           parseInt(result[3], 16)
         ] : null;
-
       }
 
     } else if (Array.isArray(str)) {
-
-      let out = []
-
+      let out = [];
       str.forEach(string => {
-        out.push(module.exports.hexToRgb(string))
+        out.push(module.exports.hexToRgb(string));
       })
-
-      return out
+      return out;
 
     } else {
-      console.log(`=> ${module.exports.newError(new Error("Que poha de entrada que tu boto aqui?"), "Utils_hexToRgb")}`)
+      console.log(`=> ${module.exports.newError(new Error("Que poha de entrada que tu boto aqui?"), "Utils_hexToRgb")}`);
     }
   },
 

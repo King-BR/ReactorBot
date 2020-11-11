@@ -1,10 +1,13 @@
 const Discord = require("discord.js");
 const { Clans } = require("../../database.js");
+const isImageUrl = require("is-image-url");
 
 module.exports = {
   // Execução do comando
   run: (client, botUtils, message, args) => {
     newError = botUtils.newError;
+
+    if (!botUtils.isDev(message.author.id) /*&& !botUtils.isTester(message.author.id)*/) return message.channel.send("Comando em manutenção");
 
     try {
       Clans.find({}, (errDBclans, clans) => {
@@ -51,7 +54,43 @@ module.exports = {
             if(!clan) return message.channel.send("Você precisa ser fundador de algum clã para poder usar esse comando");
 
             try {
-              
+              if(!args[0]) {
+                let embedConfig = new Discord.MessageEmbed()
+                  .setTitle(clan.name);
+
+                if(clan.image && isImageUrl(clan.image)) embedConfig.setThumbnail(clan.image);
+                if(clan.desc && clan.desc.length > 0) embedConfig.setDescription(clan.desc);
+                
+                let clanFounders = clan.founders.filter(m => {
+                  return message.guild.members.cache.get(m);
+                });
+
+                clanFounders = clanFounders.map(m => {
+                  return message.guild.members.cache.get(m).displayName;
+                });
+
+                embedConfig.addField("Fundadores", clanFounders.join(", "));
+
+                let clanMembers = clan.members.filter(m => {
+                  return message.guild.members.cache.get(m);
+                });
+
+                clanMembers = clanMembers.map(m => {
+                  return message.guild.members.cache.get(m).displayName;
+                }).slice(0, 15);
+
+                embedConfig.addField(`Membros: ${clanMembers.length}/${clan.maxMembers}`, clanMembers.join(", "));
+
+                message.channel.send(embedConfig);
+                return;
+              }
+
+              switch(args[0]) {
+                case "name":
+                case "nome": {
+                  break;
+                }
+              }
             } catch(err2) {
               let embed = new Discord.MessageEmbed()
                 .setTitle("Erro inesperado")

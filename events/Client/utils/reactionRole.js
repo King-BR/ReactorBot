@@ -7,9 +7,14 @@ module.exports = async (client, botUtils, guild) => {
     const rrChannel = guild.channels.cache.get("773614504016609320")
 
     const roles = [
-      { name: "Coletor", react: '🏮', role: "773627457462075453" , desc: 'Poder utilizar o bot Mudae, para colecionar personagens de anime'},
+      { name: "Colecionador", react: '🏮', role: "773627457462075453" , desc: 'Poder utilizar o bot Mudae, para colecionar personagens de anime'},
       { name: "Tradução", react: '🌐', role: "773763715794862110" , desc: 'Poder pedir/acompanhar/conversar sobre traduções dos mods'},
-      { name: "Steam", react: '🎮', role: "774371061344763935", desc: 'Marque caso você tenha mindustry da steam, nenhum beneficio no server até o momento'}
+      { name: "Steam", react: '🎮', role: "774371061344763935", desc: 'Marque caso você tenha mindustry da steam'}
+    ]
+
+    const bannedChannels = [
+      '738471925004632104', //frases do dia
+      '700126364304670881', //anuncios
     ]
 
     const m = rrChannel.messages.fetch(id)

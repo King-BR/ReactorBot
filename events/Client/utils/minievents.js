@@ -125,7 +125,9 @@ module.exports = (client, botUtils, server, editing) => {
 
         let quest = resp
 
-        for (let i = 0; i < quant; i++) { quest = mutate(quest) }
+        do {
+          for (let i = 0; i < quant; i++) { quest = mutate(quest) }
+        } while (quest == resp)
 
         quest = `Deu um erro no arquivo(${quant}x), descubra a palavra:\`${quest}\``
 
