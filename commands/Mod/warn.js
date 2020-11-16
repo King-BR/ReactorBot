@@ -9,7 +9,7 @@ module.exports = {
     newError = botUtils.newError;
     try {
       // Codigo do comando
-      if (!message.member.hasPermission(["KICK_MEMBERS", "BAN_MEMBERS"])) return message.reply("Você não tem permissão para isso");
+      if (!message.member.hasPermission(["KICK_MEMBERS"])) return message.reply("Você não tem permissão para isso");
       if(!message.mentions.users.first()) return message.reply("marca alguem pow");
 
       const user = message.mentions.users.first();

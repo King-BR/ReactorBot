@@ -1,13 +1,14 @@
 const Discord = require("discord.js");
 const { Clans } = require("../../database.js");
 const isImageUrl = require("is-image-url");
+const { prefix } = require("../../config.json");
 
 module.exports = {
   // Execução do comando
   run: (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
-    if (!botUtils.isDev(message.author.id) /*&& !botUtils.isTester(message.author.id)*/) return message.channel.send("Comando em manutenção");
+    if (!botUtils.isDev(message.author.id) && !botUtils.isTester(message.author.id)) return message.channel.send("Comando em manutenção");
 
     try {
       Clans.find({}, (errDBclans, clans) => {
@@ -26,14 +27,14 @@ module.exports = {
           return;
         }
 
-        if(!clans || clans.length == 0) return message.channel.send("Você precisa ser fundador de algum clã para poder usar esse comando");
+        if(!clans || clans.length == 0) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
 
         try {
           let c = clans.filter(c => {
             return c.founders.includes(message.author.id);
           });
 
-          if(!c[0]) return message.channel.send("Você precisa ser fundador de algum clã para poder usar esse comando");
+          if(!c[0]) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
 
           Clans.findById(c[0]._id, (errDBclan, clan) => {
             if (errDBclan) {
@@ -51,35 +52,19 @@ module.exports = {
               return;
             }
 
-            if(!clan) return message.channel.send("Você precisa ser fundador de algum clã para poder usar esse comando");
+            if(!clan) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
 
             try {
               if(!args[0]) {
                 let embedConfig = new Discord.MessageEmbed()
-                  .setTitle(clan.name);
+                  .setTitle("Configurações do clã")
+                  .addField("Nome", `${clan.name}\n\nPara mudar use ${prefix}${module.exports.config.name} nome <Novo nome do clã>`, true)
+                  .addField("Foto", `${clan.image ? "Imagem ao lado =>\n\n" : ""}Para mudar use ${prefix}${module.exports.config.name} img <link da imagem ou imagem em anexo>`, true)
+                  .addField("Descrição", `${clan.desc ? clan.desc : "Sem descrição"}\n\nPara mudar use ${prefix}${module.exports.config.name} desc <Nova descrição do clã>`);
 
-                if(clan.image && isImageUrl(clan.image)) embedConfig.setThumbnail(clan.image);
-                if(clan.desc && clan.desc.length > 0) embedConfig.setDescription(clan.desc);
-                
-                let clanFounders = clan.founders.filter(m => {
-                  return message.guild.members.cache.get(m);
-                });
-
-                clanFounders = clanFounders.map(m => {
-                  return message.guild.members.cache.get(m).displayName;
-                });
-
-                embedConfig.addField("Fundadores", clanFounders.join(", "));
-
-                let clanMembers = clan.members.filter(m => {
-                  return message.guild.members.cache.get(m);
-                });
-
-                clanMembers = clanMembers.map(m => {
-                  return message.guild.members.cache.get(m).displayName;
-                }).slice(0, 15);
-
-                embedConfig.addField(`Membros: ${clanMembers.length}/${clan.maxMembers}`, clanMembers.join(", "));
+                  if(clan.image && isImageUrl(clan.image)) {
+                    embedConfig.setThumbnail(clan.image);
+                  }
 
                 message.channel.send(embedConfig);
                 return;
@@ -88,6 +73,33 @@ module.exports = {
               switch(args[0]) {
                 case "name":
                 case "nome": {
+                  if(!args[1]) return message.channel.send("Esqueceu o novo nome");
+
+                  let oldName = clan.name;
+                  let name = args.slice(1).join(" ");
+                  clan.name = name;
+                  clan.save();
+
+                  let embed = new Discord.MessageEmbed()
+                    .setTitle("O nome do clã foi atualizado")
+                    .addField("Novo nome", clan.name, true)
+                    .addField("Antigo nome", oldName, true)
+                    .setTimestamp()
+                    .setColor("RANDOM");
+                  message.channel.send(embed);
+                  break;
+                }
+                case "descricao":
+                case "descrição":
+                case "desc": {
+                  //break;
+                }
+                case "ft":
+                case "foto":
+                case "image":
+                case "imagem":
+                case "img": {
+                  message.channel.send("Ainda não implementado");
                   break;
                 }
               }
@@ -136,8 +148,8 @@ module.exports = {
 
   // Configuração do comando
   config: {
-    name: "editcla",
-    aliases: ["editclan", "ec"],
+    name: "editclan",
+    aliases: ["editcla", "editclã", "ec"],
     description: "Edite as informações do clã",
     usage: "editcla <opção> <informação a ser editada>",
     accessableby: "Membros"

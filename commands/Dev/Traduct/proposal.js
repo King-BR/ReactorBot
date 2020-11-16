@@ -16,14 +16,13 @@ module.exports = {
       const prop = args.join(' ')
       const eng = helpers.textEN.find(t => t.replace(helpers.regSep, '$1').trim() == trad.replace(helpers.regSep, '$1').trim())
 
-
       botUtils.jsonChange(helpers.filePath + 'creating.json', lines => {
 
         if (!lines[line]) {
           lines[line] = [{
             msg: trad.replace(helpers.regSep, '$2').trim(),
             author: 'defalt',
-            likes: 0,
+            likes: -1,
             mUp: [],
             mDown: []
           }]
@@ -58,7 +57,8 @@ module.exports = {
         .addField('Original:', eng ? '```' + eng + '```' : '_Não foi achado_')
         .addField('Proposta:', '```' + (trad ? trad.replace(helpers.regSep, '$1').trim() + ' = ' : '') + (prop || 'Oh no') + '```')
         .setTimestamp();
-      client.channels.cache.get("775957550038384670").send(nembed);
+      client.channels.cache.get("775957550038384670").send(nembed)
+        .then(msg => {msg.react('❌').then(() => {msg.react('✅')})});
 
 
     } catch (err) {

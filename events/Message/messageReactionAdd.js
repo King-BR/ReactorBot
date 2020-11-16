@@ -1,16 +1,70 @@
 const Discord = require("discord.js");
 const isImageUrl = require("is-image-url");
 
-module.exports = ({ client, botUtils }, messageReaction, user) => {
+module.exports = async ({ client, botUtils }, messageReaction, user) => {
   newError = botUtils.newError;
 
   try {
+    
+    //se é partial, ent carrega
+    if (messageReaction.message.partial) await messageReaction.message.fetch();
 
+    //se foi o bot q mando
+    if(user.id == client.user.id) return;
     const rolesW = {
       "699823332484317194": 4, //dono
       "700182152481996881": 3, //adm
       "755603968180093089": 2  //mod
     }
+
+    if (messageReaction.message.channel.id == '775957550038384670'){
+      const msg = messageReaction.message
+      if (!msg.embeds.length) return console.log('Foi reagido uma mensagem que n possui embed,');
+      const emb = msg.embeds[0]
+      const line = (/\d+/i).exec(emb.title)[0]
+      const authorId = (/\d+/i).exec(emb.author.iconURL)[0]
+      
+
+      botUtils.jsonChange('./dataBank/MindustryTraductions/creating.json',props => {
+
+        const i = props[line].findIndex(p => p.author == authorId);
+
+        if (messageReaction.emoji.toString() == '✅'){
+          if (user.id == authorId) return;
+          if (props[line][i].mDown.includes(user.id)) {
+            props[line][i].likes++;
+            props[line][i].mDown = props[line][i].mDown.filter(u => u !=  user.id)
+          }
+          if (!props[line][i].mUp.includes(user.id)) {
+            props[line][i].likes++;
+            props[line][i].mUp.push(user.id)
+          } 
+        } else if (messageReaction.emoji.toString() == '❌'){
+          if (user.id == authorId) return;
+          if (props[line][i].mUp.includes(user.id)) {
+            props[line][i].likes--;
+            props[line][i].mUp = props[line][i].mUp.filter(u => u !=  user.id);
+          }
+          if (!props[line][i].mDown.includes(user.id)) {
+            props[line][i].likes--;
+            props[line][i].mDown.push(user.id);
+          } 
+        } else if (messageReaction.emoji.toString() == '🗑️' && botUtils.isDev(user.id)){
+          msg.delete()
+          if (props[line].length == 2){
+            delete props[line];
+          } else {
+            props[line].splice(i,1)
+          }
+        }
+
+        return props;
+
+      },true)
+
+      return;
+    }
+
 
     if (messageReaction.emoji.toString() == '⭐' && !messageReaction.me) {
 

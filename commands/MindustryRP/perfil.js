@@ -6,8 +6,6 @@ module.exports = {
   run: (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
-    //if (!botUtils.isDev(message.author.id) && !botUtils.isTester(message.author.id)) return message.channel.send("Comando em manutenção");
-
     try {
       let member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
 
@@ -41,6 +39,7 @@ module.exports = {
 
           let embedPerfil = new Discord.MessageEmbed()
             .setTitle(`Perfil de **${member.displayName}**`)
+            .setThumbnail(member.user.displayAvatarURL({ dynamic: true, format: "png", size: 512 }))
             .setDescription(`Dinheiro: ${doc.money}\n\nLevel: ${doc.levelSystem.level}\nXP: ${doc.levelSystem.xp} / ${XPconfig[doc.levelSystem.level - 1].XPNextLevel}\nTotal de XP: ${doc.levelSystem.txp}`)
             .setColor("RANDOM")
             .setTimestamp();

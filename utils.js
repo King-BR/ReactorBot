@@ -170,39 +170,39 @@ module.exports = {
     let page = 1;
 
     channel.send(func(1) || 'nill').then(msg => {
-      if(size == 1) return;
+      if (size == 1) return;
       msg.react('➡️').catch(err => console.log(err))
 
       const filter = (reaction, user) => {
         return ['➡️', '⬅️'].includes(reaction.emoji.name) && !user.bot
       };
 
-      let collector = msg.createReactionCollector(filter, {idle: 30000});
+      let collector = msg.createReactionCollector(filter, { idle: 30000 });
 
-            collector.on("collect", (r, u) => {
-              if (r.emoji.name == '➡️') {
-                page++;
-                msg.edit(func(page) || 'nill');
-                msg.reactions.removeAll().then(() =>{
-                  msg.react('⬅️').then(() => {
-                    if(page < size) msg.react('➡️').catch(err => console.log(err));
-                  }).catch(err => console.log(err));
-                }).catch(err => console.log(err));
-              } else {
-                page--;
-                msg.edit(func(page) || 'nill');
-                msg.reactions.removeAll().then(() =>{
-                  Promise.all(page > 1?[msg.react('⬅️')]:[]).then(() => {
-                    msg.react('➡️').catch(err => console.log(err));
-                  }).catch(err => console.log(err))
-                }).catch(err => console.log(err));
-              }
-            })
+      collector.on("collect", (r, u) => {
+        if (r.emoji.name == '➡️') {
+          page++;
+          msg.edit(func(page) || 'nill');
+          msg.reactions.removeAll().then(() => {
+            msg.react('⬅️').then(() => {
+              if (page < size) msg.react('➡️').catch(err => console.log(err));
+            }).catch(err => console.log(err));
+          }).catch(err => console.log(err));
+        } else {
+          page--;
+          msg.edit(func(page) || 'nill');
+          msg.reactions.removeAll().then(() => {
+            Promise.all(page > 1 ? [msg.react('⬅️')] : []).then(() => {
+              msg.react('➡️').catch(err => console.log(err));
+            }).catch(err => console.log(err))
+          }).catch(err => console.log(err));
+        }
+      })
 
-            collector.on("end", collected => {
-              if (collected.size > 0) return;
-              msg.reactions.removeAll();
-            });
+      collector.on("end", collected => {
+        if (collected.size > 0) return;
+        msg.reactions.removeAll();
+      });
 
     })
 

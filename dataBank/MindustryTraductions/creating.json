@@ -3,9 +3,11 @@
     {
       "msg": "[accent]v6[] está atualmente em [accent]alpha[].\\n[lightgray]Isso significa:[]\\n[scarlet]- A campanha está inacabada[]\\n- Está faltando conteúdo\\n - A maioria das [scarlet]IAs das unidades[] não funciona adequadamente\\n- A maioria das unidades estão inacabadas\\n- Tudo o que você ver está sujeito a mudanças ou remoção.\\n\\nReporte bugs ou crashes em [accent]Github[].",
       "author": "defalt",
-      "likes": 0,
+      "likes": -1,
       "mUp": [],
-      "mDown": []
+      "mDown": [
+        "291693225411084289"
+      ]
     },
     {
       "msg": "[accent]v6[] está atualmente em [accent]alpha[].\\n[lightgray]Isso significa:[]\\n[scarlet]- A campanha está inacabada[]\\n- Está faltando conteúdo\\n - A maioria das [scarlet]IAs das unidades[] não funciona adequadamente\\n- A maioria das unidades estão inacabadas\\n- Tudo o que você ver está sujeito a mudanças ou remoção.\\n\\nReporte bugs ou crashes no [accent]Github[].",
@@ -19,9 +21,11 @@
     {
       "msg": "Escudo/Horda",
       "author": "defalt",
-      "likes": 0,
+      "likes": -1,
       "mUp": [],
-      "mDown": []
+      "mDown": [
+        "291693225411084289"
+      ]
     },
     {
       "msg": "Escudos/Horda",
@@ -35,12 +39,68 @@
     {
       "msg": "Path To Spawn",
       "author": "defalt",
-      "likes": 0,
+      "likes": -1,
       "mUp": [],
-      "mDown": []
+      "mDown": [
+        "291693225411084289"
+      ]
     },
     {
       "msg": "Caminho até o núcleo",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "424": [
+    {
+      "msg": "Core Select",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Limitar Núcleo",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "444": [
+    {
+      "msg": "Amount",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Quantidade",
+      "author": "291693225411084289",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "478": [
+    {
+      "msg": "Research {0}",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "291693225411084289"
+      ]
+    },
+    {
+      "msg": "Pesquise {0}",
       "author": "291693225411084289",
       "likes": 0,
       "mUp": [],
@@ -69,9 +129,11 @@
     {
       "msg": "Lanceiro",
       "author": "defalt",
-      "likes": 0,
+      "likes": -1,
       "mUp": [],
-      "mDown": []
+      "mDown": [
+        "291693225411084289"
+      ]
     },
     {
       "msg": "Lança",
@@ -83,8 +145,10 @@
     {
       "msg": "Lançador",
       "author": "291693225411084289",
-      "likes": 0,
-      "mUp": [],
+      "likes": 1,
+      "mUp": [
+        "690302307350741032"
+      ],
       "mDown": []
     }
   ],
@@ -92,15 +156,21 @@
     {
       "msg": "Morteiro",
       "author": "defalt",
-      "likes": 0,
+      "likes": -2,
       "mUp": [],
-      "mDown": []
+      "mDown": [
+        "690302307350741032",
+        "291693225411084289"
+      ]
     },
     {
       "msg": "Ondulação",
       "author": "291693225411084289",
-      "likes": 0,
-      "mUp": [],
+      "likes": 2,
+      "mUp": [
+        "690302307350741032",
+        "291693225411084289"
+      ],
       "mDown": []
     }
   ],
@@ -120,9 +190,10 @@
     {
       "msg": "Arco elétrico",
       "author": "291693225411084289",
-      "likes": 1,
+      "likes": 2,
       "mUp": [
-        "291693225411084289"
+        "291693225411084289",
+        "690302307350741032"
       ],
       "mDown": []
     }
@@ -143,13 +214,6 @@
       "mDown": [
         "291693225411084289"
       ]
-    },
-    {
-      "msg": "Premonição",
-      "author": "291693225411084289",
-      "likes": 0,
-      "mUp": [],
-      "mDown": []
     },
     {
       "msg": "Sombra",
@@ -175,22 +239,52 @@
       "mDown": [
         "291693225411084289"
       ]
+    },
+    {
+      "msg": "dejavu",
+      "author": "685847472618078257",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Premonição",
+      "author": "291693225411084289",
+      "likes": 3,
+      "mUp": [
+        "680393595173601531",
+        "685847472618078257",
+        "690302307350741032",
+        "697061608836432003",
+        "616042440058732544",
+        "620199324210429954"
+      ],
+      "mDown": [
+        "318399612060696576",
+        "613840593738792981",
+        "661034918188679200"
+      ]
     }
   ],
   "1241": [
     {
       "msg": "Destroi qualquer energia que entre dentro. Apenas caixa de areia.",
       "author": "defalt",
-      "likes": 0,
+      "likes": -2,
       "mUp": [],
-      "mDown": []
+      "mDown": [
+        "291693225411084289",
+        "690302307350741032"
+      ]
     },
     {
       "msg": "Destrói qualquer tipo de energia. Apenas no modo criativo.",
       "author": "690302307350741032",
-      "likes": 0,
+      "likes": -1,
       "mUp": [],
-      "mDown": []
+      "mDown": [
+        "291693225411084289"
+      ]
     },
     {
       "msg": "Um bloco que consome uma quantidade imensa de energia. Apenas no criativo.",
@@ -204,9 +298,11 @@
     {
       "msg": "Infinitivamente da energia. Apenas caixa de areia.",
       "author": "defalt",
-      "likes": 0,
+      "likes": -1,
       "mUp": [],
-      "mDown": []
+      "mDown": [
+        "291693225411084289"
+      ]
     },
     {
       "msg": "Um gerador capaz de fornecer energia infinita. Apenas no criativo.",
@@ -229,11 +325,13 @@
     {
       "msg": "Gera itens infinitos. Apenas sandbox.",
       "author": "690302307350741032",
-      "likes": 1,
+      "likes": 0,
       "mUp": [
         "680393595173601531"
       ],
-      "mDown": []
+      "mDown": [
+        "291693225411084289"
+      ]
     },
     {
       "msg": "Gera itens infinitos. Apenas criativo.",
@@ -247,8 +345,10 @@
     {
       "msg": "Gera quantidades infinitas de itens. Apenas no criativo.",
       "author": "291693225411084289",
-      "likes": 0,
-      "mUp": [],
+      "likes": 1,
+      "mUp": [
+        "690302307350741032"
+      ],
       "mDown": []
     }
   ]

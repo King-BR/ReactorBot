@@ -14,40 +14,33 @@ module.exports = {
       args[1] = parseInt(args[1]) || parseInt(args[0]) || 1
       if (!(args[0] && isNaN(args[0]))) args[0] = '';
 
-      //Definindo valores
-      const eng = fs.readFileSync(helpers.filePath + 'english.txt', 'utf8').split('\n')
-
       // transformando a lista de objetos text em apenas seus caminhos
       let pathBR = helpers.textBR.map(t => t.replace(/^([^=]*).+$/i, '$1').trim())
       let pathEN = helpers.textEN.map(t => t.replace(/^([^=]*).+$/i, '$1').trim())
+      let embed = new Discord.MessageEmbed()
+        .setColor("RANDOM")
+        .setTimestamp();
 
       //vendo se a busca possui uma descrição, caso tenha retorna ela
       if (args[0].trim() && pathBR.some((t, i) => {
-        if (t == args[0]) {
-          let embed = new Discord.MessageEmbed()
-            .setColor("RANDOM")
-            .setTimestamp();
-          embed.addField('linhaBR:', i + 1)
-          embed.addField('TextoBR:', '`' + helpers.textBR[i].replace(/^.+=(.+)$/i, '$1').trim() + '`')
-          pathEN.some((t, i) => {
-            if (t == args[0]) {
-              embed.addField('linhaEN:', i + 1)
-              embed.addField('TextoEN:', '`' + helpers.textEN[i].replace(/^.+=(.+)$/i, '$1').trim() + '`')
-              return true;
-            };
-          })
-          embed.addField('Childs:', pathBR.some(t => t.startsWith(args[0] + '.')))
-          message.channel.send(embed)
+        if (t != args[0]) return; 
+        embed.setTitle(args[0])
+        embed.addField('linhaBR:', i + 1)
+        embed.addField('TextoBR:', '`' + helpers.textBR[i].replace(/^.+=(.+)$/i, '$1').trim() + '`');
+        pathEN.some((t, i) => {
+          if (t != args[0]) return;
+          embed.addField('linhaEN:', i + 1)
+          embed.addField('TextoEN:', '`' + helpers.textEN[i].replace(/^.+=(.+)$/i, '$1').trim()+'`')
           return true;
-        };
+        });
+        embed.addField('Childs:', pathBR.some(t => t.startsWith(args[0] + '.')))
+        return message.channel.send(embed);
       })) return;
-      //caso tenha filhos ou n exista passe para ca
+      if(args[0] && !args[0].endsWith('.')) args[0] += '.';
 
       //pegando os filhos do caminho q foi pedido
-      if (args[0].endsWith('.')) args[0] = args[0].slice(0, -1)
-      args[0] = args[0] && args[0].replace(/\./g, '\\.') + '\\.'
-      pathBR = pathBR.filter(t => t).map(t => (new RegExp(`^(${args[0]}[^\\.]+).*\$`, 'i')).exec(t)).filter((t) => t).map(t => t[1])
-      pathBR = pathBR.filter((t, i) => pathBR.indexOf(t) == i).sort()
+      pathBR = pathBR.filter(p => p.startsWith(args[0].toLowerCase())).map(l => l.replace(args[0].toLowerCase(),'').replace(/^([^\.]+).*/i,'$1'))
+      pathBR = pathBR.filter((t,i) => i == pathBR.indexOf(t)).sort()
 
       //caso n foi achado
       if (!pathBR.length) return message.reply('Não foi achado nada');

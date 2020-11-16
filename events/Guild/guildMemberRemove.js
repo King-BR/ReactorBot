@@ -1,25 +1,21 @@
 const Discord = require("discord.js");
 
-module.exports = async ({ client, botUtils }, member) => {
+module.exports = ({ client, botUtils }, member) => {
   newError = botUtils.newError;
-
-  if(member.guild.id != "699823229354639471") return;
 
   try {
     let emoji = client.emojis.cache.get("777879077309775872");
 
     let welcome = new Discord.MessageEmbed()
-      .setTitle(`${emoji} Bem vindo!`)
-      .setDescription(`${member} (${member.user.tag}), obrigado por entrar em nosso servidor!`)
+      .setTitle(`Até Logo!`)
+      .setDescription(`${member} (${member.user.tag}), saiu do nosso servidor!`)
       .setColor("RANDOM")
       .setTimestamp()
       .setThumbnail(member.user.displayAvatarURL({ format: "png", dynamic: true, size: 512 }))
+      //.setImage("https://thumbs.gfycat.com/BrownFavoriteCock-small.gif");
     client.channels.cache.get("699823229354639474").send(welcome);
+
   } catch (err) {
-    let IDs = {
-      server: member.guild.id,
-      user: member.user.id
-    }
-    console.log(`=> ${newError(err, "guildMemberAdd", IDs)}`);
+    console.log(`=> ${newError(err, "nome do evento")}`);
   }
 }

@@ -6,8 +6,6 @@ module.exports = {
   run: (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
-    if (!botUtils.isDev(message.author.id) && !botUtils.isTester(message.author.id)) return message.channel.send("Comando em manutenção");
-
     try {
       if (message.mentions.members.size > 2) return message.channel.send("Tem que marcar no maximo 2 usuarios");
       if (message.mentions.members.size < 2) return message.channel.send("Tem que marcar no minimo 2 usuarios");

@@ -13,7 +13,8 @@ const botUtils = require("./utils.js");
 const client = new Discord.Client({
   fetchAllMembers: true,
   disableMentions: "everyone",
-  autoreconnect: true
+  autoreconnect: true,
+  partials: ['MESSAGE', 'REACTION']
 });
 client.config = config;
 

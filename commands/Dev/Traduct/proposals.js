@@ -70,6 +70,7 @@ module.exports = {
         pAuthor = pAuthor ? pAuthor.tag.toLowerCase() : "original"
         return pAuthor.startsWith(args[1].toLowerCase()) || prop.author == args[1] || message.mentions.users.size && prop.author == message.mentions.users.first().id
       });
+      if(iProp == -1) return message.reply('Não foi encontrado esse usuario');
       const prop = line[iProp]
 
       //Caso tenha os nomes

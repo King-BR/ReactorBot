@@ -7,7 +7,17 @@ module.exports = {
     try {
       // Execução do comandosfa
       const details = {
-        help: ""
+        help: "Faz aparecer isso aqui",
+        line: "Mostra o conteudo que aparece em tal linha",
+        proposal: "Envia uma proposta para o banco de dados do bot, para posteriormente ser enviado para o mindustry",
+        proposals: "Vê todas as propostas atuais, se enviado a linha e o nome do membro é possivel votar",
+        getchanges: "Pega o arquivo final com as mudanças,caso queira somente as mudanças basta escrever `!traduct getchanges changes`",
+        delete: "Apaga uma proposta feita pelo author do comando",
+        diff: "Envia um arquivo com as diferenças entre o bundleBR e o bundleEN",
+        find: "Acha uma certa palavra no bundleBR",
+        import: "APENAS DEV, importa as atuais mudanças do github, LAGA MUITO",
+        info: "Envia uma informação mais detalhada de como ajudar a traduzir mindustry na dm",
+        see: "Procura determinada tradução se enviado um caminho, caso enviado o comando `!traduct see *` envia o arquivos com as traduções atuais do github"
       }
       
       let embed = new Discord.MessageEmbed()
@@ -15,7 +25,7 @@ module.exports = {
         .setColor("RANDOM");
       let folder = fs.readdirSync(`./commands/Dev/Traduct`).filter(t => t.endsWith('.js'));
       folder.forEach(t => {
-        embed.addField('traduct '+t.slice(0,-3),details[t.slice(0,-3)] || "Não especificado")
+        embed.addField('traduct '+t.slice(0,-3),details[t.slice(0,-3)] || "<Não especificado>")
       })
       message.channel.send(embed);
 

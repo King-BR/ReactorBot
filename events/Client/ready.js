@@ -7,7 +7,6 @@ module.exports = ({ client, botUtils }) => {
     console.log(`\nBot foi logado como ${client.user.tag}`)
     console.log("Iniciado em " + botUtils.formatDate(new Date()));
 
-
     // Tempo q o bot levou pra começar
     botUtils.jsonChange('./dataBank/serverState.json', server => {
 
@@ -18,6 +17,8 @@ module.exports = ({ client, botUtils }) => {
 
     // Reactor reaction
     require('./utils/reactionRole')(client, botUtils, guild)
+    // Delete propostas
+    require('./utils/deleteProp')(client, botUtils, guild)
 
     //atividade do bot
     client.user.setActivity("!ajuda para a lista de comandos", { type: "WATCHING" });
