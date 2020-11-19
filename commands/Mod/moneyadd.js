@@ -16,7 +16,7 @@ module.exports = {
         .setColor('RANDOM')
         .setAuthor(message.author.tag, message.author.displayAvatarURL())
         .setTitle('Adicionou dinheiro!')
-        .setDescription(log)
+        .setDescription(`${member}`)
         .setThumbnail(user.displayAvatarURL({ dynamic: true, format: "png", size: 1024 }))
         .setTimestamp();
       client.channels.cache.get("767982805908324411").send(emb);

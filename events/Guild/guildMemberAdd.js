@@ -2,11 +2,11 @@ const Discord = require("discord.js");
 
 module.exports = async ({ client, botUtils }, member) => {
   newError = botUtils.newError;
-
+// testa agr
   if(member.guild.id != "699823229354639471") return;
 
   try {
-    let emoji = client.emojis.cache.get("777879077309775872");
+    let emoji = client.emojis.cache.find(e => e.name == "PaimonPat" && e.animated);
 
     let welcome = new Discord.MessageEmbed()
       .setTitle(`${emoji} Bem vindo!`)

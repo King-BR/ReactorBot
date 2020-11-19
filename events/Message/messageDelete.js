@@ -5,9 +5,10 @@ module.exports = async ({ client, botUtils }, message) => {
 
   try {
     const cLogs = client.channels.cache.get('767982805908324411');
-
     if (message.channel.id == cLogs.id) {
-      if (message.embeds[0]) cLogs.send(message.embeds[0]);
+      if (message.embeds.size) {
+        cLogs.send(message.embeds[0])
+      };
       cLogs.send('Alguem tentou apagar uma mensagem');
     }
 

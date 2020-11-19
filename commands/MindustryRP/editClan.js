@@ -8,8 +8,6 @@ module.exports = {
   run: (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
-    if (!botUtils.isDev(message.author.id) && !botUtils.isTester(message.author.id)) return message.channel.send("Comando em manutenção");
-
     try {
       Clans.find({}, (errDBclans, clans) => {
         if (errDBclans) {
@@ -70,7 +68,7 @@ module.exports = {
                 return;
               }
 
-              switch(args[0]) {
+              switch(args[0].toLowerCase()) {
                 case "name":
                 case "nome": {
                   if(!args[1]) return message.channel.send("Esqueceu o novo nome");
@@ -92,14 +90,36 @@ module.exports = {
                 case "descricao":
                 case "descrição":
                 case "desc": {
-                  //break;
+                  if(!args[1]) return message.channel.send("Esqueceu a nova descrição");
+
+                  let oldDesc = clan.desc;
+                  let desc = args.slice(1).join(" ");
+                  clan.desc = desc;
+                  clan.save();
+
+                  let embed = new Discord.MessageEmbed()
+                    .setTitle("A descrição do clã foi atualizado")
+                    .addField("Nova descrição", clan.desc)
+                    .addField("Antiga descrição", oldDesc)
+                    .setTimestamp()
+                    .setColor("RANDOM");
+                  message.channel.send(embed);
+                  break;
                 }
                 case "ft":
                 case "foto":
                 case "image":
                 case "imagem":
                 case "img": {
-                  message.channel.send("Ainda não implementado");
+                  return message.channel.send("Ainda não foi implementado");
+
+                  if(!args[1] && !message.attachments.first()) return message.channel.send("Esqueceu a nova foto");
+
+                  let embed = new Discord.MessageEmbed()
+                    .setTitle("A foto do clã foi atualizado")
+                    .setTimestamp()
+                    .setColor("RANDOM");
+                  message.channel.send(embed);
                   break;
                 }
               }
@@ -148,8 +168,8 @@ module.exports = {
 
   // Configuração do comando
   config: {
-    name: "editclan",
-    aliases: ["editcla", "editclã", "ec"],
+    name: "editclã",
+    aliases: ["editcla", "editclan", "ec"],
     description: "Edite as informações do clã",
     usage: "editcla <opção> <informação a ser editada>",
     accessableby: "Membros"

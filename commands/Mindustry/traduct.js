@@ -23,7 +23,7 @@ module.exports = {
         "proposals": ['propostas']
       }
 
-      let folder = fs.readdirSync(`./commands/Dev/Traduct`);
+      let folder = fs.readdirSync(`./commands/Mindustry/Traduct`);
       let file = cmd?folder.filter(t => t.endsWith('.js')).find(t => {
         return t.slice(0,-3) == cmd.toLowerCase() || aliases[t.slice(0,-3)] && aliases[t.slice(0,-3)].includes(cmd.toLowerCase())
       }):'help.js';
@@ -50,8 +50,8 @@ module.exports = {
     name: "traduct",
     noalias: "Sem sinonimos",
     aliases: ['traduction', 'tradução', 'translate','tdc'],
-    description: "!! ESSE COMANDO PODE CAUSAR MTO LAG !!",
+    description: "Veja a tradução do mindustry e faça propostas",
     usage: "traduct <opção>",
-    accessableby: "Desenvolvedores"
+    accessableby: "Membros"
   }
 }

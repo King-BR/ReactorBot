@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { Users, Clans } = require("../../database.js");
 
 module.exports = {
   run: async (client, botUtils, message, args) => {
@@ -57,7 +58,7 @@ module.exports = {
           .then(() => msg.react('⬇️'))
           .then(() => msg.react('➡️'))
           .then(() => {
-            
+
             stime = new Date().getTime()
             const filter = (reaction, user) => {
               return ['⬅️', '⬆️', '⬇️', '➡️'].includes(reaction.emoji.name) && user.id == message.author.id
@@ -94,7 +95,51 @@ module.exports = {
               msg.edit(artmsg(arr))
               if (arr.every((s, i) => s == i + 1)) {
                 let t = new Date().getTime() - stime
-                message.reply(`Parabens\nSuas estatisticas:\nTempo:\`${Math.floor(t / 60000)}:${Math.floor(t / 1000 % 60)}\`\nMovimentos:\`${moves.length}\``)
+                message.reply(`Parabens\nFoi adicionado $10 na sua conta e 50xp\nSuas estatisticas:\nTempo:\`${Math.floor(t / 60000)}:${Math.floor(t / 1000 % 60).toString().padStart(2,'0')}\`\nMovimentos:\`${moves.length}\``)
+
+
+                newError = botUtils.newError;
+
+                Users.findById(message.author.id, (errDB, doc) => {
+                  // Caso aconteça um erro na database
+                  if (errDB) {
+                    console.log(`=> ${newError(errDB, "fifteen")}`);
+                    return;
+                  }
+
+                  // Caso não exista usuario com esse id na database
+                  if (!doc) {
+                    // Cria o novo usuario
+                    let newUser = new Users({
+                      _id: message.author.id,
+                      money: 10,
+                      levelSystem: {
+                        xp: 50,
+                        txp: 50
+                      }
+                    });
+
+                    // Salva o novo usuario na database
+                    newUser.save();
+                    return;
+                  }
+
+                  try {
+
+                    // Add 50 de dinheiro para o usuario
+                    doc.money += 10;
+
+                    // Add 50 de xp para o usuario
+                    doc.levelSystem.xp += 50;
+                    doc.levelSystem.txp += 50;
+
+                    doc.save();
+                  } catch (err) {
+                    // Handler de erros
+                    console.log(`=> ${newError(err, "fifteen")}`);
+                  }
+                });
+
                 return collector.stop();
               };
             }
@@ -110,7 +155,7 @@ module.exports = {
             })
 
             collector.on("end", collected => {
-              console.log('cabo')
+              //console.log('cabo');
               msg.reactions.removeAll();
             });
           })

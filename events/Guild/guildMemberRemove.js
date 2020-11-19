@@ -4,10 +4,10 @@ module.exports = ({ client, botUtils }, member) => {
   newError = botUtils.newError;
 
   try {
-    let emoji = client.emojis.cache.get("777879077309775872");
+    let emoji = client.emojis.cache.find(e => e.name == "PaimonPat" && e.animated);
 
     let welcome = new Discord.MessageEmbed()
-      .setTitle(`Até Logo!`)
+      .setTitle(`${emoji} Até Logo!`)
       .setDescription(`${member} (${member.user.tag}), saiu do nosso servidor!`)
       .setColor("RANDOM")
       .setTimestamp()

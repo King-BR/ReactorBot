@@ -46,6 +46,8 @@ module.exports = async ({ client, botUtils }, message) => {
 
 		// Anti trava discord
 		require('./Utils/antitrava.js')(client, botUtils, message);
+		// Spam detector
+		require('./Utils/spamdetect.js')(client, botUtils, message);
 
 		// tudo oq n possui prefixo é ignorado
 		if (!message.content.startsWith(prefix)) return;

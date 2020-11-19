@@ -40,7 +40,7 @@ module.exports = {
           let embedPerfil = new Discord.MessageEmbed()
             .setTitle(`Perfil de **${member.displayName}**`)
             .setThumbnail(member.user.displayAvatarURL({ dynamic: true, format: "png", size: 512 }))
-            .setDescription(`Dinheiro: ${doc.money}\n\nLevel: ${doc.levelSystem.level}\nXP: ${doc.levelSystem.xp} / ${XPconfig[doc.levelSystem.level - 1].XPNextLevel}\nTotal de XP: ${doc.levelSystem.txp}`)
+            .setDescription(`Dinheiro: ${doc.money}\n\nLevel: ${doc.levelSystem.level}\nXP: ${doc.levelSystem.xp} / ${XPconfig[doc.levelSystem.level - 1].XPNextLevel}\nXP total: ${doc.levelSystem.txp}`)
             .setColor("RANDOM")
             .setTimestamp();
 

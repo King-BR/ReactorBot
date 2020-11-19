@@ -517,7 +517,7 @@ module.exports = {
   //--------------------------------------------------------------------------------------------------//
   // Rewarding system utils
 
-  userGive: (userID, money = 0, xp = 0, fileName = '???') => {
+  userGive: (userID, toAdd, errFileName = '???') => {
     //criando função de erro
     const newError = (desc, fileName, obj) => {
       console.log(`=> ${module.exports.newError(new Error(desc), fileName + "_userGive", obj)}`);
@@ -526,8 +526,8 @@ module.exports = {
     return newError("Esperando a verificação do king no meu codigo, pra ver se eu n fiz nenhuma merda :P", '???');
 
     //fazendo os ifs
-    if (typeof fileName != "string") return newError("O nome do arquivo não é uma string", "???");
-    if (isNaN(userID)) return newError("O id do usuario é um valor estranho", fileName);
+    if (typeof errFileName != "string") return newError("O nome do arquivo não é uma string", "???");
+    if (toAdd) return newError("O id do usuario é um valor estranho", fileName);
     if (isNaN(money)) return newError("O dinheiro precisa ser um numero", fileName, { user: userID });
     if (isNaN(xp)) return newError("A experiencia precisa ser um numero", fileName, { user: userID });
 
