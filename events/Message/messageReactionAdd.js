@@ -11,10 +11,26 @@ module.exports = async ({ client, botUtils }, messageReaction, user) => {
 
     //se foi o bot q mando
     if(user.id == client.user.id) return;
+    const guild = messageReaction.message.guild
     const rolesW = {
       "699823332484317194": 4, //dono
       "700182152481996881": 3, //adm
       "755603968180093089": 2  //mod
+    }
+    
+    if (messageReaction.emoji.toString() == '🚊'){ 
+      messageReaction.remove()
+      messageReaction.message.react(guild.emojis.cache.get('767832115701874728'))
+        .then((r) => {
+          messageReaction.users.remove('699824957118611569')
+          messageReaction.message.awaitReactions((r,u) => u.id == user.id,{max: 1, time: 60000})
+            .then(() => {
+              r.users.remove('699824957118611569')
+            }).catch(() => {
+              r.users.remove('699824957118611569')
+            });
+        })
+        .catch(err => console.log(`=> ${newError(err, "messageReaction")}`));
     }
 
     if (messageReaction.message.channel.id == '775957550038384670'){
@@ -26,6 +42,11 @@ module.exports = async ({ client, botUtils }, messageReaction, user) => {
       
 
       botUtils.jsonChange('./dataBank/MindustryTraductions/creating.json',props => {
+
+        if(!props[line]) {
+          console.log('reagiram uma proposta onde n tem linha');
+          return;
+        };
 
         const i = props[line].findIndex(p => p.author == authorId);
 
@@ -68,7 +89,6 @@ module.exports = async ({ client, botUtils }, messageReaction, user) => {
 
     if (messageReaction.emoji.toString() == '⭐' && !messageReaction.me) {
 
-      const guild = messageReaction.message.guild
       let number = 0;
       messageReaction.users.cache.each(user => {
         const memb = guild.members.cache.get(user.id);

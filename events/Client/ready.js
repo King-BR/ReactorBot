@@ -31,7 +31,7 @@ module.exports = ({ client, botUtils }) => {
       //verifica se o tempo dos mutes ja esgotaram
       botUtils.jsonChange('./dataBank/mutedlist.json', muted => {
         for (let userid in muted) {
-          if (Math.sign(muted[userid]) * (d.getTime() - muted[userid]) > 0) {
+          if (Math.sign(muted[userid][0]) * (d.getTime() - muted[userid][0]) > 0) {
             delete muted[userid];
             const user = client.users.cache.get(userid);
             user.send(`Você foi desmutado do server ${guild}`);
@@ -54,10 +54,12 @@ module.exports = ({ client, botUtils }) => {
 
           //pega as respostas e o tipo do evento
           const ret = require("./utils/minievents.js")(client, botUtils, server);
+          if ( ret) {
           server.eventType = ret[1];
           server.eventWin = ret[0];
 
           server.nextMiniquiz = d.getTime() + Math.floor((Math.random() + 1) * 20 * 60 * 1000);
+          } else {console.log(`=> ${newError(new Error("Não foi retornado nenhum valor para se colocar no miniquiz"), "ClientReady_MiniquizReturn")}`);}
         }
 
         // Mensagem do dia/Intervalo24h 

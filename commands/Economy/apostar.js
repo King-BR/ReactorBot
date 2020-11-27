@@ -7,106 +7,82 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
-      return message.reply('ainda em progresso...');
-      let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-      let money = args[1];
+      return;
+      //return message.reply('ainda em progresso...');
+      let money = parseInt(args.pop());
 
-      if (!user) {
-        message.channel.send("marca alguem seu retardado");
-        return;
-      }
+      if (isNaN(money) || money < 1) return message.reply('Escolha um numero positivo, que não seja zero para apostar')
 
-      if(user.id == message.author.id) {
-        message.channel.send("doente mental");
-        return;
-      }
-
-      if (isNaN(money) || !money || money < 1) {
-        message.channel.send("digita um numero valido");
-        return;
-      }
-
-      money = Number.parseInt(money);
-
-      Users.findById(message.author.id, (errGiver, giver) => {
-        if (errGiver) {
-          let embed = new Discord.MessageEmbed()
-            .setTitle("Erro inesperado")
-            .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
-          message.channel.send(embed);
-
-          let IDs = {
-            server: message.guild.id,
-            user: message.author.id,
-            msg: message.id
-          }
-          console.log(`=> ${newError(errGiver, module.exports.config.name, IDs)}`);
-          return;
-        }
-
-        if (!giver) {
-          let newUser1 = new Users({
-            _id: message.author.id
-          });
-          newUser1.save();
-          message.channel.send("Tente novamente!");
-          return;
-        }
-
-        Users.findById(user.id, async (errReciever, reciever) => {
-          if (errReciever) {
-            let embed = new Discord.MessageEmbed()
-              .setTitle("Erro inesperado")
-              .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
-            message.channel.send(embed);
-
-            let IDs = {
-              server: message.guild.id,
-              user: user.id,
-              msg: message.id
-            }
-            console.log(`=> ${newError(errReciever, module.exports.config.name, IDs)}`);
-            return;
-          }
-
-          if (!reciever) {
-            let newUser2 = new Users({
-              _id: user.id
-            });
-            await newUser2.save();
-          }
-
-          try {
-            if(giver.money - money < 0) {
-              message.channel.send("voce não tem dinheiro suficiente");
+      let belters = []
+      const win = (winner, belters, quantia) => {
+        belters.forEach(u => {
+          Users.findById(u.id, (errDB, doc) => {
+            if (errDB) {
+              console.log(`=> ${newError(errDB, "apostar")}`);
               return;
             }
-            
-            giver.money -= money;
-            reciever.money += money;
 
-            giver.save();
-            reciever.save();
+            try {
+              doc.money += quanti * (u == winner ? 1 : -1);
 
-            let embedGive = new Discord.MessageEmbed()
-              .setTitle(`Dinheiro enviado`)
-              .setColor("RANDOM")
-              .setTimestamp()
-              .setDescription(`${user.displayName} recebeu ${money}$ de ${message.member.displayName}`);
-            message.channel.send(embedGive);
-            return;
+              doc.levelSystem.xp += 5;
+              doc.levelSystem.txp += 5;
 
-          } catch (err1) {
-            let IDs = {
-              server: message.guild.id,
-              user: message.author.id,
-              msg: message.id
+              doc.save();
+            } catch (err) {
+              console.log(`=> ${newError(err, "apostar")}`);
             }
-            console.log(`=> ${newError(err1, module.exports.config.name, IDs)}`);
-            return;
-          }
+          });
+        })
+      }
+
+      if (args[0] == '*') {
+
+        let embed = new Discord.MessageEmbed()
+          .setTitle(`Apostando ${money}`)
+          .setDescription('reaja com ✅ para participar');
+
+      } else if (message.mentions.members.size) {
+
+        belters = message.mentions.members.array()
+        belters.push(message.member)
+        belters = belters.filter((u1, i) => i == belters.findIndex(u2 => u1.id == u2.id))
+        belters = belters.map(u => u.id)
+        belters = belters.forEach(u => {
+          Users.findById(u.id, (errDB, doc) => {
+            if (errDB) {
+              console.log(`=> ${newError(errDB, "apostar")}`);
+              return;
+            } try {
+
+              
+
+            } catch (err) {
+              console.log(`=> ${newError(err, "apostar")}`);
+            }
+          });})
+
+
+        var filter = (reaction, user) => '✅' == reaction.emoji.name && !user.bot;
+        var collector = msg.createReactionCollector(filter, { time: 60000 });
+
+        collector.on("collect", (r, u) => {
+
+
+
+        })
+
+        collector.on("end", collected => {
+          message.reply("acabou o tempo");
+
         });
-      });
+
+      } else {
+        return message.reply('Você precisa marcar alguem para apostar, ou escreva `*` para apostar com todos')
+      }
+
+      message.channel.send(belters.join('\n'))
+
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle('Erro inesperado')

@@ -13,7 +13,7 @@ module.exports = {
       if(!message.mentions.users.first()) return message.reply("marca alguem pow");
 
       const user = message.mentions.users.first();
-      const channel = message.guild.channels.cache.find(ch => ch.id === '764634049163427840');
+			const channel = message.guild.channels.cache.get('764634049163427840');
       let embed = new Discord.MessageEmbed()
         .setColor('#FFFF00')
         .setAuthor(message.author.tag, message.author.displayAvatarURL())

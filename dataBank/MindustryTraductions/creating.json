@@ -105,6 +105,34 @@
       "likes": 0,
       "mUp": [],
       "mDown": []
+    },
+    {
+      "msg": "Pesquise {0}",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "481": [
+    {
+      "msg": "Launch",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Lançar",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "544676001221705739",
+        "680393595173601531"
+      ],
+      "mDown": []
     }
   ],
   "482": [
@@ -122,6 +150,1358 @@
       "author": "291693225411084289",
       "likes": 0,
       "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Apenas o host pode pesquisar itens.",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "485": [
+    {
+      "msg": "Loadout",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Carregamento",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "486": [
+    {
+      "msg": "Resources",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Recursos",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "489": [
+    {
+      "msg": "Destination: {0}",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Destino: {0}",
+      "author": "291693225411084289",
+      "likes": 4,
+      "mUp": [
+        "544676001221705739",
+        "680393595173601531",
+        "616042440058732544",
+        "689332925308731393"
+      ],
+      "mDown": []
+    },
+    {
+      "msg": "Destino: {0}",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "511": [
+    {
+      "msg": "Rain",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Chuva",
+      "author": "690302307350741032",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "512": [
+    {
+      "msg": "Snow",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Neve",
+      "author": "690302307350741032",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "513": [
+    {
+      "msg": "Sandstorm",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Tempestade de Areia",
+      "author": "690302307350741032",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "514": [
+    {
+      "msg": "Sporestorm",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Tempestade de Esporos",
+      "author": "690302307350741032",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "515": [
+    {
+      "msg": "Fog",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Névoa",
+      "author": "690302307350741032",
+      "likes": 0,
+      "mUp": [],
+      "mDown": []
+    }
+  ],
+  "517": [
+    {
+      "msg": "[lightgray]Unexplored",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "[lightgray]Inexplorado",
+      "author": "291693225411084289",
+      "likes": 4,
+      "mUp": [
+        "544676001221705739",
+        "680393595173601531",
+        "689332925308731393",
+        "766115251657244704"
+      ],
+      "mDown": []
+    },
+    {
+      "msg": "[lightgray]Inexplorado",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "518": [
+    {
+      "msg": "Resources:",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Recursos:",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "519": [
+    {
+      "msg": "Production:",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Produção:",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "520": [
+    {
+      "msg": "Stored:",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Armazenado:",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "521": [
+    {
+      "msg": "Resume",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Continuar",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "522": [
+    {
+      "msg": "Launch",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Lançar",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "523": [
+    {
+      "msg": "Select",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Selecione",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "525": [
+    {
+      "msg": "Rename Sector",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Renomear Setor",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "526": [
+    {
+      "msg": "[scarlet]Insufficient Core Resources",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "[scarlet]Recursos Insuficientes no Núcleo",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "529": [
+    {
+      "msg": "Sun",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Sol",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "680393595173601531"
+      ],
+      "mDown": []
+    }
+  ],
+  "531": [
+    {
+      "msg": "Ground Zero",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Marco Zero",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "532": [
+    {
+      "msg": "The Craters",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "As Crateras",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "533": [
+    {
+      "msg": "Frozen Forest",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Floresta Congelada",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "534": [
+    {
+      "msg": "Ruinous Shores",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Costas em Ruínas",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "535": [
+    {
+      "msg": "Stained Mountains",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Montanhas Manchadas",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "536": [
+    {
+      "msg": "Desolate Rift",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Fenda Desolada",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "537": [
+    {
+      "msg": "Nuclear Production Complex",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Complexo de Produção Nuclear",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "538": [
+    {
+      "msg": "Overgrowth",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Supercrescimento",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "539": [
+    {
+      "msg": "Tar Fields",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Campos de Piche",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "540": [
+    {
+      "msg": "Salt Flats",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Planícies de Sal",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "541": [
+    {
+      "msg": "Fungal Pass",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Passagem Fúngica",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "567": [
+    {
+      "msg": "Are you sure you want to clear all your saves?",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Você tem certeza que quer apagar todos os seus saves?",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "568": [
+    {
+      "msg": "Clear Saves",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Apagar Saves",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "569": [
+    {
+      "msg": "Clear Research",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Apagar Pesquisas",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "570": [
+    {
+      "msg": "Are you sure you want to clear all of your campaign research?",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Você tem certeza que quer apagar todas as pesquisas da campanha?",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "571": [
+    {
+      "msg": "Clear Campaign Saves",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Apagar Saves da Campanha",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "572": [
+    {
+      "msg": "Are you sure you want to clear all of your campaign saves?",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Você tem certeza que quer apagar todos os seus saves da Campanha?",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "576": [
+    {
+      "msg": "[scarlet]Requires captured sector",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "[scarlet]Requer captura do setor",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "582": [
+    {
+      "msg": "[scarlet]Unit can't build",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "[scarlet]Unidades não podem construir",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "583": [
+    {
+      "msg": "[lightgray]Last Accessed: {0}",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "[lightgray]Último Aceso: {0}",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "590": [
+    {
+      "msg": "Affinities",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Afinidades",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "600": [
+    {
+      "msg": "Display Size",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Tamanho do Display",
+      "author": "690302307350741032",
+      "likes": -1,
+      "mUp": [],
+      "mDown": [
+        "375462796697010176"
+      ]
+    }
+  ],
+  "603": [
+    {
+      "msg": "Link Range",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Alcance do Link",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "604": [
+    {
+      "msg": "Instructions",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Instruções",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "609": [
+    {
+      "msg": "Memory Capacity",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Capacidade de Memória",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "627": [
+    {
+      "msg": "Shield Health",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Vida do Escudo",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "680393595173601531",
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "629": [
+    {
+      "msg": "Explosiveness",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Explosividade",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "630": [
+    {
+      "msg": "Base Deflect Chance",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Chance Base de Esquiva",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "632": [
+    {
+      "msg": "Lightning Damage",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Dano por Raio",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "633": [
+    {
+      "msg": "Flammability",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Inflamabilidade",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "634": [
+    {
+      "msg": "Radioactivity",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Radioatividade",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "635": [
+    {
+      "msg": "HeatCapacity",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Capacidade de Aquecimento",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "636": [
+    {
+      "msg": "Viscosity",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Viscosidade",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "637": [
+    {
+      "msg": "Temperature",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Temperatura",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "638": [
+    {
+      "msg": "Speed",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Velocidade",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "639": [
+    {
+      "msg": "Build Speed",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Velocidade de Construção",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "640": [
+    {
+      "msg": "Mine Speed",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Velocidade de Mineração",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "641": [
+    {
+      "msg": "Mine Tier",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Nível de Mineração",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "642": [
+    {
+      "msg": "Payload Capacity",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Capacidade de Carga",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "643": [
+    {
+      "msg": "Command Limit",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Limite de Comandos",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "644": [
+    {
+      "msg": "Abilities",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Habilidades",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "646": [
+    {
+      "msg": "Force Field",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Campo de Força",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "647": [
+    {
+      "msg": "Repair Field",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Campo de Reparação",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "648": [
+    {
+      "msg": "Status Field",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Campo de Status",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "649": [
+    {
+      "msg": "{0} Factory",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "{0} Fábrica",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "375462796697010176",
+        "689332925308731393"
+      ],
+      "mDown": []
+    }
+  ],
+  "650": [
+    {
+      "msg": "Shield Regen Field",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Campo de Regeneração de Escudos",
+      "author": "690302307350741032",
+      "likes": 1,
+      "mUp": [
+        "375462796697010176"
+      ],
+      "mDown": []
+    }
+  ],
+  "653": [
+    {
+      "msg": "Missing Resources",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Recursos Insuficientes",
+      "author": "690302307350741032",
+      "likes": 3,
+      "mUp": [
+        "657752992153337876",
+        "375462796697010176",
+        "689332925308731393"
+      ],
+      "mDown": []
+    }
+  ],
+  "654": [
+    {
+      "msg": "Core Base Required",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Base do Núcleo Necessária",
+      "author": "690302307350741032",
+      "likes": 3,
+      "mUp": [
+        "657752992153337876",
+        "375462796697010176",
+        "689332925308731393"
+      ],
+      "mDown": []
+    }
+  ],
+  "662": [
+    {
+      "msg": "Connections: {0}/{1}",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Conexões: {0}/{1}",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "375462796697010176",
+        "689332925308731393"
+      ],
+      "mDown": []
+    }
+  ],
+  "672": [
+    {
+      "msg": "Sainda",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Saída",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "375462796697010176",
+        "689332925308731393"
+      ],
+      "mDown": []
+    }
+  ],
+  "683": [
+    {
+      "msg": "[stat]{0}[lightgray]x pierce",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "[stat]{0}[lightgray]x perfuração",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "375462796697010176",
+        "689332925308731393"
+      ],
+      "mDown": []
+    }
+  ],
+  "684": [
+    {
+      "msg": "[stat]pierce",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "[stat]perfuração",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "375462796697010176",
+        "689332925308731393"
+      ],
+      "mDown": []
+    }
+  ],
+  "691": [
+    {
+      "msg": "blocks²",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "Blocos²",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "375462796697010176",
+        "689332925308731393"
+      ],
+      "mDown": []
+    }
+  ],
+  "704": [
+    {
+      "msg": "shield health",
+      "author": "defalt",
+      "likes": -1,
+      "mUp": [],
+      "mDown": []
+    },
+    {
+      "msg": "vida do escudo",
+      "author": "690302307350741032",
+      "likes": 2,
+      "mUp": [
+        "375462796697010176",
+        "689332925308731393"
+      ],
       "mDown": []
     }
   ],

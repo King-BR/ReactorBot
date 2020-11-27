@@ -37,6 +37,7 @@ module.exports = {
           mUp: [],
           mDown: []
         })
+        console.log(lines[line])
         return lines
       }, true)
 

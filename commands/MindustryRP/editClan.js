@@ -111,12 +111,21 @@ module.exports = {
                 case "image":
                 case "imagem":
                 case "img": {
-                  return message.channel.send("Ainda não foi implementado");
-
                   if(!args[1] && !message.attachments.first()) return message.channel.send("Esqueceu a nova foto");
+
+                  let novaFoto;
+                  if(message.attachments.first() && isImageUrl(message.attachments.first().url)) {
+                    novaFoto = message.attachments.first().url;
+                  } else if(isImageUrl(args[1])) {
+                    novaFoto = args[1];
+                  } else return message.channel.send("Imagem invalida");
+
+                  clan.image = novaFoto;
+                  clan.save();
 
                   let embed = new Discord.MessageEmbed()
                     .setTitle("A foto do clã foi atualizado")
+                    .setThumbnail(novaFoto)
                     .setTimestamp()
                     .setColor("RANDOM");
                   message.channel.send(embed);
@@ -168,8 +177,8 @@ module.exports = {
 
   // Configuração do comando
   config: {
-    name: "editclã",
-    aliases: ["editcla", "editclan", "ec"],
+    name: "editclan",
+    aliases: ["editcla", "editclã", "ec"],
     description: "Edite as informações do clã",
     usage: "editcla <opção> <informação a ser editada>",
     accessableby: "Membros"

@@ -18,7 +18,7 @@ module.exports = {
         .setTimestamp();
 
 
-      //Caso não tenha o numero da linha
+      //Caso queira um de cada
       if (args[0] == '*') {
 
         const lines = Object.keys(allLines);
@@ -27,7 +27,7 @@ module.exports = {
           
 
           let lembed = new Discord.MessageEmbed()
-            .setTitle("Proposta da linha "+lines[page-1])
+            .setTitle(`${page}/${lines.length}Proposta da linha ${lines[page-1]}`)
             .setColor("RANDOM")
             .setTimestamp();
 
@@ -45,9 +45,17 @@ module.exports = {
       //Caso não tenha o numero da linha
       if (isNaN(iLine)) {
 
-        embed.setDescription(Object.keys(allLines).map(lin => `**${allLines[lin].length - 1} propostas na linha:** \`${lin}\``).join('\n'))
+        const lines = Object.keys(allLines).map(lin => `**${allLines[lin].length - 1} propostas na linha:** \`${lin}\``)
+        botUtils.createPage(message.channel,Math.ceil(lines.length/10), page => {
 
-        return message.channel.send(embed);
+          let embed = new Discord.MessageEmbed()
+            .setTitle(`${page}/${Math.ceil(lines.length/10)} Linhas com propostas`);
+          lines.filter((l,i) => i<page*10 && i >= (page-1)*10).forEach(l => {embed.setDescription(l)});
+          console.log(page*10,(page-1)*10)
+
+          return embed
+        });
+        return;
       }
 
       //pegando os nomes

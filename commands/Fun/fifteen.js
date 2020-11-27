@@ -95,7 +95,7 @@ module.exports = {
               msg.edit(artmsg(arr))
               if (arr.every((s, i) => s == i + 1)) {
                 let t = new Date().getTime() - stime
-                message.reply(`Parabens\nFoi adicionado $10 na sua conta e 50xp\nSuas estatisticas:\nTempo:\`${Math.floor(t / 60000)}:${Math.floor(t / 1000 % 60).toString().padStart(2,'0')}\`\nMovimentos:\`${moves.length}\``)
+                message.reply(`Parabens\nFoi adicionado $10 na sua conta e 50xp\nSuas estatisticas:\nTempo:\`${Math.floor(t / 60000)}:${Math.floor(t / 1000 % 60).toString().padStart(2,'0')}\nMovimentos:\`${moves.length}\``)
 
 
                 newError = botUtils.newError;
@@ -180,7 +180,7 @@ module.exports = {
     name: "fifteen",
     noalias: "Sem sinonimos",
     aliases: ['15'],
-    description: "fifteen",
+    description: "Tente solucionar o puzzle fifteen",
     usage: "fifteen",
     accessableby: "Membro"
   }

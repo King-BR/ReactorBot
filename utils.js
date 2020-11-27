@@ -171,39 +171,33 @@ module.exports = {
 
     channel.send(func(1) || 'nill').then(msg => {
       if (size == 1) return;
-      msg.react('➡️').catch(err => console.log(err))
+      msg.react('⬅️').then(() => {
+        msg.react('➡️')
 
-      const filter = (reaction, user) => {
-        return ['➡️', '⬅️'].includes(reaction.emoji.name) && !user.bot
-      };
+        const filter = (reaction, user) => {
+          return ['➡️', '⬅️'].includes(reaction.emoji.name) && !user.bot
+        };
 
-      let collector = msg.createReactionCollector(filter, { idle: 30000 });
+        let collector = msg.createReactionCollector(filter, { idle: 30000 });
 
-      collector.on("collect", (r, u) => {
-        if (r.emoji.name == '➡️') {
-          page++;
+        collector.on("collect", r => {
+          page = (page+(r.emoji.name == '➡️'?0:size-2))%size+1;
+          
           msg.edit(func(page) || 'nill');
-          msg.reactions.removeAll().then(() => {
-            msg.react('⬅️').then(() => {
-              if (page < size) msg.react('➡️').catch(err => console.log(err));
-            }).catch(err => console.log(err));
-          }).catch(err => console.log(err));
-        } else {
-          page--;
-          msg.edit(func(page) || 'nill');
-          msg.reactions.removeAll().then(() => {
-            Promise.all(page > 1 ? [msg.react('⬅️')] : []).then(() => {
-              msg.react('➡️').catch(err => console.log(err));
-            }).catch(err => console.log(err))
-          }).catch(err => console.log(err));
-        }
-      })
+          msg.reactions.cache.each(react => {
+            react.users.cache.filter(u => !u.bot).each(u => {
+              react.users.remove(u.id);
+            });
+          });
 
-      collector.on("end", collected => {
-        if (collected.size > 0) return;
-        msg.reactions.removeAll();
-      });
+        })
 
+        collector.on("end", collected => {
+          if (collected.size > 0) return;
+          msg.reactions.removeAll();
+        });
+
+      }).catch(err => console.log(err))
     })
 
   },

@@ -23,7 +23,7 @@ module.exports = {
       let embed = new Discord.MessageEmbed()
         .setTitle("Ajuda")
         .setColor("RANDOM");
-      let folder = fs.readdirSync(`./commands/Dev/Traduct`).filter(t => t.endsWith('.js'));
+      let folder = fs.readdirSync(`./commands/Mindustry/Traduct`).filter(t => t.endsWith('.js'));
       folder.forEach(t => {
         embed.addField('traduct '+t.slice(0,-3),details[t.slice(0,-3)] || "<Não especificado>")
       })
@@ -40,7 +40,7 @@ module.exports = {
         user: message.author.id,
         msg: message.id
       }
-      console.log(`=> ${newError(err, 'traduct_' + (/\s+([^\s]+)/i.exec(message.content)[1] || 'help'), IDs)}`);
+      console.log(`=> ${newError(err, 'traduct_help', IDs)}`);
     }
   }
 }

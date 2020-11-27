@@ -15,6 +15,13 @@ module.exports = {
       Mindustry.file('core/assets/bundles/bundle_pt_BR.properties', function(err, file) {
         if (err) return console.log(err);
 
+        message.channel.send({
+          files: [
+            {attachment: Buffer.from(file.contents.toString()) , name: 'Github.txt'},
+            {attachment: Buffer.from(helpers.textBR.join('\n')), name: "Saved.txt"}
+          ]
+        })
+
         const diff = botUtils.arrDiference(helpers.textBR, file.contents.toString().split('\n'))
 
         fs.writeFileSync(helpers.filePath + 'mostRecent.json', JSON.stringify({ difs: diff }, null, 2));

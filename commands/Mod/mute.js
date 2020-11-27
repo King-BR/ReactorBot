@@ -13,7 +13,7 @@ module.exports = {
 			if(!args[1]) return message.reply("A duração do mute precisa ser definida");
 			
       const user = message.mentions.members.first();
-			const channel = message.guild.channels.cache.find(ch => ch.name === 'punição');
+			const channel = message.guild.channels.cache.get('764634049163427840');
       const reason =  args[2] ? args.slice(2).join(" ") : "[Nenhum motivo foi dado]"
       const d = new Date()
       const stotime = {m: 60*1000,h: 60*60*1000,d: 24*60*60*1000,y: 365*24*60*60*1000,s: 100*365*24*60*60*1000, e: -d.getTime()};
@@ -24,9 +24,9 @@ module.exports = {
       let tempo = d.getTime() + stotime[args[1].slice(-1)] * parseInt(args[1].slice(0,-1))
 
       user.roles.add(message.guild.roles.cache.get("755665930159390721"),reason)
-        .then( async () => {
+        .then( () => {
           let muted = botUtils.jsonPull('./dataBank/mutedlist.json');
-          muted[user.id] = tempo;
+          muted[user.id] = [tempo,reason];
           botUtils.jsonPush('./dataBank/mutedlist.json', muted);
 
 					let embed = new Discord.MessageEmbed()
@@ -36,7 +36,7 @@ module.exports = {
 						.setDescription(`${user} levou mute por ${parseInt(args[1].slice(0,-1))} ${stostr[args[1].slice(-1)]}.\n\nMotivo: ${ reason }`)
 						.setThumbnail(user.user.displayAvatarURL({dynamic: true, format: "png", size: 1024}))
             .setTimestamp();
-					await channel.send(embed);
+					channel.send(embed);
         });
 
     } catch(err) {

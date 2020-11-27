@@ -12,7 +12,7 @@ module.exports = {
       if (!message.mentions.members.first()) return message.reply("Precisa marcar alguem pra poder kickar ne");
 			
       const user = message.mentions.members.first();
-			const channel = message.guild.channels.cache.find(ch => ch.name === 'punição');
+			const channel = message.guild.channels.cache.get('764634049163427840');
 			const reason =  args[1] ? args.slice(1).join(" ") : "[Nenhum motivo foi dado]"
 
 			let rankUser = user.roles.highest.position;

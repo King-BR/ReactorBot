@@ -4,6 +4,8 @@ module.exports = (client, botUtils, message) => {
   newError = botUtils.newError;
   try {
     
+    if(botUtils.isDev(message.author.id)) return;
+
     let msg = message.content.replace(/<.+?>/g,'M')
     let size = msg.length
     let spaces = msg.match(/\s/g)
@@ -24,13 +26,15 @@ module.exports = (client, botUtils, message) => {
 
     ) {
       const cLogs = client.channels.cache.get('767982805908324411');
+      message.react('755634481771184229')
       return cLogs.send({embed: {
         title: "Possivel SPAM",
         author: {
           name: message.author.tag,
 		      icon_url: message.author.avatarURL()
         },
-        description: message.content
+        description: message.content,
+        fields: [{name:"channel",value: message.channel},{name: "message",value:`https://discordapp.com/channels/699823229354639471/${message.channel.id}/${message.id}`}]
       }});
       message.reply('sua mensagem foi detectado como spam.')
     };

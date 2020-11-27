@@ -146,7 +146,12 @@ module.exports = (client, botUtils, server, editing) => {
     //se estiver no modo de edição (editing true)
     //o bot n vai mandar mensagens no #miniquiz e nem vai permiter pessoas falarem
     if (!editing) {
-      channel.send('> ' + quest[0]);
+
+      let color = number/choose.length
+      color = '#' + [0,0,0].map((n,i) => Math.max(1-Math.max(Math.abs((color*6+i*2)%6-2)-1,0),0))
+        .map(n => Math.floor(n*255).toString(16).padStart(2,'0')).join('')
+
+      channel.send({embed:{description: quest[0],color: color}});
       channel.overwritePermissions([{ id: "700183808783286372", allow: 805829713 }, { id: "755665930159390721", deny: 2112 }, { id: "699823229354639471", allow: 68672, deny: 805761041 }]);
     }
 
