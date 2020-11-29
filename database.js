@@ -591,7 +591,7 @@ var Base = new Schema({
 // Cria os models na database
 var Users = mongoose.model('Users', User);
 var Clans = mongoose.model('Clans', Clan);
-var Bases = mongoose.model('Bsaes', Base);
+var Bases = mongoose.model('Bases', Base);
 
 // Exporta os models para uso nos codigos
 module.exports = {

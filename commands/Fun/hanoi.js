@@ -9,45 +9,17 @@ module.exports = {
     //if (!botUtils.isDev(message.author.id) && !botUtils.isTester(message.author.id)) return message.channel.send("Comando em manutenção")
 
     try {
-      if (isNaN(args[0]) || !Number.isInteger(Number(args[0]))) return message.channel.send("numero invalido");
       if (!args[0]) args[0] = 5;
+      if (isNaN(args[0]) || !Number.isInteger(Number(args[0]))) return message.channel.send("numero invalido");
       if (args[0] < 3) return message.channel.send("Quantidade minima: 3");
       if (args[0] > 10) return message.channel.send("Quantidade máxima: 10");
 
       let recompensa = {
-        "3": {
-          money: 3,
-          xp: 10
-        },
-        "4": {
-          money: 5,
-          xp: 15
-        },
-        "5": {
-          money: 8,
-          xp: 25
-        },
-        "6": {
-          money: 15,
-          xp: 50
-        },
-        "7": {
-          money: 20,
-          xp: 70
-        },
-        "8": {
-          money: 30,
-          xp: 90
-        },
-        "9": {
-          money: 50,
-          xp: 120
-        },
-        "10": {
-          money: 80,
-          xp: 200
-        }
+        money: Math.floor((Math.pow(2, args[0]) - 1) / 2) + Math.floor((Math.pow(2, args[0]) - 1) / 10),
+        xp: Math.floor((Math.pow(2, args[0]) - 1) / 3) * 2 + Math.floor((Math.pow(2, args[0]) - 1) / 4)
       }
+
+      //message.channel.send(JSON.stringify(recompensa, null, 2));
 
       let pieces = {
         "0": "\u200b",
@@ -123,6 +95,25 @@ module.exports = {
                 break;
               }
             }
+
+            let embed2 = new Discord.MessageEmbed()
+              .setTitle("Torres de hanoi")
+              .setDescription(`Quantidade minima de movimentos: ${minMoves}\n\nMovimentos: ${quantMoves}`)
+              .setColor("RANDOM")
+              .setTimestamp(startTime);
+
+            for (i = 0; i < hanoi.length; i++) {
+              let move = "";
+              if (moveFrom == i) move = " <=";
+              let str = "";
+              for (let j = 0; j < args[0]; j++) {
+                str += pieces[hanoi[i][j]] + "\n";
+              }
+              embed2.addField(`Torre ${torre[i]}${move}`, `${str}`, true);
+            }
+
+            msg.edit(embed2);
+
           } else {
             let pieceChosed = hanoi[moveFrom].filter(e => e != 0)[0];
             switch (r.emoji.name) {
@@ -213,21 +204,28 @@ module.exports = {
               return;
             }
 
-            if(!doc) {
+            if (!doc) {
               doc = new Users({
                 _id: message.author.id
               });
             }
 
-            doc.money += recompensa[args[0]].money;
-            doc.levelSystem.txp += recompensa[args[0]].xp;
-            doc.levelSystem.xp += recompensa[args[0]].xp;
+            if (quantMoves != minMoves) {
+              recompensa = {
+                money: recompensa.money - Math.ceil(recompensa.money / (minMoves - (quantMoves - minMoves))),
+                xp: recompensa.xp - Math.ceil(recompensa.xp / (minMoves - (quantMoves - minMoves)))
+              }
+            }
+
+            doc.money += recompensa.money;
+            doc.levelSystem.txp += recompensa.xp;
+            doc.levelSystem.xp += recompensa.xp;
 
             doc.save();
 
             let embed3 = new Discord.MessageEmbed()
               .setTitle("Torres de hanoi")
-              .setDescription(`Quantidade minima de movimentos: ${minMoves}\n\nMovimentos: \`${quantMoves}\`\nResolvido em: \`${Math.floor(endTime / 60000)}:${Math.floor(endTime / 1000 % 60).toString().padStart(2, '0')}\`\n\n**Recompensas:**\n$${recompensa[args[0]].money}\n${recompensa[args[0]].xp} xp`)
+              .setDescription(`Quantidade minima de movimentos: ${minMoves}\n\nMovimentos: \`${quantMoves}\`\nResolvido em: \`${Math.floor(endTime / 60000)}:${Math.floor(endTime / 1000 % 60).toString().padStart(2, '0')}\`\n\n**Recompensas:**\n$${recompensa.money}\n${recompensa.xp} xp`)
               .setColor("RANDOM")
               .setTimestamp();
 

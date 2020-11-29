@@ -25,14 +25,14 @@ module.exports = {
           return;
         }
 
-        if(!clans || clans.length == 0) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
+        if (!clans || clans.length == 0) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
 
         try {
           let c = clans.filter(c => {
             return c.founders.includes(message.author.id);
           });
 
-          if(!c[0]) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
+          if (!c[0]) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
 
           Clans.findById(c[0]._id, (errDBclan, clan) => {
             if (errDBclan) {
@@ -50,28 +50,13 @@ module.exports = {
               return;
             }
 
-            if(!clan) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
+            if (!clan) return message.channel.send("Você precisa ser fundador de um clã para poder usar esse comando");
 
             try {
-              if(!args[0]) {
-                let embedConfig = new Discord.MessageEmbed()
-                  .setTitle("Configurações do clã")
-                  .addField("Nome", `${clan.name}\n\nPara mudar use ${prefix}${module.exports.config.name} nome <Novo nome do clã>`, true)
-                  .addField("Foto", `${clan.image ? "Imagem ao lado =>\n\n" : ""}Para mudar use ${prefix}${module.exports.config.name} img <link da imagem ou imagem em anexo>`, true)
-                  .addField("Descrição", `${clan.desc ? clan.desc : "Sem descrição"}\n\nPara mudar use ${prefix}${module.exports.config.name} desc <Nova descrição do clã>`);
-
-                  if(clan.image && isImageUrl(clan.image)) {
-                    embedConfig.setThumbnail(clan.image);
-                  }
-
-                message.channel.send(embedConfig);
-                return;
-              }
-
-              switch(args[0].toLowerCase()) {
+              switch (args[0].toLowerCase()) {
                 case "name":
                 case "nome": {
-                  if(!args[1]) return message.channel.send("Esqueceu o novo nome");
+                  if (!args[1]) return message.channel.send("Esqueceu o novo nome");
 
                   let oldName = clan.name;
                   let name = args.slice(1).join(" ");
@@ -90,7 +75,7 @@ module.exports = {
                 case "descricao":
                 case "descrição":
                 case "desc": {
-                  if(!args[1]) return message.channel.send("Esqueceu a nova descrição");
+                  if (!args[1]) return message.channel.send("Esqueceu a nova descrição");
 
                   let oldDesc = clan.desc;
                   let desc = args.slice(1).join(" ");
@@ -111,12 +96,12 @@ module.exports = {
                 case "image":
                 case "imagem":
                 case "img": {
-                  if(!args[1] && !message.attachments.first()) return message.channel.send("Esqueceu a nova foto");
+                  if (!args[1] && !message.attachments.first()) return message.channel.send("Esqueceu a nova foto");
 
                   let novaFoto;
-                  if(message.attachments.first() && isImageUrl(message.attachments.first().url)) {
+                  if (message.attachments.first() && isImageUrl(message.attachments.first().url)) {
                     novaFoto = message.attachments.first().url;
-                  } else if(isImageUrl(args[1])) {
+                  } else if (isImageUrl(args[1])) {
                     novaFoto = args[1];
                   } else return message.channel.send("Imagem invalida");
 
@@ -131,8 +116,53 @@ module.exports = {
                   message.channel.send(embed);
                   break;
                 }
+                case "role":
+                case "cargo": {
+                  switch (args[1].toLowerCase()) {
+                    case "color":
+                    case "cor": {
+                      break;
+                    }
+                    case "name":
+                    case "nome": {
+                      break;
+                    }
+                    default: {
+                      let embedRole = new Discord.MessageEmbed()
+                        .setTitle("Configurações do cargo do clã");
+
+                      if (clan.role && clan.role.length > 0 && message.guild.roles.fetch(clan.role)) {
+                        let clanRole = message.guild.roles.cache.get(clan.role);
+
+                        embedRole.setDescription(`Menção: ${clanRole}`)
+                          .addField("Nome", `${clanRole.name}\n\nPara mudar use \`${prefix}${modules.exports.config.name} role name <novo nome>\``, true)
+                          .addField("Cor", `hex: ${clanRole.hexColor}\nbase10: ${clanRole.color}\n\nPara mudar use \`${prefix}${modules.exports.config.name} role color <nova cor>\``);
+                      } else {
+                        embedRole.setDescription(`O seu clã não possui um cargo ainda!\n\nPara comprar use o comandos \`${prefix}clanshop buy role\``)
+                      }
+
+                      message.channel.send(embedRole);
+                      break;
+                    }
+                  }
+                  break;
+                }
+                default: {
+                  let embedConfig = new Discord.MessageEmbed()
+                    .setTitle("Configurações do clã")
+                    .addField("Nome", `${clan.name}\n\nPara mudar use \`${prefix}${module.exports.config.name} nome <Novo nome do clã>\``, true)
+                    .addField("Foto", `${clan.image ? "Imagem ao lado =>\n\n" : ""}Para mudar use \`${prefix}${module.exports.config.name} img <link da imagem ou imagem em anexo>\``, true)
+                    .addField("Descrição", `${clan.desc ? clan.desc : "Sem descrição"}\n\nPara mudar use \`${prefix}${module.exports.config.name} desc <Nova descrição do clã>\``);
+
+                  if (clan.image && isImageUrl(clan.image)) {
+                    embedConfig.setThumbnail(clan.image);
+                  }
+
+                  message.channel.send(embedConfig);
+                  break;
+                }
               }
-            } catch(err2) {
+            } catch (err2) {
               let embed = new Discord.MessageEmbed()
                 .setTitle("Erro inesperado")
                 .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
@@ -146,7 +176,7 @@ module.exports = {
               console.log(`=> ${newError(err2, module.exports.config.name, IDs)}`);
             }
           });
-        } catch(err1) {
+        } catch (err1) {
           let embed = new Discord.MessageEmbed()
             .setTitle("Erro inesperado")
             .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");

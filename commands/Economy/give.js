@@ -93,7 +93,7 @@ module.exports = {
               .setTitle(`Dinheiro enviado`)
               .setColor("RANDOM")
               .setTimestamp()
-              .setDescription(`${user.displayName} recebeu ${money}$ de ${message.member.displayName}`);
+              .setDescription(`${user.displayName} recebeu $${money} de ${message.member.displayName}`);
             message.channel.send(embedGive);
             return;
 

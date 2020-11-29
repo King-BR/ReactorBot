@@ -38,10 +38,10 @@ module.exports = {
           let XPconfig = botUtils.jsonPull("./dataBank/levelSystem.json");
 
           let embedPerfil = new Discord.MessageEmbed()
-            .setTitle(`Perfil de **${member.displayName}**`)
-            .setThumbnail(member.user.displayAvatarURL({ dynamic: true, format: "png", size: 512 }))
+            .setAuthor(member.displayName, member.user.displayAvatarURL({ dynamic: true, size: 512, format: "png" }))
             .setDescription(`Dinheiro: ${doc.money}\n\nLevel: ${doc.levelSystem.level}\nXP: ${doc.levelSystem.xp} / ${XPconfig[doc.levelSystem.level - 1].XPNextLevel}\nXP total: ${doc.levelSystem.txp}`)
             .setColor("RANDOM")
+            .setFooter(`ID: ${member.id}`)
             .setTimestamp();
 
           Clans.find({}, (errDBclan, clans) => {
@@ -63,7 +63,8 @@ module.exports = {
             if (clans.length > 0) {
               clans.map(clan => {
                 if (clan.members.indexOf(member.id) != -1 || clan.founders.indexOf(member.id) != -1) {
-                  embedPerfil.addField("Clã", `Nome: ${clan.name}\nLevel: ${clan.level}`, true)
+                  embedPerfil.addField("Clã", `Nome: ${clan.name}\nLevel: ${clan.level}`, true);
+                  embedPerfil.setThumbnail(clan.image);
                 }
               });
             }
