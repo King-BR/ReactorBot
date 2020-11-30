@@ -14,7 +14,7 @@
     "chalk": "^4.1.0",
     "cpu-stat": "^2.0.1",
     "date-fns": "^2.16.1",
-    "discord.js": "^12.3.1",
+    "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "enmap": "^5.2.4",
     "express": "^4.17.1",
