@@ -20,13 +20,7 @@ module.exports = {
           return;
         }
 
-        if (!doc) {
-          let newUser = new Users({ _id: user.id });
-          newUser.save();
-
-          message.channel.send("tente novamente");
-          return;
-        }
+        if (!doc)  doc = new Users({ _id: user.id });
 
         try {
           let embedConfirm = new Discord.MessageEmbed()

@@ -18,6 +18,7 @@ module.exports = (client, botUtils, message) => {
     urls = urls && urls.length || 0
 
     if(size < 20 && !mentions) return;
+    if(msg.startsWith('!apostar')) return;
     if(
 
       (size >= 50 && !urls && spaces<0.05) ||
