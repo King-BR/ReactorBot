@@ -4,7 +4,7 @@ const { Users } = require("../../database.js");
 module.exports = {
   run: async (client, botUtils, message, args) => {
     if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
-    if (botUtils.isDev(message.author.id)) return message.reply("Comando indisponivel por enquanto");
+    //if (!botUtils.isDev(message.author.id)) return message.reply("Comando indisponivel por enquanto");
 
     newError = botUtils.newError;
 
@@ -17,13 +17,7 @@ module.exports = {
           return;
         }
 
-        if (!doc) {
-          let newUser = new Users({ _id: user.id });
-          newUser.save();
-
-          message.channel.send("tente novamente");
-          return;
-        }
+        if (!doc)  doc = new Users({ _id: user.id });
 
         try {
           let embedConfirm = new Discord.MessageEmbed()
@@ -46,7 +40,14 @@ module.exports = {
 
                       let embedReset = new Discord.MessageEmbed()
                         .setDescription(`Dinheiro de ${user.displayName || "`desconhecido`"} foi resetado`);
+                      let embedLog = new Discord.MessageEmbed()
+                      .setTitle("Dinheiro resetado")
+                      .setAuthor(message.author.tag,message.author.displayAvatarURL())
+                      .setThumbnail(user.user.displayAvatarURL({format:'png',dynamic:true}))
+                      .setDescription(`${user.user.tag || "`desconhecido`"} resetou o seu dinheiro (${doc.money}$)`);
+
                       msg.edit(embedReset);
+                      message.guild.channels.cache.get('767982805908324411').send(embedLog);
                       reactionCollector.stop();
                       break;
                     }

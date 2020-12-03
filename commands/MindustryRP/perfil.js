@@ -25,14 +25,7 @@ module.exports = {
           return;
         }
 
-        if (!doc) {
-          let newUser = new Users({
-            _id: member.id
-          });
-          newUser.save();
-          message.channel.send("Tente novamente");
-          return;
-        }
+        if (!doc)  doc = new Users({ _id: member.id });
 
         try {
           let XPconfig = botUtils.jsonPull("./dataBank/levelSystem.json");

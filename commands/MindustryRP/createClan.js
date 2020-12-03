@@ -35,14 +35,7 @@ module.exports = {
           return;
         }
 
-        if (!doc) {
-          let newUser = new Users({
-            _id: message.author.id
-          });
-          newUser.save();
-          message.channel.send("Você não tem dinheiro o suficiente para cria um clã");
-          return;
-        }
+        if (!doc)  doc = new Users({ _id: message.author.id });
 
         if (doc.money - 20000 < 0) return message.channel.send("Você não tem dinheiro o suficiente para cria um clã");
 

@@ -1,11 +1,8 @@
 {
-  "serverStarted": 1606602843259,
-  "nextMiniquiz": 1606616366423,
-  "nextMsgOfDay": 1606651200000,
+  "serverStarted": 1607017136251,
+  "nextMiniquiz": 1607035471770,
+  "nextMsgOfDay": 1607083200000,
   "nextMsgChange": 1604340000000,
-  "eventType": 3,
-  "eventWin": [
-    2,
-    6
-  ]
+  "eventType": null,
+  "eventWin": null
 }

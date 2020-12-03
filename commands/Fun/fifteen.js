@@ -108,25 +108,11 @@ module.exports = {
                   }
 
                   // Caso não exista usuario com esse id na database
-                  if (!doc) {
-                    // Cria o novo usuario
-                    let newUser = new Users({
-                      _id: message.author.id,
-                      money: 10,
-                      levelSystem: {
-                        xp: 50,
-                        txp: 50
-                      }
-                    });
-
-                    // Salva o novo usuario na database
-                    newUser.save();
-                    return;
-                  }
+                  if (!doc)  doc = new Users({ _id: message.author.id });
 
                   try {
 
-                    // Add 50 de dinheiro para o usuario
+                    // Add 10 de dinheiro para o usuario
                     doc.money += 10;
 
                     // Add 50 de xp para o usuario

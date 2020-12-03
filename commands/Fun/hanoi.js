@@ -12,7 +12,7 @@ module.exports = {
       if (!args[0]) args[0] = 5;
       if (isNaN(args[0]) || !Number.isInteger(Number(args[0]))) return message.channel.send("numero invalido");
       if (args[0] < 3) return message.channel.send("Quantidade minima: 3");
-      if (args[0] > 10) return message.channel.send("Quantidade máxima: 10");
+      if (args[0] > 11) return message.channel.send("Quantidade máxima: 11");
 
       let recompensa = {
         money: Math.floor((Math.pow(2, args[0]) - 1) / 2) + Math.floor((Math.pow(2, args[0]) - 1) / 10),
@@ -32,7 +32,8 @@ module.exports = {
         "7": "<:blank:780544005229641750>7⃣",
         "8": "<:blank:780544005229641750>8⃣",
         "9": "<:blank:780544005229641750>9⃣",
-        "10": "<:blank:780544005229641750>🔟"
+        "10": "<:blank:780544005229641750>🔟",
+        "11": "<:blank:780544005229641750>⏸️"
       }
 
       let torre = {
@@ -74,7 +75,7 @@ module.exports = {
 
         let filter = (r, u) => ((r.emoji.name == "🇦" || r.emoji.name == "🇧" || r.emoji.name == "🇨") && u.id == message.author.id);
 
-        var collector = msg.createReactionCollector(filter);
+        var collector = msg.createReactionCollector(filter, {idle: 120000});
 
         let moveFrom = null;
         collector.on("collect", (r, u) => {
@@ -162,7 +163,7 @@ module.exports = {
             }
             moveFrom = null;
 
-            if (hanoi[2].filter(e => e != 0).length == args[0]) {
+            if (!hanoi[2].includes(0)) {
               collector.stop();
 
             } else {
@@ -186,6 +187,12 @@ module.exports = {
         });
 
         collector.on("end", () => {
+          msg.reactions.removeAll();
+
+          if(hanoi[2].includes(0)) return;
+
+          //  || hanoi[2] != solved || hanoi[0].filter(e => e == 0).length != hanoi[0].length || hanoi[1].filter(e => e == 0).length != hanoi[1].length || hanoi[2].filter(e => e == 0) != 0
+          
           let endTime = new Date().getTime() - startTime;
 
           Users.findById(message.author.id, (err, doc) => {
@@ -204,17 +211,16 @@ module.exports = {
               return;
             }
 
-            if (!doc) {
-              doc = new Users({
-                _id: message.author.id
-              });
-            }
+            if (!doc)  doc = new Users({ _id: message.author.id });
 
             if (quantMoves != minMoves) {
               recompensa = {
-                money: recompensa.money - Math.ceil(recompensa.money / (minMoves - (quantMoves - minMoves))),
-                xp: recompensa.xp - Math.ceil(recompensa.xp / (minMoves - (quantMoves - minMoves)))
+                money: Math.ceil(recompensa.money * Math.pow(2, (minMoves - quantMoves)/minMoves)),
+                xp: Math.ceil(recompensa.xp * Math.pow(2, (minMoves - quantMoves)/minMoves))
               }
+
+              if(recompensa.money < 1) recompensa.money = 0;
+              if(recompensa.xp < 1) recompensa.xp = 0;
             }
 
             doc.money += recompensa.money;
