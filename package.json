@@ -23,7 +23,7 @@
     "image-compressor": "^2.0.3",
     "is-image-url": "^1.1.8",
     "md5": "^2.3.0",
-    "mongoose": "^5.10.13",
+    "mongoose": "^5.10.14",
     "node-superfetch": "^0.1.10",
     "request": "^2.88.2",
     "sharp": "^0.26.3"
