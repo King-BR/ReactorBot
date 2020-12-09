@@ -27,6 +27,7 @@ module.exports = ({ client, botUtils }) => {
     //Tempos
     client.setInterval(async () => {
       const d = new Date();
+      require("./utils/updatePlacar.js")(client, botUtils);
 
       //verifica se o tempo dos mutes ja esgotaram
       botUtils.jsonChange('./dataBank/mutedlist.json', muted => {

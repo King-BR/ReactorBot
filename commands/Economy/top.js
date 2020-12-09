@@ -7,24 +7,40 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
-      await Users.find({}).sort({ money: -1 }).exec(function(err, total) {
-        if (err) {
+      //o help
+      if (!args[0] || args[0].toLowerCase() == "help") return message.channel.send({embed:{
+        title:"Ajuda top",
+        description: "**top money:** Mostra o placar de dinheiro\n**top lvl:** Mostra o placar de nível\n"
+      }})
 
-        } else {
+      //
+      let sort = (a, b) => {
+        return (args[0] && args[0].toLowerCase() == "lvl") ? b.levelSystem.txp - a.levelSystem.txp : b.money - a.money;
+      }
+
+      await Users.find({}, (err, doc) => {
+        if(err) {
+          console.log(err);
+          return;
+        }
+
+        doc = doc.sort(sort);
+
           //iniciando variaveis
           let pos = 0;
           let last = [0, Number.MAX_VALUE]
           let finded = false;
           let msg = '';
-          let guild = client.guilds.cache.get('699823229354639471')
+          let guild = client.guilds.cache.get('699823229354639471');
           let membId = message.mentions.members.first() || guild.members.cache.get(args[0]) || message.member;
           membId = membId.id;
 
           //Adicionando na lista
-          total.forEach(user => {
+          doc.forEach(user => {
             pos++;
-            if (last[1] > user.money){
-              last = [pos,user.money]
+            let val = (args[0] && args[0].toLowerCase() == 'lvl') ? user.levelSystem.level : user.money;
+            if (last[1] > val){
+              last = [pos,val];
             }
 
             if (pos <= 10 || user._id == membId) {
@@ -40,7 +56,7 @@ module.exports = {
 
               msg += '**' + last[0] + '.** '
               msg += user._id == membId ? `**${name}**` : name
-              msg += ': **' + user.money + '**\n'
+              msg += ': **' + val + '**\n'
             }
           });
 
@@ -52,15 +68,17 @@ module.exports = {
           }
 
           //enviando lista
+          let title = "Money";
+          if(args[0] && args[0].toLowerCase() == "lvl") title = "Level";
+
           let embed = new Discord.MessageEmbed()
-            .setTitle("Top Money")
+            .setTitle("Top " + title)
             .setColor("RANDOM")
             .setDescription(msg)
             .setFooter((last[1]==0?last[0]-1:last[0]) + ' membros'); //n contando membros com 0 de money
           message.channel.send(embed)
-        }
-      });
 
+      });
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")

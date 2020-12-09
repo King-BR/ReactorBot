@@ -201,6 +201,33 @@ module.exports = {
     })
 
   },
+
+  /**
+   * @param txp {Number} Total de xp do usuario
+   * @returns {Object}
+   */
+  getLevel: (txp) => {
+    let XPconfig = module.exports.jsonPull("./dataBank/levelSystem.json");
+    let levelSystem = {
+      level: 1,
+      xp: 0,
+      txp: txp
+    }
+
+    XPconfig.forEach((c, index, arrConfig) => {
+      if(!arrConfig[index -1]) {
+        if(txp < c.txp) return;
+      } else if(txp >= arrConfig[index -1].txp + 1 && txp <= c.txp) {
+        levelSystem = {
+          level: c.level,
+          xp: arrConfig[index -1].txp - txp,
+          txp: txp
+        }
+      }
+    });
+
+    return levelSystem;
+  },
   //--------------------------------------------------------------------------------------------------//
   // Clan utils
 
