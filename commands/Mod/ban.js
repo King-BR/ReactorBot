@@ -55,7 +55,7 @@ module.exports = {
     noalias: "Sem sinônimos",
     aliases: [],
     description: "Use para banir um membro do servidor.",
-    usage: "ban <@member> [motivo]",
+    usage: "ban <@membro> [motivo]",
     accessableby: "STAFF"
   }
 }
