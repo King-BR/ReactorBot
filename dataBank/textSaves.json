@@ -1,36 +1,25 @@
 {
- 'quizWords": [
- 
- "Anuken","Mindustry",
+  "quizWords": [
+    "Anuken","Mindustry",
 
- 
- "Torreta Dupla","Dispersão","Lança-chamas","Artilharia","Onda","Lanceiro","Tesla","Paralaxe","Enxame","Salvo","Segmento","Tsunami","Fusível","Morteiro","Ciclone",                                "Espectro","Fusão",
+    "Torreta Dupla","Dispersão","Lança-chamas","Artilharia","Onda","Lanceiro","Tesla","Paralaxe","Enxame","Salvo","Segmento","Tsunami","Fusível","Morteiro","Ciclone",                                "Espectro","Fusão",
 
+    "Broca Mecânica","Broca Pneumática","Broca a Laser","Broca de Impacto","Extrator de Água","Cultivador","Bomba de Petróleo",
 
-"Broca Mecânica","Broca Pneumática","Broca a Laser","Broca de Impacto","Extrator de Água","Cultivador","Bomba de Petróleo",
+    "Esteira","Esteira de Titânio","Esteira de Plastânio","Esteira Blindada","Junção","Esteira-ponte", "Transportador de Fase","Ordenador","Ordenador Invertido","Roteador","Distribuidor","Portão de Sobrecarga","Portão de Sobrecarga Invertido","Catapulta Eletromagnética","Esteira de Carga","Roteador de Carga","Criador de Itens","Destruidor de Itens",
 
+    "Bomba Mecânica","Bomba Rotatória","Bomba Térmica","Cano","Cano de Pulso","Cano Blindado","Roteador de Líquido","Tanque de Líquido","Junção de Líquido","Cano-ponte","Cano de Fase","Criador de Líquidos","Destruidor de Líquidos",
 
-"Esteira","Esteira de Titânio","Esteira de Plastânio","Esteira Blindada","Junção","Esteira-ponte", Transportador de Fase","Ordenador","Ordenador Invertido","Roteador","Distribuidor","Portão de Sobrecarga","Portão de Sobrecarga Invertido","Catapulta Eletromagnética","Esteira de Carga","Roteador de Carga","Criador de Itens","Destruidor de Itens",
+    "Célula de Energia","Célula de Energia Grande","Torre de Surto","Diodo","Bateria","Bateria Grande","Gerador à Combustão","Gerador Térmico","Gerador à Vapor","Gerador Diferencial","Gerador GTR","Painel Solar","Painel Solar Grande","Reator Nuclear","Reator de Impacto","Criador de Energia", "Anulador de Energia",
 
+    "Muro de Cobre","Muralha de Cobre","Muro de Titânio","Muralha de Titânio","Muro de Plastânio","Muralha de Plastânio","Muro de Tório","Muralha de Tório","Muro de Fase","Muralha de Fase","Muro de Liga de Surto","Muralha de Liga de Surto","Porta","Porta Grande","Muro de Sucata","Muro Grande de Sucata","Muro Gigante de Sucata", "Muro Enorme de Sucata",
 
-"Bomba Mecânica","Bomba Rotatória","Bomba Térmica","Cano","Cano de Pulso","Cano Blindado","Roteador de Líquido","Tanque de Líquido","Junção de Líquido","Cano-ponte","Cano de Fase","Criador de Líquidos","Destruidor de Líquidos",
+    "Prensa de Grafite","Multi-Prensa","Fundidora de Silício","Fornalha de Silício","Forno","Compressor de Plastânio","Palheta de Fase","Fundidora de Liga","Misturador de Crio-fluido","Misturador de piratita","Misturador de Explosão","Aparelho de Fusão","Separador","Desmontador","Prensa de Esporo","Pulverizador","Centrífuga de Carvão"," Incinerador",
 
+    "Centro de Comando","Fábrica de Unidades Terrestres","Fábrica de Unidades Aéreas","Fábrica de Unidades Navais","Reconstrutor aditivo","Reconstrutor Multiplicativo","Reconstrutor Exponencial","Reconstrutor Tetrativo", "Ponto de Reparo",
 
-"Célula de Energia","Célula de Energia Grande","Torre de Surto","Diodo","Bateria","Bateria Grande","Gerador à Combustão","Gerador Térmico","Gerador à Vapor","Gerador Diferencial","Gerador GTR","Painel Solar","Painel Solar Grande","Reator Nuclear","Reator de Impacto","Criador de Energia","Anulador de Energia",
+    "Reparador", "Projetor de Reparo", "Projetor de Sobrecarga", "Domo de Sobrecarga", "Projetor de Campo de Força", "Mins de Choque", "Fundação do Núcleo", "Centro do Núcleo", "Cofre", "Contêiner", "Descarregador", "Mensagem", "Alavanca", "Micro Processador", "Processador Lógico", "Hiper Processador", "Célula de Memória", "Banco de Memória", "Monitor Lógico", "Monitor Lógico Grande",
 
-
-"Muro de Cobre","Muralha de Cobre","Muro de Titânio","Muralha de Titânio","Muro de Plastânio","Muralha de Plastânio","Muro de Tório","Muralha de Tório","Muro de Fase","Muralha de Fase","Muro de Liga de Surto","Muralha de Liga de Surto","Porta","Porta Grande","Muro de Sucata","Muro Grande de Sucata","Muro Gigante de Sucata","Muro Enorme de Sucata",
-
-
-"Prensa de Grafite","Multi-Prensa","Fundidora de Silício","Fornalha de Silício","Forno","Compressor de Plastânio","Palheta de Fase","Fundidora de Liga","Misturador de Crio-fluido","Misturador de piratita","Misturador de Explosão","Aparelho de Fusão","Separador","Desmontador","Prensa de Esporo","Pulverizador","Centrífuga de Carvão","Incinerador",
-
-
-"Centro de Comando","Fábrica de Unidades Terrestres","Fábrica de Unidades Aéreas","Fábrica de Unidades Navais","Reconstrutor aditivo","Reconstrutor Multiplicativo","Reconstrutor Exponencial","Reconstrutor Tetrativo","Ponto de Reparo",
-
-
-"Reparador","Projetor de Reparo","Projetor de Sobrecarga","Domo de Sobrecarga","Projetor de Campo de Força","Mins de Choque","Fundação do Núcleo","Centro do Núcleo","Cofre","Contêiner","Descarregador","Mensagem","Alavanca","Micro Processador","Processador Lógico","Hiper Processador","Célula de Memória","Banco de Memória","Monitor Lógico","Monitor Lógico Grande",
-
-
-Adaga",             "Fortaleza",                "Rastejante","
- ]
+    "Adaga", "Fortaleza", "Rastejante"
+  ]
 }
