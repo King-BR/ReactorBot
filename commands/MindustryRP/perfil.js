@@ -13,7 +13,7 @@ module.exports = {
         if (errDB) {
           let embed = new Discord.MessageEmbed()
             .setTitle("Erro inesperado")
-            .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+            .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
           message.channel.send(embed);
 
           let IDs = {
@@ -41,7 +41,7 @@ module.exports = {
             if (errDBclan) {
               let embed = new Discord.MessageEmbed()
                 .setTitle("Erro inesperado")
-                .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+                .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
               message.channel.send(embed);
 
               let IDs = {
@@ -66,7 +66,7 @@ module.exports = {
               if (errDBbase) {
                 let embed = new Discord.MessageEmbed()
                   .setTitle("Erro inesperado")
-                  .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+                  .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
                 message.channel.send(embed);
 
                 let IDs = {
@@ -81,7 +81,7 @@ module.exports = {
               if(bases.lenght > 0) {
                 bases.map(base => {
                   if(base._id == member.id) {
-                    embedPerfil.addField("Base", `Nome: ${base.name ? base.name : "Base de " + member.displayName}\nNivel do nucleo: ${base.core}`, true)
+                    embedPerfil.addField("Base", `Nome: ${base.name ? base.name : "Base de " + member.displayName}\nNível do núcleo: ${base.core}`, true)
                   }
                 })
               }
@@ -92,7 +92,7 @@ module.exports = {
         } catch (err) {
           let embed = new Discord.MessageEmbed()
             .setTitle("Erro inesperado")
-            .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+            .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
           message.channel.send(embed);
 
           let IDs = {
@@ -106,7 +106,7 @@ module.exports = {
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")
-        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+        .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
       message.channel.send(embed);
 
       let IDs = {
@@ -122,8 +122,8 @@ module.exports = {
   config: {
     name: "perfil",
     aliases: ["p", "profile"],
-    description: "Veja o seu perfil ou o do usuario marcado",
-    usage: "perfil [@user]",
+    description: "Veja o seu perfil ou o perfil de outro usuário..",
+    usage: "perfil [@usuário]",
     accessableby: "Membros"
   }
 }
