@@ -4,12 +4,12 @@ const Discord = require("discord.js");
 module.exports = {
   // Execução do comando
   run: async (client, botUtils, message, args) => {
-    if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
+    if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você não é um membro STAFF.");
     
     newError = botUtils.newError;
     try {
       // Codigo do comando
-			if(!message.member.hasPermission(["KICK_MEMBERS", "ADMINISTRATOR"])) return message.reply("Você não tem permissão para isso");
+			if(!message.member.hasPermission(["KICK_MEMBERS", "ADMINISTRATOR"])) return message.reply("Você não tem permissão para executar este comando.");
 			if(!args[1]) return message.reply("A duração do mute precisa ser definida");
 			
       const user = message.mentions.members.first();
@@ -19,7 +19,7 @@ module.exports = {
       const stotime = {m: 60*1000,h: 60*60*1000,d: 24*60*60*1000,y: 365*24*60*60*1000,s: 100*365*24*60*60*1000, e: -d.getTime()};
       const stostr = {m: "Minutos",h: "Horas",d: "Dias",y: "Anos",s: "Séculos",e: "Eternidades"};
 
-      if(!stotime[args[1].slice(-1)] || !parseInt(args[1].slice(0,-1))) return message.reply("Não foi possivel indentificar a duração, use `!ajuda mute` para mais informações");
+      if(!stotime[args[1].slice(-1)] || !parseInt(args[1].slice(0,-1))) return message.reply("Não foi possível identificar a duração. Use `!ajuda mute` para mais informações.");
 
       let tempo = d.getTime() + stotime[args[1].slice(-1)] * parseInt(args[1].slice(0,-1))
 
@@ -41,8 +41,8 @@ module.exports = {
 
     } catch(err) {
       let embed = new Discord.MessageEmbed()
-        .setTitle("Erro inesperado")
-        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+        .setTitle("Erro inesperado.")
+        .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
       message.channel.send(embed);
 
       let IDs = {
@@ -56,10 +56,10 @@ module.exports = {
   // Configuração do comando
   config: {
     name: "mute",
-    noalias: "Sem sinonimos",
+    noalias: "Sem sinônimos",
     aliases: [],
-    description: "De um mute para um membro do server",
-    usage: "mute <@member> <tempo><m/h/d/y> [motivo]",
+    description: "Silencie um membro do servidor por uma certa quantidade de tempo.",
+    usage: "mute <@membro> <tempo><m/h/d/a> [motivo]",
     accessableby: "STAFF"
   }
 }
