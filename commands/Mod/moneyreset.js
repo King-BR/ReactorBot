@@ -3,8 +3,8 @@ const { Users } = require("../../database.js");
 
 module.exports = {
   run: async (client, botUtils, message, args) => {
-    if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
-    //if (!botUtils.isDev(message.author.id)) return message.reply("Comando indisponivel por enquanto");
+    if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você não é um membro STAFF.");
+    //if (!botUtils.isDev(message.author.id)) return message.reply("Comando indisponível por enquanto.");
 
     newError = botUtils.newError;
 
@@ -22,7 +22,7 @@ module.exports = {
         try {
           let embedConfirm = new Discord.MessageEmbed()
             .setTitle(`Tem certeza que quer resetar o dinheiro de ${user.displayName || "`desconhecido`"}?`)
-            .setDescription("Reaja com ✅ para confirmar\nReaja com ❌ para cancelar")
+            .setDescription("Reaja com ✅ para confirmar.\nReaja com ❌ para cancelar.")
           message.channel.send(embedConfirm).then(msg => {
             msg.react("✅").then(() => {
               msg.react("❌");
@@ -39,12 +39,12 @@ module.exports = {
                       doc.save();
 
                       let embedReset = new Discord.MessageEmbed()
-                        .setDescription(`Dinheiro de ${user.displayName || "`desconhecido`"} foi resetado`);
+                        .setDescription(`O dinheiro de ${user.displayName || "`desconhecido`"} foi resetado com sucesso!`);
                       let embedLog = new Discord.MessageEmbed()
                       .setTitle("Dinheiro resetado")
                       .setAuthor(message.author.tag,message.author.displayAvatarURL())
                       .setThumbnail(user.user.displayAvatarURL({format:'png',dynamic:true}))
-                      .setDescription(`${user.user.tag || "`desconhecido`"} resetou o seu dinheiro (${doc.money}$)`);
+                      .setDescription(`${user.user.tag || "`desconhecido`"} Resetou o seu dinheiro (${doc.money}$)`);
 
                       msg.edit(embedReset);
                       message.guild.channels.cache.get('767982805908324411').send(embedLog);
@@ -53,7 +53,7 @@ module.exports = {
                     }
                     case "❌": {
                       let embedCancelado = new Discord.MessageEmbed()
-                        .setDescription(`Reset do dinheiro de ${user.displayName || "`desconhecido`"} cancelado`);
+                        .setDescription(`O reset do dinheiro de ${user.displayName || "`desconhecido`"}foi cancelado.`);
                       msg.edit(embedCancelado);
                       reactionCollector.stop();
                       break;
@@ -63,7 +63,7 @@ module.exports = {
                 } catch (err3) {
                   let embed = new Discord.MessageEmbed()
                     .setTitle("Erro inesperado")
-                    .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+                    .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
                   message.channel.send(embed);
 
                   let IDs = {
@@ -79,7 +79,7 @@ module.exports = {
         } catch (err2) {
           let embed = new Discord.MessageEmbed()
             .setTitle("Erro inesperado")
-            .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+            .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
           message.channel.send(embed);
 
           let IDs = {
@@ -93,7 +93,7 @@ module.exports = {
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")
-        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+        .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
       message.channel.send(embed);
 
       let IDs = {
@@ -107,9 +107,9 @@ module.exports = {
 
   config: {
     name: "moneyreset",
-    noalias: "Sem sinonimos",
+    noalias: "Sem sinônimos",
     aliases: [],
-    description: "Retira todo o dinheiro de tal membro",
+    description: "Reseta o dinheiro de algum membro do server.",
     usage: "moneyreset [Membro]",
     accessableby: "STAFF"
   }
