@@ -1,8 +1,21 @@
 {
   "quizWords": [
-    "Mindustry","Anuke","Núcleo","Cofre","Muro","Muralha","Porta","Esteira-Ponte","Roteador","Bateria","Reparador","Esteira","Incinerador","Pulverizador","Separador","Processador","Contêiner",
+
+    "Mindustry","Anuken",
+
+    "Núcleo","Fundação do Núcleo","Centro do Núcleo",
+    
+    "Esteira","Esteira de Titânio","Esteira de Plastânio","Esteira Blindada","Ordenador","Ordenador Invertido","Distribuidor","Portão de Sobrecarga","Portão de Sobrecarga Invertido","Transportar de Fase","Catapulta Eletromagnética","Esteira de Carga","Roteador de Carga",
+
+    "Prensa de Grafite","Multi-Prensa","Fundidora de Silício","Fornalha de Silício","Forno","Compressor de Plastânio","Palheta de Fase","Fundidora de Liga","Aparelho de Fusão","Misturador de Explosão","Misturador de Piratita,"Prensa de esporos","Misturador de Crio-fluido","Separador",
+    
+    "Projetor de Reparo","Projetor de Sobrecarga","Domo de Sobrecarga","Projetor de Campo de Força","Mina de Choque","Descarregador","Desmontador","Cofre","Muro","Muralha","Porta","Esteira-Ponte","Roteador","Bateria","Reparador","Esteira","Incinerador","Pulverizador",
+ 
+    "Mensagem","Alavanca","Micro Processador","Processador Lógico","Hiper Processador","Célula de Memória","Banco de Memória","Monitor lógico","Monitor Lógico Grande",
+
+   "Contêiner",
     "Magma","Piche",
-    "Fusão","Espectro","Ciclone","Ondulação","Enxame","Salvo","Onda","Queimada","Dupla","Dispersão","Granizo","Lançador",
+    "Segmento","Paralaxe","Tsunami",""Fusão","Espectro","Ciclone","Ondulação","Enxame","Salvo","Onda","Queimada","Dupla","Dispersão","Granizo","Lançador",
     "Revenã","Tridente","Lich","Erradicador","Fortaleza","Titã","Omega","Alfa","Delta","Tau","Javelin","Glaive","Eruptor",
     "Cobre","Chumbo","Metavidro","Grafite","Areia","Carvão","Titânio","Tório","Sucata","Silício","Plastânio","Surto","Esporos","Piratita",
     "Escória","Petróleo","Água"
