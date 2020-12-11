@@ -4,7 +4,7 @@ const { Users } = require("../../database.js");
 module.exports = {
   // Execução do comando
   run: (client, botUtils, message, args) => {
-    if (!botUtils.isDev(message.author.id)) return message.channel.send("Voce não tem permissão para executar esse comando");
+    if (!botUtils.isDev(message.author.id)) return message.channel.send("Você não tem permissão para executar este comando.");
 
     newError = botUtils.newError;
 
@@ -34,7 +34,7 @@ module.exports = {
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")
-        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+        .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
       message.channel.send(embed);
 
       let IDs = {
@@ -49,9 +49,9 @@ module.exports = {
   // Configuração do comando
   config: {
     name: "db",
-    noalias: "Sem sinonimos",
+    noalias: "Sem sinônimos",
     aliases: [],
-    description: "Cheque as informações na database",
+    description: "Checa as informações na database.",
     usage: "db [@usuario ou ID]",
     accessableby: "Desenvolvedores"
   }
