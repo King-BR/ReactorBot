@@ -13,20 +13,15 @@ module.exports = async (client, botUtils, serverState, guild) => {
     const m = channel.messages.fetch(id)
       .then(message => {
 
-        let pos = 0;
         let msg = '';
-        Users.find({}).sort({"levelSystem.txp": -1}).exec( (err, users) => {
-          users.forEach(u => {
-            if(++pos > 10) return;
+        Users.find({}).sort({"levelSystem.txp": -1}).limit(10).exec( (err, users) => {
+          users.forEach((u,i) => {
             let member = message.guild.members.cache.get(u._id);
-            
             embed.addField(
-              `**${pos}. ${member ? member.displayName : "Desconhecido"}:**`,
+              `**${i+1}. ${member ? member.displayName : "Desconhecido"}:**`,
               `lvl${u.levelSystem.level}. ${u.money}$`);
-            
-            if(pos > 10) message.edit(embed);
           });
-
+          message.edit(embed)
         });
 
       }).catch(err => {console.log(`=> ${newError(err, "ClientReady_updatePlacar")}`)});

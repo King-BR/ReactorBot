@@ -7,7 +7,7 @@ module.exports = (client, botUtils, server, editing) => {
     //funções do evento
 
     const choose = [
-      function() {
+      function() { // Soma
 
         const n1 = Math.floor(Math.random() * 400 + 100);
         const n2 = Math.floor(Math.random() * 400 + 100) * (Math.random() < 0.5 ? -1 : 1);
@@ -16,22 +16,26 @@ module.exports = (client, botUtils, server, editing) => {
         const resp = (n1 + n2).toString();
 
         return [quest, resp];
-      }, function() {
+      }, function() { // Shuffle
 
         const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
         const resp = palavras[Math.floor(Math.random() * palavras.length)];
+        const shuffle = (word) => {
 
-        let word = resp.split("");
-        let quest = '';
+          word = word.split("");
+          let res = '';
 
-        while (word.length > 0) {
-          quest += word.splice(Math.floor(Math.random() * word.length), 1);
+          while (word.length > 0) {
+            res += word.splice(Math.floor(Math.random() * word.length), 1);
+          }
+
+          return res
         }
 
-        quest = `Desembaralhe a palavra: \`${quest}\``;
+        quest = `Desembaralhe a palavra: \`${resp.split(' ').map(s => shuffle(s)).join(' ')}\``;
 
         return [quest, resp.toLowerCase()];
-      }, function() {
+      }, function() { // Raizes
 
         const power = 2 - Math.ceil(Math.log10(0.5 - Math.random() / 2));
 
@@ -74,7 +78,7 @@ module.exports = (client, botUtils, server, editing) => {
         res = res.slice(2);
 
         return [`Quais são as raízes de \`${res}\``, val];
-      }, function() {
+      }, function() { // Sistema
         const resp = [Math.floor(Math.random() * 20 - 10), Math.floor(Math.random() * 20 - 10)]
 
         let str = 'Qual é o valor de `x` e `y` do sistema \n```'
@@ -101,10 +105,10 @@ module.exports = (client, botUtils, server, editing) => {
 
         str += '```'
         return [str, resp]
-      }, function() {
+      }, function() { // Error
         const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
         const resp = palavras[Math.floor(Math.random() * palavras.length)];
-        const quant = Math.max(Math.floor((1 - Math.log10(1 - Math.random())) * resp.length / 4),1);
+        const quant = Math.max(Math.floor((1 - Math.log10(1 - Math.random())) * resp.length / 4), 1);
 
         const mutate = (str) => {
 
@@ -129,7 +133,7 @@ module.exports = (client, botUtils, server, editing) => {
           for (let i = 0; i < quant; i++) { quest = mutate(quest) }
         } while (quest == resp)
 
-        quest = `Deu um erro no arquivo(${quant}x), descubra a palavra:\`${quest}\``
+        quest = `Uma palavra foi corrompida(${quant}x), descubra a palavra:\`${quest}\``
 
         return [quest, resp.toLowerCase()];
       }
@@ -147,11 +151,11 @@ module.exports = (client, botUtils, server, editing) => {
     //o bot n vai mandar mensagens no #miniquiz e nem vai permiter pessoas falarem
     if (!editing) {
 
-      let color = number/choose.length
-      color = '#' + [0,0,0].map((n,i) => Math.max(1-Math.max(Math.abs((color*6+i*2)%6-2)-1,0),0))
-        .map(n => Math.floor(n*255).toString(16).padStart(2,'0')).join('')
+      let color = number / choose.length
+      color = '#' + [0, 0, 0].map((n, i) => Math.max(1 - Math.max(Math.abs((color * 6 + i * 2) % 6 - 2) - 1, 0), 0))
+        .map(n => Math.floor(n * 255).toString(16).padStart(2, '0')).join('')
 
-      channel.send({embed:{description: quest[0],color: color}});
+      channel.send({ embed: { description: quest[0], color: color } });
       channel.overwritePermissions([{ id: "700183808783286372", allow: 805829713 }, { id: "755665930159390721", deny: 2112 }, { id: "699823229354639471", allow: 68672, deny: 805761041 }]);
     }
 

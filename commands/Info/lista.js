@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const format = require("date-fns/format");
+const { Users } = require("../../database.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: async (client, botUtils, message, args) => {
     newError = botUtils.newError;
 
     try {
@@ -34,36 +35,53 @@ module.exports = {
           embed.setTitle('Banidos');
           client.guilds.cache.get('699823229354639471').fetchBans()
             .then(bans => {
-              if(!bans.size) embed.setDescription('Ninguem esta banido')
+              if (!bans.size) embed.setDescription('Ninguem esta banido')
               bans.each(b => {
                 embed.addField(b.user.tag, b.reason, true)
-              message.channel.send(embed)
-            })})
+                message.channel.send(embed)
+              })
+            })
             .catch(err => console.log(`=> ${newError(err, 'lista', IDs)}`))
+          break;
+        } case 'avisados': {
+          embed.setTitle('Avisados');
+          Users.find({"warn.quant": { $gt: 0 }}).sort({"warn.quant": -1}).exec((err, doc) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+
+            doc.forEach(user => {
+              const member = client.users.cache.get(user._id);
+              embed.addField(member?member.tag:user._id,user.warn.quant + " Warns",true);
+            });
+            message.channel.send(embed);
+
+          });
         }
       }
 
-    } catch (err) {
-      let embed = new Discord.MessageEmbed()
-        .setTitle("Erro inesperado")
-        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
-      message.channel.send(embed);
+      } catch (err) {
+        let embed = new Discord.MessageEmbed()
+          .setTitle("Erro inesperado")
+          .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+        message.channel.send(embed);
 
-      let IDs = {
-        server: message.guild.id,
-        user: message.author.id,
-        msg: message.id
+        let IDs = {
+          server: message.guild.id,
+          user: message.author.id,
+          msg: message.id
+        }
+        console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
       }
-      console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
-    }
-  },
+    },
 
-  // Configuração do comando
-  config: {
-    name: "lista",
-    aliases: [],
-    description: "Mostra a lista de varias coisas, escreva `!lista help` para mais informações",
-    usage: "!lista <opção>",
-    accessableby: "Membros"
+    // Configuração do comando
+    config: {
+      name: "lista",
+        aliases: [],
+          description: "Mostra a lista de varias coisas, escreva `!lista help` para mais informações",
+            usage: "!lista <opção>",
+              accessableby: "Membros"
+    }
   }
-}

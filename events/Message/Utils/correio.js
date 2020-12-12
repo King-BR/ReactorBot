@@ -7,8 +7,8 @@ module.exports = (client, botUtils, message, args) => {
 		let cmd = messageArray[0].toLowerCase();
 		let args = messageArray.slice(1);
     
-    //Caso a mensagem seja do propio bot, ele n le
-   if(message.author.bot)return;
+    //Caso o autor da mensagem seja um bot, ele ignora
+   if(message.author.bot) return;
    if(cmd != "!correio")return;
     console.log(message.content)
 
