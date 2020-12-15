@@ -25,5 +25,7 @@ Descreva algum contexto adicional que pode ser util para solucionar o bug.
 
 
 **Antes de enviar o report por favor conclua os passos abaixos:**
-Marque com um X a caixa abaixo
+
+Marque com um X a caixa abaixo:
+
 [ ] Procurei nos reports fechados e abertos para saber se o bug ja foi reportado
