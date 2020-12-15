@@ -59,7 +59,7 @@ module.exports = {
     noalias: "Sem sinônimos",
     aliases: [],
     description: "Silencie um membro do servidor por uma certa quantidade de tempo.",
-    usage: "mute <@membro> <tempo><m/h/d/a> [motivo]",
+    usage: "mute <@membro> <tempo><m/h/d/y> [motivo]",
     accessableby: "STAFF"
   }
 }
