@@ -12,7 +12,7 @@ module.exports = {
 
     try {
 
-      if (isNaN(parseInt(args[1] || args[0]))) return message.reply('Não foi possível identificar a quantia de dinheiro.');
+      if (isNaN(parseInt(args[1] || args[0]))) return message.reply('Não foi possível identificar a quantia de dinheiro informada.');
 
       let money = parseInt(args[1] || args[0])
       let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
