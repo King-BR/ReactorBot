@@ -1,6 +1,6 @@
 ---
 name: Reportar bug
-about: Crie um report de bug para nos ajudar
+about: Reporte um bug para nos ajudar
 title: "[BUG] Algo de errado não está certo"
 labels: bug
 assignees: ''
