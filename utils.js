@@ -3,6 +3,7 @@ const chalk = require("chalk");
 const fs = require("fs");
 const format = require("date-fns/format");
 const md5 = require("md5");
+const zlib = require("zlib");
 
 // Files requires
 const config = require("./config.json");
@@ -181,8 +182,8 @@ module.exports = {
         let collector = msg.createReactionCollector(filter, { idle: 30000 });
 
         collector.on("collect", r => {
-          page = (page+(r.emoji.name == '➡️'?0:size-2))%size+1;
-          
+          page = (page + (r.emoji.name == '➡️' ? 0 : size - 2)) % size + 1;
+
           msg.edit(func(page) || 'nill');
           msg.reactions.cache.each(react => {
             react.users.cache.filter(u => !u.bot).each(u => {
@@ -215,12 +216,12 @@ module.exports = {
     }
 
     XPconfig.forEach((c, index, arrConfig) => {
-      if(!arrConfig[index -1]) {
-        if(txp < c.txp) return;
-      } else if(txp >= arrConfig[index -1].txp + 1 && txp <= c.txp) {
+      if (!arrConfig[index - 1]) {
+        if (txp < c.txp) return;
+      } else if (txp >= arrConfig[index - 1].txp + 1 && txp <= c.txp) {
         levelSystem = {
           level: c.level,
-          xp: arrConfig[index -1].txp - txp,
+          xp: arrConfig[index - 1].txp - txp,
           txp: txp
         }
       }
@@ -621,5 +622,152 @@ module.exports = {
     if (JSON.stringify(module.exports.jsonPull("./dataBank/levelSystem.json")) == JSON.stringify(XPdataArray)) return;
     fs.writeFileSync("./dataBank/levelSystem.json", JSON.stringify(XPdataArray), { encoding: "utf8" });
     return;
+  },
+
+  //--------------------------------------------------------------------------------------------------//
+  // Mindustry utils
+
+  /**
+   * Pegar schema
+   */
+  mndGetScheme: (base64Schem) => {
+    const VERSION = 1;
+
+    const read = (arr, size, q) => {
+
+      let res;
+      if (size == 'str') {
+
+        size = q || arr.shift() * 256 + arr.shift();
+        res = '';
+        while (size-- > 0) {
+          res += String.fromCharCode(arr.shift());
+        }
+
+      } else {
+
+        res = 0;
+        for (let i = 0; i < size; i++) {
+          res *= 256;
+          res += arr.shift();
+        }
+
+      }
+      return res;
+    }
+    const config = (arr) => {
+
+      const type = read(arr, 1);
+
+      switch (type) {
+        case 0: return null;
+        case 1: return read(arr, 4);
+        case 2: return read(arr, 8);
+        case 3:
+          var buf = new ArrayBuffer(4);
+          var view = new DataView(buf);
+          arr.splice(0, 4).forEach((b, i) => view.setUint8(i, b));
+          return view.getFloat32(0);
+        case 4: return read(arr, 1) != 0 ? read(arr, 'str') : null;
+        case 5:
+          let pos = read(arr, 1)
+          const TYPEC = ['item', 'liquid']
+          let content = module.exports.jsonPull('./dataBank/mindustryContent.json')
+          return content[TYPEC[pos]][read(arr, 2)];
+        case 6:
+          let list = [];
+          let length = read(arr, 2);
+          while (length-- > 0) { list.push(read(arr, 4)); }
+          return list;
+        case 7: return [read(arr, 4), read(arr, 4)];
+        case 8:
+          let len = input.readByte();
+          let out = [];
+          while (len-- > 0) {
+            let pos = input.readInt();
+            out.push([pos >> 16, pos & 0xFFFF]);
+          }
+          return out;
+        case 11:
+          var buf = new ArrayBuffer(8);
+          var view = new DataView(buf);
+          arr.splice(0, 8).forEach((b, i) => view.setUint8(i, b));
+          return view.getFloat64(0);
+        case 14:
+          let blen = read(arr, 4);
+          let bytes = [];
+          while (blen-- > 0) {
+            bytes.push(read(arr, 1))
+          }
+          return bytes;
+
+        //Não Atribuidos
+        case 9:
+          read(arr, 1); read(arr, 2);
+          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
+        case 12:
+          read(arr, 4);
+          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
+        case 13:
+          read(arr, 2);
+          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
+        case 15:
+          read(arr, 1);
+          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
+        default: throw new Error("Tipo desconhecido " + type);
+
+      }
+    }
+
+    // --- Verifying --- //
+
+    let text = [...Buffer.from(base64Schem, 'base64')];
+    let result = {}
+    try {
+      if ('msch' != read(text, 'str', 4)) return 1;
+      if (text.shift() != VERSION) return 2;
+
+      text = [...zlib.inflateSync(Buffer.from(base64Schem, 'base64').slice(5))];
+    } catch (e) { return 3 }
+    // --- CRIAÇÃO --- //
+
+    try {
+      // pegar largura e altura da schematic
+      result.width = read(text, 2)
+      result.height = read(text, 2)
+
+      //pegar tags
+      result.tags = {}
+      let size = read(text, 1)
+      while (size-- > 0) {
+        result.tags[read(text, 'str')] = read(text, 'str')
+      }
+
+      //pegar nomes dos blocos
+      result.names = [];
+      size = read(text, 1)
+      while (size-- > 0) {
+        result.names.push(read(text, 'str'))
+      }
+
+    } catch { return 4 }
+
+    //pegar os blocos
+    result.blocks = [];
+    size = read(text, 4)
+
+    try {
+      while (size-- > 0) {
+        let block = {}
+        block.type = read(text, 1)
+        block.position = [read(text, 2), read(text, 2)]
+        block.config = config(text)
+        block.rotation = read(text, 1)
+
+        result.blocks.push(block)
+      }
+    } catch { return 5 }
+
+    return result
   }
 }

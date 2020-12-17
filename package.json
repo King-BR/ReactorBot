@@ -11,6 +11,7 @@
   "author": "King-BR",
   "license": "ISC",
   "dependencies": {
+    "atob": "^2.1.2",
     "chalk": "^4.1.0",
     "cpu-stat": "^2.0.1",
     "date-fns": "^2.16.1",

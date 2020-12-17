@@ -8,12 +8,11 @@ module.exports = (client, botUtils, message, args) => {
 		let args = messageArray.slice(1);
     
     //Caso o autor da mensagem seja um bot, ele ignora
-   if(message.author.bot) return;
-   if(cmd != "!correio")return;
+    if(message.author.bot) return;
+    if(cmd != "!correio")return;
     console.log(message.content)
 
 		//if (!message.content.startsWith(prefix)) return;
-    
 
     //sla
     message.channel.send(`"${cmd}"\n\n-disse a putinha`);
