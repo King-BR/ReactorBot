@@ -12,7 +12,7 @@ module.exports = async ({ client, botUtils }, message) => {
 
     // Adiciona na tabela de frequencia
     botUtils.jsonChange('./dataBank/mesTotal.json', obj => {
-      if(message.guild.id != "699823229354639471") return obj;
+      if(message.guild && message.guild.id != "699823229354639471") return obj;
 
       obj.messages[0] = obj.messages[0] || {};
       obj.messages[0][message.author.id] =
@@ -23,6 +23,11 @@ module.exports = async ({ client, botUtils }, message) => {
     // Ignora mensagens de bot
     if (message.author.bot) return;
 
+    // detecta schematicas
+    let schem = message.attachments.find(a => a.name.endsWith(".msch"));
+    if (schem) return require("./Utils/scheme.js")(client, botUtils,message,schem);
+    if(!require("./Utils/schemeMes.js")(client, botUtils,message,message.content)) return;
+    
     // tudo oq n possui prefixo é ignorado
     if (!message.content.startsWith(prefix)) return;
 
@@ -34,7 +39,7 @@ module.exports = async ({ client, botUtils }, message) => {
     if (commandfile) commandfile.run(client, botUtils, message, args);
   } catch (err) {
     let IDs = {
-      server: message.server.id,
+      server: message.channel.id,
       user: message.author.id,
       msg: message.id
     };

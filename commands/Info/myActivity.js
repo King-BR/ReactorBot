@@ -123,7 +123,6 @@ module.exports = {
           }
           str += '```'
 
-          console.log('ue')
           let embed = new Discord.MessageEmbed()
             .setTitle(result.name)
             .setDescription(str)

@@ -2,6 +2,10 @@
 const chalk = require("chalk");
 const fs = require("fs");
 const format = require("date-fns/format");
+const zlib = require("zlib");
+const bb = require("bit-buffer");
+const Canvas = require('canvas');
+const Discord = require('discord.js');
 
 // Files requires
 const config = require("./config.json");
@@ -384,17 +388,17 @@ module.exports = {
 
   userGive: (userID, money = 0, xp = 0, fileName = '???') => {
     //criando função de erro
-    const newError = (desc,fileName,obj) => {
-      console.log(`=> ${module.exports.newError(new Error(desc), fileName+"_userGive",obj)}`);
+    const newError = (desc, fileName, obj) => {
+      console.log(`=> ${module.exports.newError(new Error(desc), fileName + "_userGive", obj)}`);
     }
 
-    return newError("Esperando a verificação do king no meu codigo, pra ver se eu n fiz nenhuma merda :P",'???');
+    return newError("Esperando a verificação do king no meu codigo, pra ver se eu n fiz nenhuma merda :P", '???');
 
     //fazendo os ifs
-    if(typeof fileName != "string")return newError("O nome do arquivo não é uma string","???");
-    if(isNaN(userID))return newError("O id do usuario é um valor estranho",fileName);
-    if(isNaN(money))return newError("O dinheiro precisa ser um numero",fileName,{user:userID});
-    if(isNaN(xp))return newError("A experiencia precisa ser um numero",fileName,{user:userID});
+    if (typeof fileName != "string") return newError("O nome do arquivo não é uma string", "???");
+    if (isNaN(userID)) return newError("O id do usuario é um valor estranho", fileName);
+    if (isNaN(money)) return newError("O dinheiro precisa ser um numero", fileName, { user: userID });
+    if (isNaN(xp)) return newError("A experiencia precisa ser um numero", fileName, { user: userID });
 
     //programa
     Users.findById(message.author.id, (err, doc) => {
@@ -428,6 +432,360 @@ module.exports = {
 
       doc.save();
     });
+  },
+  //--------------------------------------------------------------------------------------------------//
+  //
+  /**
+   * Pegar schema
+   */
+  mndGetScheme: (binarySchem) => {
+    const VERSION = 1;
+    const DEBUG = false;
+
+    const config = (its) => {
+
+      const type = bits.readInt8();
+
+      switch (type) {
+        case 0: return null;
+        case 1: return bits.readInt32();
+        case 2: return bits.readInt32() * 2 ** 32 + bits.readUint32();
+        case 3:
+          var buf = new ArrayBuffer(4);
+          var view = new DataView(buf);
+          bits.readArrayBuffer(4).forEach((b, i) => view.setint8(i, b));
+          return view.getFloat32(0);
+        case 4: return bits.readInt8() != 0 ? bits.readUTF8String(bits.readInt16()) : null;
+        case 5:
+          let content = module.exports.jsonPull('./dataBank/mindustryContent.json');
+          return content[['item', null, null, null, 'liquid'][bits.readInt8()]][bits.readUint16()];
+        case 6:
+          let list = [];
+          let length = bits.readUInt16();
+          while (length-- > 0) { list.push(bits.readInt32()); }
+          return list;
+        case 7: return [bits.readInt32(), bits.readInt32()];
+        case 8:
+          let len = bits.readInt8();
+          let out = [];
+          while (len-- > 0) {
+            out.push([bits.readInt16(), bits.readInt16()]);
+          }
+          return out;
+        case 10: return bits.readInt8();
+        case 11:
+          var buf = new ArrayBuffer(8);
+          var view = new DataView(buf);
+          bits.readArrayBuffer(8).forEach((b, i) => view.setUint8(i, b));
+          return view.getFloat64(0);
+        case 14:
+          let blen = bits.readInt32();
+          let bytes = [];
+          while (blen-- > 0) {
+            bytes.push(bits.readInt8())
+          }
+          return bytes;
+        case 15: return bits.readInt8(); //Centro de comando
+
+        //Não Atribuidos
+        case 9:
+          bits.readInt8(); bits.readInt16();
+          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
+        case 12:
+          bits.readInt32();
+          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
+        case 13:
+          bits.readInt16();
+          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
+
+        default: throw new Error("Tipo desconhecido " + type);
+
+      }
+    }
+
+    // --- Verifying --- //
+
+    let text = [...Buffer.from(binarySchem, 'base64')];
+    let result = {};
+    let bits;
+
+    try {
+      let i = ['m', 's', 'c', 'h', VERSION].findIndex(v => v == text.slice(0, 4) || v.toString().charCodeAt(v) == text.slice(0, 4))
+
+      if (i >= 0) return Math.floor(i / 4);
+
+      bits = new bb.BitStream(zlib.inflateSync(Buffer.from(binarySchem, 'base64').slice(5)));
+      bits.bigEndian = true;
+    } catch (e) {
+      if (DEBUG) console.log(e);
+      return 3;
+    }
+    // --- CRIAÇÃO --- //
+
+    try {
+      // pegar largura e altura da schematic
+      result.width = bits.readInt16()
+      result.height = bits.readInt16()
+
+      //pegar tags
+      result.tags = {}
+      let size = bits.readInt8()
+      while (size-- > 0) {
+        result.tags[bits.readUTF8String(bits.readInt16())] = bits.readUTF8String(bits.readInt16())
+      }
+
+      //pegar nomes dos blocos
+      result.names = [];
+      size = bits.readInt8()
+      while (size-- > 0) {
+        result.names.push(bits.readUTF8String(bits.readInt16()));
+      }
+
+    } catch (e) {
+      if (DEBUG) console.log(e);
+      return 4;
+    }
+
+    //pegar os blocos
+    result.blocks = [];
+    size = bits.readInt32()
+    try {
+      while (size-- > 0) {
+        let block = {}
+        block.type = bits.readInt8()
+        block.position = [bits.readInt16(), bits.readInt16()]
+        block.config = config(bits)
+        block.rotation = bits.readInt8()
+
+        result.blocks.push(block)
+      }
+    } catch (e) {
+      if (DEBUG) console.log(e);
+      return 5;
+    }
+
+    return result
+  },
+
+  schemeToCanvas: async (schema) => {
+
+    // Constantes
+    const cons = {
+      CONVEYOR: ["titanium-conveyor", "conveyor", "armored-conveyor", "conduit", "plated-conduit", "pulse-conduit"],
+      ITEMSCONVEYOR: ["titanium-conveyor", "conveyor", "armored-conveyor"],
+      LIQUIDSCONVEYOR: ["conduit", "plated-conduit", "pulse-conduit"],
+      PLATEDCONVEYOR: ["plated-conduit","armored-conveyor"],
+
+      BRIDGE: ["bridge-conveyor", "phase-conveyor", "bridge-conduit", "phase-conduit"],
+      ITEMSBRIDGE: ["bridge-conveyor", "phase-conveyor"],
+      LIQUIDSBRIDGE: ["bridge-conduit", "phase-conduit"],
+
+      ROTATE: ["plastanium-conveyor"],
+    }
+
+    // Pegando os canvas
+    let canvas = Canvas.createCanvas(schema.width * 32, schema.height * 32);
+    let canvasM = Canvas.createCanvas(schema.width * 32, schema.height * 32);
+    let ctx = canvas.getContext("2d");
+    let ctxM = canvasM.getContext("2d");
+
+    // Pegando as imagens
+    const content = JSON.parse(fs.readFileSync('./dataBank/mindustryBlocks.json'));
+    const atlas = JSON.parse(fs.readFileSync('./images/blocks.atlas'));
+    let image = await Canvas.loadImage("./images/blocks.png");
+
+    //Criando a memoria
+    schema.memory = []
+    for (let x = 0; x < schema.width; x++) {
+      schema.memory[x] = [];
+      for (let y = 0; y < schema.height; y++) {
+        schema.memory[x][y] = -1;
+      }
+    }
+    schema.blocks.forEach((block, id) => {
+      let a = atlas[schema.names[block.type]]
+      let size = a ? a[0] : 1;
+
+      for (let x = -Math.floor((size - 1) / 2); x <= Math.floor(size / 2); x++) {
+        for (let y = -Math.floor((size - 1) / 2); y <= Math.floor(size / 2); y++) {
+          schema.memory[block.position[0] + x][block.position[1] + y] = id;
+        }
+      }
+
+    })
+
+    //Funções
+    const draw = (ctx, item, x, y, rot) => {
+      if (!item) item = atlas["error"];
+
+      let s = item[0] * 32;
+      x = x * 32 + 32
+      y = (schema.height - y) * 32 - 32
+
+      let px = x - Math.floor(item[0] / 2 + 0.5) * 32 + 32 - s / 2 % 32;
+      let py = y - Math.floor(item[0] / 2) * 32 + 32 - s / 2 % 32;
+
+      ctx.save()
+      ctx.translate(px, py);
+
+      if (rot) {
+        ctx.rotate((rot || 0) * Math.PI / 2);
+      }
+
+      ctx.drawImage(image, item[1] * 32, item[2] * 32, s, s, s / 2 % 32 - 32, s / 2 % 32 - 32, s, s);
+      ctx.restore();
+    }
+    const getBlock = (x, y, name) => {
+      if (x < 0 || y < 0 || x >= schema.width || y >= schema.height) return;
+      let block = schema.blocks[schema.memory[x][y]]
+      return name && block ? schema.names[block.type] : block
+    };
+    const bridgeEnd = (x, y) => {
+      let block = getBlock(x, y);
+      if (block.config[0] && block.config[1]) return true;
+      if (!(block.config[0] || block.config[1])) return true;
+      return false;
+    };
+
+    //Desenha blocos
+    schema.blocks.forEach((obj, i) => {
+      let objName = schema.names[obj.type];
+
+      if (cons.CONVEYOR.includes(objName)) { //Conveyors
+
+        let pos = obj.position;
+        let rot = (4 - obj.rotation) % 4;
+        let sides = [0, 0, 0, 0];
+        let plated = cons.PLATEDCONVEYOR.includes(objName)
+        let name = cons.ITEMSCONVEYOR.includes(objName) ? "items" : "liquids";
+
+        for (let i = 0; i < 4; i++) {
+          let x = pos[0] + (i - 1) % 2;
+          let y = pos[1] + (2 - i) % 2;
+          let block = getBlock(x, y, true);
+          if (
+            (!plated && content[name].includes(block)) ||
+            (cons[`${name.toUpperCase()}CONVEYOR`].includes(block) && getBlock(x, y).rotation == (4 - i) % 4) ||
+            (!plated && cons[`${name.toUpperCase()}BRIDGE`].includes(block) && bridgeEnd(x, y))
+          ) {
+            sides[(i + obj.rotation) % 4] = 1;
+          }
+        }
+
+        let n = 0;
+        if (sides[1]) {
+          if (sides[0]) n = 6;
+          if (!sides[0]) n = 1;
+        }
+        if (sides[3]) {
+          if (sides[0]) n = 2;
+          if (!sides[0]) n = 5;
+        }
+        if (sides[1] && sides[3]) {
+          if (sides[0]) n = 3;
+          if (!sides[0]) n = 4;
+        }
+
+        draw(ctx, atlas[`${objName}-${n}`], obj.position[0], obj.position[1], rot)
+
+      } else if (["door", "door-large"].includes(objName)) { //Doors
+        draw(ctx, atlas[objName + (obj.config > 0 ? '-open' : '')], obj.position[0], obj.position[1])
+      } else { //Block itself
+        draw(ctx, atlas[objName], obj.position[0], obj.position[1], cons.ROTATE.includes(objName) ? -obj.rotation : 0);
+      }
+    })
+
+    //Overlay de cor
+    schema.names.forEach((type, typeID) => {
+      if (["unloader", "item-source", "sorter", "inverted-sorter", "liquid-source"].includes(type)) {
+
+        let atlasBlock = atlas[type + "-center"] || atlas["color-center"]
+        ctxM.globalCompositeOperation = "source-over";
+        schema.blocks.filter(block => block.type == typeID && block.config).forEach((block) => {
+          ctxM.fillStyle = block.config.color;
+          ctxM.fillRect(block.position[0] * 32, (schema.height - block.position[1] - 1) * 32, 32, 32);
+
+          ctxM.beginPath();
+          ctxM.save()
+          ctxM.rect(block.position[0] * 32, (schema.height - block.position[1] - 1) * 32, 32, 32);
+          ctxM.clip();
+
+          ctxM.globalCompositeOperation = "destination-in";
+          draw(ctxM, atlasBlock, block.position[0], block.position[1])
+          ctxM.restore()
+        });
+
+      }
+    });
+    ctx.drawImage(canvasM, 0, 0);
+
+    //Deixa tudo transparente
+    ctx.globalAlpha = 0.8;
+
+    //Desenha pontes
+    schema.names.forEach((type, typeID) => {
+      if (cons.BRIDGE.includes(type)) {
+        schema.blocks.filter(obj => obj.type == typeID)
+          .filter(obj => !(obj.config[0] && obj.config[1]))
+          .forEach((obj) => {
+            let block = getBlock(obj.position[0] + obj.config[0], obj.position[1] + obj.config[1]);
+            if (block && block.type == typeID) {
+
+              let dir = 3 + (obj.config[0] ? Math.sign(obj.config[0]) : 1 + Math.sign(obj.config[1]))
+              let dist = Math.abs(obj.config[0] + obj.config[1]);
+
+              while (dist-- > 1) {
+                draw(ctx, atlas[type + "-bridge"],
+                  obj.position[0] + Math.sign(obj.config[0]) * dist,
+                  obj.position[1] + Math.sign(obj.config[1]) * dist,
+                  -dir);
+              }
+
+            }
+          });
+      }
+    })
+
+    return canvas.toBuffer()
+  },
+
+  mndSendMessageEmbed: async (base64,schema,message) => {
+
+    if(!isNaN(schema)) throw new Error("Foi enviado um numero");
+
+    let final = await module.exports.schemeToCanvas(schema);
+
+    // Calculos
+
+    const blocks = JSON.parse(fs.readFileSync('./dataBank/mindustryBlocks.json'));
+    const atlas = JSON.parse(fs.readFileSync('./images/blocks.atlas'));
+
+    schema.crafterSize = 0;
+
+    schema.blocks.forEach(block => {
+      let objName = schema.names[block.type]
+      let objAtlas = atlas[objName]
+      if(Object.keys(blocks.crafter).includes(objName) && objAtlas){
+        schema.crafterSize += objAtlas[0]**2;
+      }
+
+    });
+    schema.crafterSize /= schema.width*schema.height || 1;
+
+    //Envio
+
+    const attachment1 = new Discord.MessageAttachment(final, 'bufferedfilename.png');
+    const attachment2 = new Discord.MessageAttachment(Buffer.from(base64, "base64"), schema.tags.name + '.msch');
+
+    let embed = new Discord.MessageEmbed()
+      .setAuthor(message.author.tag, message.author.displayAvatarURL())
+      .setTitle(schema.tags.name)
+      .addField("Eficiência de espaço",Math.floor(schema.crafterSize*10000)/100+"%")
+      .setColor("#9c43d9")
+      .setFooter(schema.tags.description)
+      .attachFiles([attachment1, attachment2])
+      .setImage('attachment://bufferedfilename.png');
+    message.channel.send(embed).then(msg => msg.react('📪'));
   }
 
   //--------------------------------------------------------------------------------------------------//

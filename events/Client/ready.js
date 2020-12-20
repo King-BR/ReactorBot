@@ -1,18 +1,31 @@
+const Discord = require('discord.js');
+
 module.exports = ({ client, botUtils }) => {
   newError = botUtils.newError;
   try {
     const guild = client.guilds.cache.get("699823229354639471");
+    const log = guild.channels.cache.get("767982805908324411");
 
     //log no console
     console.log(`\nBot foi logado como ${client.user.tag}`)
     console.log("Iniciado em " + botUtils.formatDate(new Date()));
-
 
     // Tempo q o bot levou pra começar
     botUtils.jsonChange('./dataBank/serverState.json', server => {
 
       const dTime = (new Date()).getTime() - server.serverStarted - 10800000
       console.log(`Demorou ${Math.floor(dTime / 60000)}:${(Math.floor(dTime / 1000) % 60).toString().padStart(2, '0')}  para iniciar\n`);
+
+      if (dTime >= 5000) {
+
+        let embed = new Discord.MessageEmbed()
+          .setColor("#ff0000")
+          .setTitle("O bot esta lento")
+          .setFooter(server.serverStarted)
+          .setDescription(`Demorou ${Math.floor(dTime / 60000)}:${(Math.floor(dTime / 1000) % 60).toString().padStart(2, '0')}  para iniciar`);
+        log.send(embed);
+
+      }
 
     }, true);
 

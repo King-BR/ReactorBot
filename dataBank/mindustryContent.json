@@ -1,0 +1,26 @@
+{
+  "item": [
+    {"name": "copper","color":"#d99d73"},
+    {"name": "Lead"  ,"color":"#8c7fa9"},
+    {"name": "metaglass","color":"#ebeef5"},
+    {"name": "graphite","color":"#b2c6d2"},
+    {"name": "sand","color":"#f7cba4"},
+    {"name": "coal","color":"#272727"},
+    {"name": "titanium","color":"#8da1e3"},
+    {"name": "thorium","color":"#f9a3c7"},
+    {"name": "scrap","color":"#777777"},
+    {"name": "silicon","color":"#53565c"},
+    {"name": "plastanium","color":"#cbd97f"},
+    {"name": "phase-fabric","color":"#f4ba6e"},
+    {"name": "surge-alloy","color":"#f3e979"},
+    {"name": "spore-pod","color":"#7457ce"},
+    {"name": "blast-compound","color":"#ff795e"},
+    {"name": "pyratite","color":"#ffaa5f"}
+  ],
+  "liquid":[
+    {"name":"water","color":"#596ab8"},
+    {"name":"slag","color":"#ffa166"},
+    {"name":"oil","color":"#313131"},
+    {"name":"cryofluid","color":"#6ecdec"}
+  ]
+}
