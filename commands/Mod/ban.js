@@ -6,8 +6,8 @@ module.exports = {
     newError = botUtils.newError;
     try {
       // Codigo do comando
-      if (!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.reply("Você não tem permissão para isso");
-      if (!message.mentions.members.first()) return message.reply("Precisa marcar alguem pra poder banir ne");
+      if (!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.reply("Você não tem permissão para executar este comando.");
+      if (!message.mentions.members.first()) return message.reply("Mencione a pessoa que deseja banir.");
 
       const user = message.mentions.members.first();
 			const channel = message.guild.channels.cache.get('764634049163427840');
@@ -37,7 +37,7 @@ module.exports = {
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")
-        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+        .setDescription("Um erro inesperado aconteceu. por favor contate os desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
       message.channel.send(embed);
 
       let IDs = {
@@ -52,10 +52,10 @@ module.exports = {
   // Configuração do comando
   config: {
     name: "ban",
-    noalias: "Sem sinonimos",
+    noalias: "Sem sinônimos",
     aliases: [],
-    description: "De um ban em um membro do server",
-    usage: "ban <@member> [motivo]",
+    description: "Use para banir um membro do servidor.",
+    usage: "ban <@membro> [motivo]",
     accessableby: "STAFF"
   }
 }

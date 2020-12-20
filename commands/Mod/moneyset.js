@@ -4,15 +4,15 @@ const { Users } = require("../../database.js");
 
 module.exports = {
   run: async (client, botUtils, message, args) => {
-    if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
+    if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você não é um membro STAFF");
 
-    // if (!botUtils.isDev(message.author.id)) return message.reply("Comando indisponivel por enquanto, use o `!moneyadd`");
+    // if (!botUtils.isDev(message.author.id)) return message.reply("Comando indisponível por enquanto, use o `!moneyadd`.");
 
     newError = botUtils.newError;
 
     try {
 
-      if (isNaN(parseInt(args[1] || args[0]))) return message.reply('Não foi possivel indentificar a quantia de dinheiro a se informar');
+      if (isNaN(parseInt(args[1] || args[0]))) return message.reply('Não foi possível identificar a quantia de dinheiro informada.');
 
       let money = parseInt(args[1] || args[0])
       let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
@@ -27,8 +27,8 @@ module.exports = {
 
         try {
           let embedConfirm = new Discord.MessageEmbed()
-            .setTitle(`Tem certeza que quer setar o dinheiro de ${user.displayName || "`desconhecido`"}?`)
-            .setDescription("Reaja com ✅ para confirmar\nReaja com ❌ para cancelar")
+            .setTitle(`Tem certeza que quer definir o dinheiro de ${user.displayName || "`desconhecido`"}?`)
+            .setDescription("Reaja com ✅ para confirmar.\nReaja com ❌ para cancelar.")
           message.channel.send(embedConfirm).then(msg => {
             msg.react("✅").then(() => {
               msg.react("❌");
@@ -44,14 +44,14 @@ module.exports = {
                     doc.save();
 
                     let embedReset = new Discord.MessageEmbed()
-                      .setDescription(`Dinheiro de ${user.displayName || "`desconhecido`"} foi setado`);
+                      .setDescription(`O dinheiro de ${user.displayName || "`desconhecido`"} foi definido com sucesso!`);
                     msg.edit(embedReset);
                     reactionCollector.stop();
                     break;
                   }
                   case "❌": {
                     let embedCancelado = new Discord.MessageEmbed()
-                      .setDescription(`Set do dinheiro de ${user.displayName || "`desconhecido`"} cancelado`);
+                      .setDescription(`A mudança do dinheiro de ${user.displayName || "`desconhecido`"} foi cancelada`);
                     msg.edit(embedCancelado);
                     reactionCollector.stop();
                     break;
@@ -63,7 +63,7 @@ module.exports = {
         } catch (err2) {
           let embed = new Discord.MessageEmbed()
             .setTitle("Erro inesperado")
-            .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+            .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
           message.channel.send(embed);
 
           let IDs = {
@@ -77,7 +77,7 @@ module.exports = {
     } catch (err) {
       let embed = new Discord.MessageEmbed()
         .setTitle("Erro inesperado")
-        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+        .setDescription("Um erro inesperado aconteceu. por favor contate os Desenvolvedores do ReactorBot.\n\nUm log foi criado com mais informações do erro.");
       message.channel.send(embed);
 
       let IDs = {
@@ -91,10 +91,10 @@ module.exports = {
 
   config: {
     name: "moneyset",
-    noalias: "Sem sinonimos",
+    noalias: "Sem sinônimos",
     aliases: [],
     description: "Define a quantidade dinheiro que tal membro possui",
-    usage: "moneyset [Membro] <Quantia>",
+    usage: "moneyset <@membro> [Quantia]",
     accessableby: "STAFF"
   }
 }
