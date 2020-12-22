@@ -56,33 +56,10 @@ module.exports = (client, botUtils, message) => {
 							return;
 						}
 
-						if (!doc) {
-							let newUser = new Users({
-								_id: message.author.id,
-								money: money,
-								levelSystem: {
-									xp: xp,
-									txp: xp
-								}
-							});
-							newUser.save();
-							return obj;
-						}
+						if (!doc) doc = new User({ _id: message.author.id });
 
-						if (
-							doc.levelSystem.xp + xp >=
-							XPconfig[doc.levelSystem.level - 1].XPNextLevel
-						) {
-							doc.levelSystem.xp = doc.levelSystem.xp + xp - XPconfig[doc.levelSystem.level - 1].XPNextLevel;
-							doc.levelSystem.txp += xp;
-							doc.levelSystem.level++;
-						} else {
-							doc.levelSystem.xp += xp;
-							doc.levelSystem.txp += xp;
-						}
-
+						doc.txp += xp;
 						doc.money += money;
-
 						doc.save();
 					});
 

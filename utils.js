@@ -212,18 +212,20 @@ module.exports = {
     let levelSystem = {
       level: 1,
       xp: 0,
-      txp: txp
+      txp: txp,
+      xpString: `0/${XPconfig[0].XPNextLevel}`
     }
 
+    let control = false;
     XPconfig.forEach((c, index, arrConfig) => {
-      if (!arrConfig[index - 1]) {
-        if (txp < c.txp) return;
-      } else if (txp >= arrConfig[index - 1].txp + 1 && txp <= c.txp) {
+      if (txp < c.txp && !control) {
         levelSystem = {
-          level: c.level,
-          xp: arrConfig[index - 1].txp - txp,
-          txp: txp
+          level: c.lvl,
+          xp: c.txp - txp,
+          txp: txp,
+          xpString: `${c.txp - txp}/${c.XPNextLevel}`
         }
+        control = true;
       }
     });
 

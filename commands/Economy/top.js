@@ -15,7 +15,7 @@ module.exports = {
 
       //
       let sort = (a, b) => {
-        return (args[0] && args[0].toLowerCase() == "lvl") ? b.levelSystem.txp - a.levelSystem.txp : b.money - a.money;
+        return (args[0] && args[0].toLowerCase() == "lvl") ? b.txp - a.txp : b.money - a.money;
       }
 
       await Users.find({}, (err, doc) => {
@@ -37,8 +37,9 @@ module.exports = {
 
           //Adicionando na lista
           doc.forEach(user => {
+            let levelSystem = botUtils.getLevel(user.txp);
             pos++;
-            let val = (args[0] && args[0].toLowerCase() == 'lvl') ? user.levelSystem.level : user.money;
+            let val = (args[0] && args[0].toLowerCase() == 'lvl') ? levelSystem.level + " " + levelSystem.xpString : user.money;
             if (last[1] > val){
               last = [pos,val];
             }
@@ -48,7 +49,7 @@ module.exports = {
               if (pos>11) msg += '...\n';
               if (user._id == membId) finded = true;
               
-              let name = guild.members.cache.get(user._id) ? guild.members.cache.get(user._id).displayName : "Usuário desconhecido";
+              let name = guild.members.cache.get(user._id) ? guild.members.cache.get(user._id).displayName : user.lastName ? user.lastName : "Usuário desconhecido";
 
               if(!guild.members.cache.get(user._id)) {
                 message.channel.send(user._id);

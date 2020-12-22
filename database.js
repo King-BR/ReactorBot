@@ -1,6 +1,6 @@
 const { formatDate } = require("./utils.js");
 var mongoose = require("mongoose");
-var Schema = mongoose.Schema
+Schema = mongoose.Schema;
 
 // Tentar conectar na database
 mongoose.connect(process.env.DATABASEURL, {
@@ -19,7 +19,7 @@ mongoose.connect(process.env.DATABASEURL, {
   return;
 });
 
-// Cria o Schema de warn
+// Cria o schema de warns
 var Warn = new Schema({
   _id: String,
   reason: {
@@ -39,7 +39,7 @@ var Warn = new Schema({
   }
 });
 
-// Cria o Schema de usuarios
+// Cria o schema de usuarios
 var User = new Schema({
   _id: String,
   mindustryRP: {
@@ -216,18 +216,14 @@ var User = new Schema({
     type: Number,
     default: 0
   },
+  txp: {
+    type: Number,
+    default: 0
+  },
   levelSystem: {
     txp: {
       type: Number,
       default: 0
-    },
-    xp: {
-      type: Number,
-      default: 0
-    },
-    level: {
-      type: Number,
-      default: 1
     }
   },
   warn: {
@@ -239,7 +235,7 @@ var User = new Schema({
   }
 });
 
-// Cria o Schema de times
+// Cria o schema de clans
 var Clan = new Schema({
   _id: String,
   name: {
@@ -275,6 +271,7 @@ var Clan = new Schema({
   }
 });
 
+// Cria o schema de bases
 var Base = new Schema({
   _id: String,
   name: String,
@@ -586,7 +583,7 @@ var Base = new Schema({
       }
     }
   }
-})
+});
 
 // Cria os models na database
 var Users = mongoose.model('Users', User);

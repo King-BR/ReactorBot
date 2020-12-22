@@ -28,11 +28,11 @@ module.exports = {
         if (!doc)  doc = new Users({ _id: member.id });
 
         try {
-          let XPconfig = botUtils.jsonPull("./dataBank/levelSystem.json");
+          let levelSystem = botUtils.getLevel(doc.txp);
 
           let embedPerfil = new Discord.MessageEmbed()
             .setAuthor(member.displayName, member.user.displayAvatarURL({ dynamic: true, size: 512, format: "png" }))
-            .setDescription(`Dinheiro: ${doc.money}\n\nLevel: ${doc.levelSystem.level}\nXP: ${doc.levelSystem.xp} / ${XPconfig[doc.levelSystem.level - 1].XPNextLevel}\nXP total: ${doc.levelSystem.txp}`)
+            .setDescription(`Dinheiro: ${doc.money}\n\nLevel: ${levelSystem.level}\nXP: ${levelSystem.xpString}\nXP total: ${levelSystem.txp}`)
             .setColor("RANDOM")
             .setFooter(`ID: ${member.id}`)
             .setTimestamp();

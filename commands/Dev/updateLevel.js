@@ -10,18 +10,11 @@ module.exports = {
         return;
       }
 
-      let XPconfig = require('../../dataBank/levelSystem.json');
       docs.forEach(doc => {
-        while(doc.levelSystem.xp >= XPconfig[doc.levelSystem.level - 1].XPNextLevel) {
-          if (doc.levelSystem.xp >= XPconfig[doc.levelSystem.level - 1].XPNextLevel) {
-					  doc.levelSystem.xp -= XPconfig[doc.levelSystem.level - 1].XPNextLevel;
-					  doc.levelSystem.level++;
-				  } else {
-					  doc.levelSystem.xp += XPconfig[doc.levelSystem.level - 1].XPNextLevel;
-				  }
-        }
+        doc.txp = doc.levelSystem.txp;
+        //message.channel.send(doc._id + ": " + doc.txp);
         doc.save();
-      });
+      })
     })
   },
 
