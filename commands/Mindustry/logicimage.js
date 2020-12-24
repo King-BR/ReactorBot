@@ -6,10 +6,10 @@ module.exports = {
 
   // Configuração do comando
   config: {
-    name: "schematic",
-    aliases: ['esquema', 'schm', 'schem'],
+    name: "logicimage",
+    aliases: ['li'],
     description: "Transforma base64 em esquemas do mindustry",
-    usage: "!schem <codigo>",
+    usage: "!li [nome] [qualidade] <imagem ou link da imagem>",
     accessableby: "Membros"
   }
 }

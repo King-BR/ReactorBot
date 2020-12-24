@@ -224,9 +224,7 @@ module.exports = {
             }
 
             doc.money += recompensa.money;
-            doc.levelSystem.txp += recompensa.xp;
-            doc.levelSystem.xp += recompensa.xp;
-
+            doc.txp += recompensa.xp;
             doc.save();
 
             let embed3 = new Discord.MessageEmbed()

@@ -39,7 +39,7 @@ module.exports = {
           doc.forEach(user => {
             let levelSystem = botUtils.getLevel(user.txp);
             pos++;
-            let val = (args[0] && args[0].toLowerCase() == 'lvl') ? levelSystem.level + " " + levelSystem.xpString : user.money;
+            let val = (args[0] && args[0].toLowerCase() == 'lvl') ? levelSystem.txp : user.money;
             if (last[1] > val){
               last = [pos,val];
             }

@@ -22,7 +22,7 @@ client.config = config;
 chalkClient = botUtils.chalkClient;
 newError = botUtils.newError;
 isDir = botUtils.isDir;
-
+botUtils.clearAllErrors();
 
 // Handler de erros em promise
 process.on('unhandledRejection', (reason, p) => { console.log(reason) });

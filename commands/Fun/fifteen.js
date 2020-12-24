@@ -116,8 +116,7 @@ module.exports = {
                     doc.money += 10;
 
                     // Add 50 de xp para o usuario
-                    doc.levelSystem.xp += 50;
-                    doc.levelSystem.txp += 50;
+                    doc.txp += 50;
 
                     doc.save();
                   } catch (err) {
