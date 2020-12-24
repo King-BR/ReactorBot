@@ -19,11 +19,10 @@ module.exports = {
         //background
         case 'bg':
         case 'background': {
+          
           let imagem = args[0];
-
           if (imagem && !imageExists(imagem) && !img) return message.channel.send("img invalida");
-
-          result.background = args[0] || (img && img.url) || null;
+          result.background = args[0] || (img && img.url && imageExists(img.url)) || null;
 
           conf.players[message.member.id].background = result.background;
           break;

@@ -7,6 +7,7 @@ module.exports = {
 
     try {
       // Codigo do comando
+      if(!args[0]) return message.reply("é necessario enviar um codigo de esquema")
       let schema = botUtils.mndGetScheme(args[0]);
       if (!isNaN(schema)) {
         if (schema == 1) return message.reply("Isso não é um codigo de esquema");

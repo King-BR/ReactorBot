@@ -24,7 +24,9 @@ chalkClient = botUtils.chalkClient;
 newError = botUtils.newError;
 isDir = botUtils.isDir;
 botUtils.clearAllErrors();
-//botUtils.setupXPconfig();
+
+// Handler de erros em promise
+process.on('unhandledRejection', (reason, p) => { console.log(reason) });
 
 // Starting Time - by Alstin112
 botUtils.jsonChange('./dataBank/serverState.json', server => {

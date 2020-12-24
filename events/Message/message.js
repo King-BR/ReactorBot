@@ -10,6 +10,7 @@ module.exports = async ({ client, botUtils }, message) => {
     let cmd = messageArray[0].toLowerCase();
     let args = messageArray.slice(1);
 
+
     // Adiciona na tabela de frequencia
     botUtils.jsonChange('./dataBank/mesTotal.json', obj => {
       if(message.guild && message.guild.id != "699823229354639471") return obj;

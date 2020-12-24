@@ -433,16 +433,39 @@ module.exports = {
       doc.save();
     });
   },
+
   //--------------------------------------------------------------------------------------------------//
-  //
+  // Schematics utils
+
   /**
-   * Pegar schema
+   * Transforma um Json em um base64 de schema
    */
+
+  mndJsonToScheme: (schema) => {
+
+    // Escreve os Tamanhos
+      //Escreve a largura
+      //Escreve a altura
+    
+    // Escreve as tags
+      //Escreve a altura
+
+    // Escreves os nomes
+    
+    // Escreves os blocos
+      //Escreve o tipo
+      //Escreve a posição
+      //Escreve a config
+      //Escreve a rotação
+    
+
+  },
+
   mndGetScheme: (binarySchem) => {
     const VERSION = 1;
-    const DEBUG = false;
+    const DEBUG = true;
 
-    const config = (its) => {
+    const config = (bits) => {
 
       const type = bits.readInt8();
 
@@ -482,7 +505,7 @@ module.exports = {
           let blen = bits.readInt32();
           let bytes = [];
           while (blen-- > 0) {
-            bytes.push(bits.readInt8())
+            bytes.push(bits.readUint8())
           }
           return bytes;
         case 15: return bits.readInt8(); //Centro de comando
@@ -510,7 +533,7 @@ module.exports = {
     let bits;
 
     try {
-      let i = ['m', 's', 'c', 'h', VERSION].findIndex(v => v == text.slice(0, 4) || v.toString().charCodeAt(v) == text.slice(0, 4))
+      let i = ['m', 's', 'c', 'h', "\01"].findIndex((v,i) => v.toString().charCodeAt() != text[i]);
 
       if (i >= 0) return Math.floor(i / 4);
 
@@ -548,8 +571,8 @@ module.exports = {
 
     //pegar os blocos
     result.blocks = [];
-    size = bits.readInt32()
     try {
+      size = bits.readInt32()
       while (size-- > 0) {
         let block = {}
         block.type = bits.readInt8()
@@ -574,7 +597,7 @@ module.exports = {
       CONVEYOR: ["titanium-conveyor", "conveyor", "armored-conveyor", "conduit", "plated-conduit", "pulse-conduit"],
       ITEMSCONVEYOR: ["titanium-conveyor", "conveyor", "armored-conveyor"],
       LIQUIDSCONVEYOR: ["conduit", "plated-conduit", "pulse-conduit"],
-      PLATEDCONVEYOR: ["plated-conduit","armored-conveyor"],
+      PLATEDCONVEYOR: ["plated-conduit", "armored-conveyor"],
 
       BRIDGE: ["bridge-conveyor", "phase-conveyor", "bridge-conduit", "phase-conduit"],
       ITEMSBRIDGE: ["bridge-conveyor", "phase-conveyor"],
@@ -602,13 +625,16 @@ module.exports = {
         schema.memory[x][y] = -1;
       }
     }
+
     schema.blocks.forEach((block, id) => {
       let a = atlas[schema.names[block.type]]
       let size = a ? a[0] : 1;
 
       for (let x = -Math.floor((size - 1) / 2); x <= Math.floor(size / 2); x++) {
         for (let y = -Math.floor((size - 1) / 2); y <= Math.floor(size / 2); y++) {
-          schema.memory[block.position[0] + x][block.position[1] + y] = id;
+          x = Math.min(Math.max(block.position[0] + x,0),schema.width-1)
+          y = Math.min(Math.max(block.position[1] + y,0),schema.height-1)
+          schema.memory[x][y] = id;
         }
       }
 
@@ -691,6 +717,8 @@ module.exports = {
       } else if (["door", "door-large"].includes(objName)) { //Doors
         draw(ctx, atlas[objName + (obj.config > 0 ? '-open' : '')], obj.position[0], obj.position[1])
       } else { //Block itself
+
+        //console.log(obj.config)
         draw(ctx, atlas[objName], obj.position[0], obj.position[1], cons.ROTATE.includes(objName) ? -obj.rotation : 0);
       }
     })
@@ -749,9 +777,9 @@ module.exports = {
     return canvas.toBuffer()
   },
 
-  mndSendMessageEmbed: async (base64,schema,message) => {
+  mndSendMessageEmbed: async (base64, schema, message) => {
 
-    if(!isNaN(schema)) throw new Error("Foi enviado um numero");
+    if (!isNaN(schema)) throw new Error("Foi enviado um numero");
 
     let final = await module.exports.schemeToCanvas(schema);
 
@@ -765,12 +793,12 @@ module.exports = {
     schema.blocks.forEach(block => {
       let objName = schema.names[block.type]
       let objAtlas = atlas[objName]
-      if(Object.keys(blocks.crafter).includes(objName) && objAtlas){
-        schema.crafterSize += objAtlas[0]**2;
+      if (Object.keys(blocks.crafter).includes(objName) && objAtlas) {
+        schema.crafterSize += objAtlas[0] ** 2;
       }
 
     });
-    schema.crafterSize /= schema.width*schema.height || 1;
+    schema.crafterSize /= schema.width * schema.height || 1;
 
     //Envio
 
@@ -780,11 +808,13 @@ module.exports = {
     let embed = new Discord.MessageEmbed()
       .setAuthor(message.author.tag, message.author.displayAvatarURL())
       .setTitle(schema.tags.name)
-      .addField("Eficiência de espaço",Math.floor(schema.crafterSize*10000)/100+"%")
       .setColor("#9c43d9")
-      .setFooter(schema.tags.description)
+      .setFooter(schema.tags.description || '')
       .attachFiles([attachment1, attachment2])
       .setImage('attachment://bufferedfilename.png');
+
+    if (schema.crafterSize) embed.addField("Eficiência de espaço", Math.floor(schema.crafterSize * 10000) / 100 + "%");
+
     message.channel.send(embed).then(msg => msg.react('📪'));
   }
 
