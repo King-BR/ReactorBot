@@ -61,7 +61,7 @@ source.forEach(foldert => {
       let name = filet.split('.')[0];
       console.log(`- ${name}.js: ${chalkClient.ok('OK')}`);
       let exported = require(`./events/${foldert}/${filet}`);
-      client.on(name, exported.bind(null, { client, botUtils }));
+      client.on(name, exported.bind(null, client));
     } catch (err) {
       console.log(`- ${filet}: ${chalkClient.error('ERROR')}`);
       console.log(`=> ${newError(err, filet)}`);

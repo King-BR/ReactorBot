@@ -1,4 +1,6 @@
-module.exports = (client, botUtils) => {
+const botUtils = require("../../../utils.js");
+
+module.exports = (client) => {
   newError = botUtils.newError;
   try {
 

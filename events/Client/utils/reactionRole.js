@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
+const botUtils = require("../../../utils.js");
 
-module.exports = async (client, botUtils, guild) => {
+module.exports = async (client, guild) => {
   newError = botUtils.newError;
   try {
     let id = "773715489696120882"

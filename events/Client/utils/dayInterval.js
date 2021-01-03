@@ -1,8 +1,9 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const GithubContent = require('github-content');
+const botUtils = require("../../../utils.js");
 
-module.exports = async (client, botUtils, serverState, guild) => {
+module.exports = async (client, serverState, guild) => {
   newError = botUtils.newError;
   try {
 

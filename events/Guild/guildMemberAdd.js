@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
+const botUtils = require("../../utils.js");
 
-module.exports = async ({ client, botUtils }, member) => {
+module.exports = async (client, member) => {
   newError = botUtils.newError;
 // testa agr
   if(member.guild.id != "699823229354639471") return;

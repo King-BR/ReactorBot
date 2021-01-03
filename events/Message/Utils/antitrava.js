@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
+const botUtils = require("../../../utils.js");
 
-module.exports = (client, botUtils, message) => {
+module.exports = (client, message) => {
 
   let canal = client.channels.cache.get("767982805908324411");
   let travas = botUtils.jsonPull("./dataBank/travas.json");

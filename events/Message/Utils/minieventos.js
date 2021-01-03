@@ -1,6 +1,7 @@
 const { Users } = require('../../../database.js');
+const botUtils = require("../../../utils.js");
 
-module.exports = (client, botUtils, message) => {
+module.exports = (client, message) => {
 	newError = botUtils.newError;
 	try {
 		// detecta os mini eventos
@@ -56,7 +57,7 @@ module.exports = (client, botUtils, message) => {
 							return;
 						}
 
-						if (!doc) doc = new User({ _id: message.author.id });
+						if (!doc) doc = new Users({ _id: message.author.id });
 
 						doc.txp += xp;
 						doc.money += money;

@@ -2,8 +2,9 @@ const Discord = require("discord.js");
 const isImageUrl = require("is-image-url");
 const sharp = require('sharp');
 const request = require('request');
+const botUtils = require("../../utils.js");
 
-module.exports = async ({ client, botUtils }, messageReaction, user) => {
+module.exports = async (client, messageReaction, user) => {
   newError = botUtils.newError;
 
   try {
@@ -87,27 +88,41 @@ module.exports = async ({ client, botUtils }, messageReaction, user) => {
 
       return;
     } else if (messageReaction.message.channel.id == '700147119465431050') {
-      if (messageReaction.emoji.toString() != '👍' || messageReaction.me) return;
+      if (messageReaction.users.cache.has(client.user.id)) return;
 
-      let txt = messageReaction.message.content.split(/\s+/)
-      if (txt[0] == 'emoji:' && txt.length == 2 && messageReaction.message.attachments.size) {
-        let url = messageReaction.message.attachments.first().url;
-        request({ url, encoding: null }, (err, resp, buffer) => {
-          if(err) return console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`);
-          sharp(buffer)
-            .rotate()
-            .resize(100)
-            .toBuffer()
-            .then(data => {
-              guild.emojis.create(data, txt[1], { reason: `Em pedido por ${messageReaction.message.author.tag} e aceito por ${user.tag}` })
-                .then(messageReaction.message.react('👍'))
-                .catch(err => console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`))
-            })
-            .catch(err => console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`));
-        });
+      if (messageReaction.emoji.toString() == '👍') {
+        let txt = messageReaction.message.content.split(/\s+/)
+        if (txt[0] == 'emoji:' && txt.length == 2 && messageReaction.message.attachments.size) {
+          let url = messageReaction.message.attachments.first().url;
+          request({ url, encoding: null }, (err, resp, buffer) => {
+            if (err) return console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`);
+            sharp(buffer)
+              .rotate()
+              .resize(100)
+              .toBuffer()
+              .then(data => {
+                guild.emojis.create(data, txt[1], { reason: `Em pedido por ${messageReaction.message.author.tag} e aceito por ${user.tag}` })
+                  .then(messageReaction.message.react('👍'))
+                  .catch(err => console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`))
+              })
+              .catch(err => console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`));
+          });
+        }
+      } else if (messageReaction.emoji.toString() == '🗒️') {
+        botUtils.jsonChange("dataBank/sugestao.json",(sugs) => {
+          sugs.stored.push({
+            author: messageReaction.message.author.id,
+            content: messageReaction.message.content,
+            accepted: user.id,
+            attach: messageReaction.message.attachments.array().map(a => a.url),
+            data: messageReaction.message.createdTimestamp
+          });
+          messageReaction.message.react('🗒️')
+          sugs.stored = sugs.stored.sort((a,b) => a.data-b.data);
+          return sugs;
+        },true);
       }
     }
-
 
     if (messageReaction.emoji.toString() == '⭐' && !messageReaction.me) {
 

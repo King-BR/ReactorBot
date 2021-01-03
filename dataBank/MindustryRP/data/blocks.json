@@ -410,7 +410,7 @@
       "buildCost": {
         "phase_fabric": 24
       }
-    },  
+    },
     "phase_wall": {
       "name": "Parede de fase",
       "solid": true,
@@ -544,9 +544,9 @@
       "size": 1,
       "buildTime": 0.06,
       "buildCost": {
-       "metaglass": 1,
-       "thorium": 1,
-       "plastanium": 1 
+        "metaglass": 1,
+        "thorium": 1,
+        "plastanium": 1
       },
       "power": null,
       "itemCapacity": 4,

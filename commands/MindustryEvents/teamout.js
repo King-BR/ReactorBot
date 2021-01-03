@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: async (client, botUtils, message, args) => {
+  run: async (client, message, args) => {
     newError = botUtils.newError;
 
     try {

@@ -1,6 +1,6 @@
 module.exports = {
-  // Execução do comandoant
-  run: async (client, botUtils, message, args) => {
+  // Execução do comando
+  run: (client, message, args) => {
     /**
      * Placeholder para o modulo Canvas
      * 

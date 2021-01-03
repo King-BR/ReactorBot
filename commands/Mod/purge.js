@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: (client, message, args) => {
     if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
     
     newError = botUtils.newError;

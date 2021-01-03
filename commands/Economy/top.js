@@ -1,9 +1,10 @@
-const fs = require("fs");
 const Discord = require("discord.js");
 const { Users } = require("../../database.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
-  run: async (client, botUtils, message, args) => {
+  // Execução do comando
+  run: async (client, message, args) => {
     newError = botUtils.newError;
 
     try {
@@ -55,9 +56,14 @@ module.exports = {
                 message.channel.send(user._id);
               }
 
-              msg += '**' + last[0] + '.** '
-              msg += user._id == membId ? `**${name}**` : name
-              msg += ': **' + val + '**\n'
+              msg += '**' + last[0] + '.** ';
+              msg += user._id == membId ? `**${name}**` : name;
+
+              if(args[0] && args[0].toLowerCase() == 'lvl') {
+                msg += `: **${levelSystem.level}**\n`;
+              } else {
+                msg += ': **' + val + '**\n';
+              }
             }
           });
 

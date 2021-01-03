@@ -1,3 +1,5 @@
+const botUtils = require("../../../utils.js");
+
 module.exports = (client, botUtils, server, editing) => {
   newError = botUtils.newError;
   try {
@@ -16,7 +18,8 @@ module.exports = (client, botUtils, server, editing) => {
         const resp = (n1 + n2).toString();
 
         return [quest, resp];
-      }, function() { // Shuffle
+      },
+      function() { // Shuffle
 
         const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
         const resp = palavras[Math.floor(Math.random() * palavras.length)];
@@ -35,7 +38,8 @@ module.exports = (client, botUtils, server, editing) => {
         quest = `Desembaralhe a palavra: \`${resp.split(' ').map(s => shuffle(s)).join(' ')}\``;
 
         return [quest, resp.toLowerCase()];
-      }, function() { // Raizes
+      },
+      function() { // Raizes
 
         const power = 2 - Math.ceil(Math.log10(0.5 - Math.random() / 2));
 
@@ -78,34 +82,13 @@ module.exports = (client, botUtils, server, editing) => {
         res = res.slice(2);
 
         return [`Quais são as raízes de \`${res}\``, val];
-      }, function() { // Sistema
+      },
+      function() { // Sistema
         const resp = [Math.floor(Math.random() * 20 - 10), Math.floor(Math.random() * 20 - 10)]
-
-        let str = 'Qual é o valor de `x` e `y` do sistema \n```'
-
-        let mx1 = Math.floor(Math.random() * 3 + 1) * (Math.random() < 0.5 ? -1 : 1)
-        let my1 = Math.floor(Math.random() * 3 + 1) * (Math.random() < 0.5 ? -1 : 1)
-
-        str += `${mx1 < 0 ? '-' : ''}${Math.abs(mx1) == 1 ? '' : Math.abs(mx1)}x `
-        str += `${my1 < 0 ? '-' : '+'} ${Math.abs(my1) == 1 ? '' : Math.abs(my1)}y `
-        str += `= ${mx1 * resp[0] + my1 * resp[1]}\n`
-
-        let mx2;
-        let my2;
-
-        do {
-          mx2 = Math.floor(Math.random() * 3 + 1) * (Math.random() < 0.5 ? -1 : 1)
-          my2 = Math.floor(Math.random() * 3 + 1) * (Math.random() < 0.5 ? -1 : 1)
-
-        } while (mx1 / mx2 == my1 / my2)
-
-        str += `${mx2 < 0 ? '-' : ''}${Math.abs(mx2) == 1 ? '' : Math.abs(mx2)}x `
-        str += `${my2 < 0 ? '-' : '+'} ${Math.abs(my2) == 1 ? '' : Math.abs(my2)}y `
-        str += `= ${mx2 * resp[0] + my2 * resp[1]}\n`
-
-        str += '```'
-        return [str, resp]
-      }, function() { // Error
+        let str = `Qual é o valor de \`x\` e \`y\` do sistema\n\`\`\`\nxy = ${resp[0] * resp[1]}\nx+y = ${resp[0] + resp[1]}\`\`\``
+        return [str, resp];
+      },
+      function() { // Error
         const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
         const resp = palavras[Math.floor(Math.random() * palavras.length)];
         const quant = Math.max(Math.floor((1 - Math.log10(1 - Math.random())) * resp.length / 4), 1);

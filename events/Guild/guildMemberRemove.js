@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
+const botUtils = require("../../utils.js");
 
-module.exports = ({ client, botUtils }, member) => {
+module.exports = async (client, member) => {
   newError = botUtils.newError;
 
   try {

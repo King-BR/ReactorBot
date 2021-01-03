@@ -1,9 +1,10 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const GithubContent = require('github-content');
+const botUtils = require("../../../utils.js");
 
 module.exports = {
-  run: (client, botUtils, message, args, helpers) => {
+  run: (client, message, args, helpers) => {
 
     try {
       // Execução do comando

@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const { Users } = require("../../../database.js");
+const botUtils = require("../../../utils.js");
 
-module.exports = async (client, botUtils, serverState, guild) => {
+module.exports = async (client, serverState, guild) => {
   newError = botUtils.newError;
   try {
 
@@ -14,12 +15,12 @@ module.exports = async (client, botUtils, serverState, guild) => {
       .then(message => {
 
         let msg = '';
-        Users.find({}).sort({"levelSystem.txp": -1}).limit(10).exec( (err, users) => {
+        Users.find({}).sort({"txp": -1}).limit(10).exec( (err, users) => {
           users.forEach((u,i) => {
             let member = message.guild.members.cache.get(u._id);
             embed.addField(
               `**${i+1}. ${member ? member.displayName : "Desconhecido"}:**`,
-              `lvl${u.levelSystem.level}. ${u.money}$`);
+              `lvl ${botUtils.getLevel(u.txp).level}. ${u.money}$`);
           });
           message.edit(embed)
         });

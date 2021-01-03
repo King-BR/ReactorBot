@@ -1,8 +1,9 @@
 const config = require('../../config.json');
 const Discord = require('discord.js');
+const botUtils = require("../../utils.js");
 prefix = config.prefix;
 
-module.exports = async ({ client, botUtils }, message) => {
+module.exports = async (client, message) => {
 	newError = botUtils.newError;
 
 	try {
@@ -11,7 +12,7 @@ module.exports = async ({ client, botUtils }, message) => {
 		let args = messageArray.slice(1);
 
 		// Ignora mensagens na dm, mas retorna um evento
-		if (message.channel.type === 'dm') return require('./Utils/correio.js')(client, botUtils, message, args);
+		if (message.channel.type === 'dm') return require('./Utils/correio.js')(client, message, args);
 
 		// Ignora mensagens de bot
 		if (message.author.bot) return;
@@ -35,19 +36,19 @@ module.exports = async ({ client, botUtils }, message) => {
 		// Utils
 		if (message.channel.id == '768238015830556693') {
 			// #mini-events
-			return require('./Utils/minieventos.js')(client, botUtils, message);
+			return require('./Utils/minieventos.js')(client, message);
 		} else if (message.channel.id == '756587320140103690') {
 			// #mudae-comécio
-			return require('./Utils/mudae.js')(client, botUtils, message);
+			return require('./Utils/mudae.js')(client, message);
 		} else if (['700147119465431050','737292005465391194'].includes(message.channel.id)) {
 			// #sugestão
-			return require('./Utils/sugestao.js')(client, botUtils, message);
+			return require('./Utils/sugestao.js')(client, message);
 		}
 
 		// Anti trava discord
-		require('./Utils/antitrava.js')(client, botUtils, message);
+		require('./Utils/antitrava.js')(client, message);
 		// Spam detector
-		//require('./Utils/spamdetect.js')(client, botUtils, message);
+		//require('./Utils/spamdetect.js')(client, message);
 
 		// tudo oq n possui prefixo é ignorado
 		if (!message.content.startsWith(prefix)) return;
@@ -57,7 +58,7 @@ module.exports = async ({ client, botUtils }, message) => {
 			client.commands.get(cmd.slice(prefix.length)) ||
 			client.commands.get(client.aliases.get(cmd.slice(prefix.length)));
 
-		if (commandfile) commandfile.run(client, botUtils, message, args);
+		if (commandfile) commandfile.run(client, message, args);
 	} catch (err) {
 	  let IDs = {
 			server: message.guild.id,

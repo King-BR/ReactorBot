@@ -1,5 +1,8 @@
-module.exports = ({ client, botUtils }) => {
+const botUtils = require("../../utils.js");
+
+module.exports = (client) => {
   newError = botUtils.newError;
+
   try {
     const guild = client.guilds.cache.get("699823229354639471");
 
@@ -16,9 +19,9 @@ module.exports = ({ client, botUtils }) => {
     }, true);
 
     // Reactor reaction
-    require('./utils/reactionRole')(client, botUtils, guild)
+    require('./utils/reactionRole')(client, guild)
     // Delete propostas
-    require('./utils/deleteProp')(client, botUtils, guild)
+    require('./utils/deleteProp')(client, guild)
 
     //atividade do bot
     client.user.setActivity("!ajuda para a lista de comandos", { type: "WATCHING" });
@@ -54,7 +57,7 @@ module.exports = ({ client, botUtils }) => {
         if (server.nextMiniquiz < d.getTime()) {
 
           //pega as respostas e o tipo do evento
-          const ret = require("./utils/minievents.js")(client, botUtils, server);
+          const ret = require("./utils/minievents.js")(client, botUtils, server, editing);
           if ( ret) {
           server.eventType = ret[1];
           server.eventWin = ret[0];

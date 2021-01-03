@@ -1,51 +1,27 @@
 const Discord = require("discord.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: (client, message, args) => {
     newError = botUtils.newError;
 
     try {
       // Codigo do comando
       if (message.channel.id != "729230699416125440") return message.reply("não estrague minha surpresa :P\nuse no teste-bot");
-      
+
 
       const funcs = [
         function() {
-          const palavras = botUtils.jsonPull('./dataBank/textSaves.json').quizWords;
-          const resp = palavras[Math.floor(Math.random() * palavras.length)];
-          const quant = Math.floor((1-Math.log10(1 - Math.random()))*resp.length/4);
-
-          const mutate = (str) => {
-
-            let op = Math.floor(Math.random() * 3)
-            let letter = Math.floor(Math.random() * 26 + 10).toString(36)
-            let arr = quest.split("");
-
-            if (op == 0) {
-              arr.splice(Math.random() * arr.length, 1, letter);
-            } else if (op == 1) {
-              arr.splice(Math.random() * arr.length, 0, letter);
-            } else if (op == 2) {
-              arr.splice(Math.random() * arr.length, 1);
-            }
-
-            return arr.join("");
-          }
-
-          let quest = resp
-
-          for (let i = 0; i < quant; i++) {quest = mutate(quest)}
-
-          quest = `Deu um erro no arquivo(${quant}x), descubra a palavra:\`${quest}\``
-
-          return [quest, resp.toLowerCase()];
+          const resp = [Math.floor(Math.random() * 20 - 10), Math.floor(Math.random() * 20 - 10)]
+          let str = `Qual é o valor de \`x\` e \`y\` do sistema\n\`\`\`\nxy = ${resp[0]*resp[1]}\nx+y = ${resp[0]+resp[1]}\`\`\``
+          return [str,resp];
         }
       ]
 
       let times = parseInt(args[0])
-      times = (!isNaN(times) && times > 0)? times : 1
-      
+      times = (!isNaN(times) && times > 0) ? times : 1
+
       for (let i = 0; i < times; i++) {
         const quest = funcs[0]()
 

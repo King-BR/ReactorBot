@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const fs = require("fs");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: (client, message, args) => {
     newError = botUtils.newError;
 
     if (message.author.id != "375462796697010176") return message.channel.send("Só o king pode usar");

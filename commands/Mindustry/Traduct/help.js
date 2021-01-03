@@ -1,8 +1,9 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const botUtils = require("../../../utils.js");
 
 module.exports = {
-  run: (client, botUtils, message, args, helpers) => {
+  run: (client, message, args, helpers) => {
 
     try {
       // Execução do comandosfa

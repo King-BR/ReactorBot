@@ -1,10 +1,11 @@
 const Discord = require("discord.js");
 const format = require("date-fns/format");
 const { Users } = require("../../database.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: async (client, botUtils, message, args) => {
+  run: (client, message, args) => {
     newError = botUtils.newError;
 
     try {
@@ -19,7 +20,8 @@ module.exports = {
           embed.setTitle('Ajuda');
           embed.addField('mutados', 'lista de quem foi mutado, envie `!lista mutados <nome>` para mais informações de tal pessoa');
           embed.addField('banidos', 'lista de quem foi banido, envie `!lista banidos <nome>` para mais informações de tal pessoa');
-          embed.addField('gays', 'lista de quem é mais gay');
+          embed.addField('avisados', 'lista de quem levou warn');
+          embed.addField('sugestões', 'lista de sugestões anotadas por adms');
           message.channel.send(embed)
           break;
         } case 'mutados': {
@@ -45,7 +47,7 @@ module.exports = {
           break;
         } case 'avisados': {
           embed.setTitle('Avisados');
-          Users.find({"warn.quant": { $gt: 0 }}).sort({"warn.quant": -1}).exec((err, doc) => {
+          Users.find({ "warn.quant": { $gt: 0 } }).sort({ "warn.quant": -1 }).exec((err, doc) => {
             if (err) {
               console.log(err);
               return;
@@ -53,35 +55,65 @@ module.exports = {
 
             doc.forEach(user => {
               const member = client.users.cache.get(user._id);
-              embed.addField(member?member.tag:user._id,user.warn.quant + " Warns",true);
+              embed.addField(member ? member.tag : user._id, user.warn.quant + " Warns", true);
             });
             message.channel.send(embed);
 
           });
+          break;
+        } case 'sugestões': {
+          sug = botUtils.jsonPull('dataBank/sugestao.json').stored
+          let pos = args.shift()
+          if (pos) {
+            if (isNaN(pos)) return message.reply("O argumento informado precisa ser um numero")
+            pos = parseInt(pos)
+            if (pos < 0 || pos >= sug.length) return message.reply(`O número precisa estar entre 0 e ${sug.length - 1}`)
+            let embed = new Discord.MessageEmbed()
+              .setTitle(`Sugestão`)
+              .setColor("RANDOM")
+              .setDescription(sug[pos].content);
+            let author = client.guilds.cache.get("699823229354639471").members.cache.get(sug[pos].author)
+            if (author) embed.setAuthor(author.displayName, author.user.avatarURL());
+            return message.channel.send(embed)
+          }
+
+          botUtils.createPage(message.channel, Math.ceil(sug.length / 10), (page) => {
+            let embed = new Discord.MessageEmbed()
+              .setTitle(`${page}/${Math.ceil(sug.length / 10)} páginas de sugestões`)
+              .setColor("RANDOM")
+              .setTimestamp()
+              .setDescription(sug.map((s, i) => {
+                let author = client.guilds.cache.get("699823229354639471").members.cache.get(s.author)
+                return `${i}. **${author ? author.displayName : s.author}**: ${botUtils.formatDate(new Date(s.data), true)}`
+              }));
+
+            return embed
+          })
+          break;
         }
       }
 
-      } catch (err) {
-        let embed = new Discord.MessageEmbed()
-          .setTitle("Erro inesperado")
-          .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
-        message.channel.send(embed);
+    } catch (err) {
+      let embed = new Discord.MessageEmbed()
+        .setTitle("Erro inesperado")
+        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+      message.channel.send(embed);
 
-        let IDs = {
-          server: message.guild.id,
-          user: message.author.id,
-          msg: message.id
-        }
-        console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
+      let IDs = {
+        server: message.guild.id,
+        user: message.author.id,
+        msg: message.id
       }
-    },
-
-    // Configuração do comando
-    config: {
-      name: "lista",
-        aliases: [],
-          description: "Mostra a lista de varias coisas, escreva `!lista help` para mais informações",
-            usage: "!lista <opção>",
-              accessableby: "Membros"
+      console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);
     }
+  },
+
+  // Configuração do comando
+  config: {
+    name: "lista",
+    aliases: [],
+    description: "Mostra a lista de varias coisas, escreva `!lista help` para mais informações",
+    usage: "!lista <opção>",
+    accessableby: "Membros"
   }
+}

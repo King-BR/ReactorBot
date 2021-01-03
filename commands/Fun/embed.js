@@ -1,11 +1,13 @@
 const Discord = require("discord.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
-  run: async (client, botUtils, message, args) => {
+  // Execução do comando
+  run: (client, message, args) => {
 
     try {
       
-      if (args[0] == 'help') return message.channel.send({embed:{description:'"description":<texto>\n"""'}});
+      if (args[0] == 'help') return message.channel.send({embed:{description:'"description":"<texto>"'}});
 
       let msg = /`{3,}(.+)`{3,}/i.exec(message.content)
 

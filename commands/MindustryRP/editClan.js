@@ -2,10 +2,11 @@ const Discord = require("discord.js");
 const { Clans } = require("../../database.js");
 const isImageUrl = require("is-image-url");
 const { prefix } = require("../../config.json");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: (client, message, args) => {
     newError = botUtils.newError;
 
     try {

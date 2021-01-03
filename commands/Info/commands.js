@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const fs = require("fs");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: (client, message, args) => {
     newError = botUtils.newError;
 
     try {
@@ -74,7 +75,7 @@ module.exports = {
     name: "commands",
     aliases: ['comandos','cmds'],
     description: "Fala sobre uma categoria com mais detalhes",
-    usage: "uso",
-    accessableby: "Comandos"
+    usage: "commands [nome da categoria]",
+    accessableby: "Membros"
   }
 }

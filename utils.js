@@ -29,7 +29,7 @@ function generateErrorID(fileName = "null", IDs = { server: 0, user: 0, msg: 0 }
 module.exports = {
 
   //--------------------------------------------------------------------------------------------------//
-  // Chalk config
+  //#region Chalk config
 
   chalkClient: {
     chalk: chalk,
@@ -38,8 +38,9 @@ module.exports = {
     ok: chalk.bold.green
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Mix utils
+  //#region Mix utils
 
   /**
    * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
@@ -163,10 +164,11 @@ module.exports = {
 
   /**
    * Retorna uma pagina
-   * @param channel {Channel} o canal onde vai ser enviado 
-   * @param size {Number} quantidade de paginas
-   * @param func {Function} a função realizada por pagina 
+   * @param {TextChannel} channel - o canal onde vai ser enviado 
+   * @param {Number} size - quantidade de paginas
+   * @param {Callback} Callback - a função realizada por pagina 
    */
+
   createPage: (channel, size, func) => {
     let page = 1;
 
@@ -203,6 +205,7 @@ module.exports = {
 
   },
 
+
   /**
    * @param txp {Number} Total de xp do usuario
    * @returns {Object}
@@ -231,8 +234,9 @@ module.exports = {
 
     return levelSystem;
   },
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Clan utils
+  //#region Clan utils
 
   /**
    * Gera um ID para o clã
@@ -245,8 +249,9 @@ module.exports = {
     return clanID.slice(0, 10);
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Handler utils
+  //#region Handler utils
 
   /**
    * Checa se o caminho fornecido é uma pasta/diretorio
@@ -262,8 +267,9 @@ module.exports = {
     }
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Error handler utils
+  //#region Error handler utils
 
   /**
    * Cria o log de um novo erro
@@ -346,8 +352,9 @@ module.exports = {
     return;
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Canvas utils
+  //#region Canvas utils
 
   /**
    * @param red {Number}
@@ -469,8 +476,9 @@ module.exports = {
     }
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Math utils
+  //#region Math utils
 
   /**
    * Transforma um numero entre 0 e 1 em outro entre o minimo e maximo informado
@@ -483,8 +491,9 @@ module.exports = {
     return (max - min) * norm + min
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Json utils
+  //#region Json utils
 
   /**
    * transforma um objeto em um .json
@@ -538,8 +547,9 @@ module.exports = {
     };
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Rewarding system utils
+  //#region Rewarding system utils
 
   userGive: (userID, toAdd, errFileName = '???') => {
     //criando função de erro
@@ -589,8 +599,9 @@ module.exports = {
     });
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Level system utils
+  //#region Level system utils
 
   /**
    * Configuração do sistema de level
@@ -626,8 +637,9 @@ module.exports = {
     return;
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Mindustry utils
+  //#region Mindustry utils
 
   /**
    * Pegar schema
@@ -772,4 +784,6 @@ module.exports = {
 
     return result
   }
+
+  //#endregion
 }

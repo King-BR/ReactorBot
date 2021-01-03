@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const { Users } = require("../../database.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: (client, message, args) => {
     if (!botUtils.isDev(message.author.id)) return message.channel.send("Voce não tem permissão para executar esse comando");
 
     newError = botUtils.newError;

@@ -1,8 +1,10 @@
 const fs = require("fs");
 const Discord = require("discord.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
-    run: async (client, botUtils, message, args) => {
+  // Execução do comando
+  run: (client, message, args) => {
 
         newError = botUtils.newError;
         isDir = botUtils.isDir;

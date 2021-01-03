@@ -1,9 +1,11 @@
 const fs = require("fs");
 const Discord = require("discord.js");
 const { Users } = require("../../database.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
-  run: async (client, botUtils, message, args) => {
+  // Execução do comando
+  run: (client, message, args) => {
     if (!message.member.roles.cache.has('755604380295757824')) return message.reply("Você n é membro da STAFF");
 
     // if (!botUtils.isDev(message.author.id)) return message.reply("Comando indisponivel por enquanto, use o `!moneyadd`");

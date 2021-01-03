@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const { Users, Clans } = require("../../database.js");
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: (client, message, args) => {
     newError = botUtils.newError;
 
     try {

@@ -1,0 +1,25 @@
+{
+  "stored": [
+    {
+      "author": "313394454323003402",
+      "content": "mudar o link no comentario fixado em <#700103914703290418> (mindustrygame.github.io/wiki/modding/), o link atualizou na v6 para  mindustrygame.github.io/wiki/modding/1-modding/",
+      "accepted": "291693225411084289",
+      "attach": [],
+      "data": 1608594918572
+    },
+    {
+      "author": "318399612060696576",
+      "content": "**Sugestão:** Mudar o nome do <@699824957118611569> pra \"Reactor\" apenas\n**Motivo:** A tagizinha do lado dos bot já complementa o nome dele, além disso ficaria mais parecido com o Core bot do server oficial",
+      "accepted": "291693225411084289",
+      "attach": [],
+      "data": 1608942012902
+    },
+    {
+      "author": "291693225411084289",
+      "content": "**Sugestão:** criar o comando `!infoschem`, com ele você consegue todas as informações de sua schematic (energia consumindo,energia gerando,custo de criação, produção de itens, consumo de itens, energia armazenada,eficiência de proporção, eficiência de espaço)\n\n**Motivo de estar escrevendo aqui:**to só anotando pra não esquecer dps :P",
+      "accepted": "291693225411084289",
+      "attach": [],
+      "data": 1609400432148
+    }
+  ]
+}

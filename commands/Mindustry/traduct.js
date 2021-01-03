@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const GithubContent = require('github-content');
+const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, botUtils, message, args) => {
+  run: (client, message, args) => {
 
     newError = botUtils.newError;
 
@@ -28,7 +28,7 @@ module.exports = {
         return t.slice(0,-3) == cmd.toLowerCase() || aliases[t.slice(0,-3)] && aliases[t.slice(0,-3)].includes(cmd.toLowerCase())
       }):'help.js';
       if (!file) return message.reply('Seu comando n foi achado')
-      require('./Traduct/'+file).run(client,botUtils,message,args,helpers)
+      require('./Traduct/'+file).run(client,message,args,helpers)
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

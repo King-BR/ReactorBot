@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
+const botUtils = require("../../../utils.js");
 
-module.exports = (client, botUtils, message) => {
+module.exports = (client, message) => {
   newError = botUtils.newError;
   try {
     if ((message.content.match(/\n/g) || []).length < 3) {

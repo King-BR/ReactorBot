@@ -1,5 +1,6 @@
 module.exports = {
-	run: async (client, botUtils, message, args) => {
+  // Execução do comando
+  run: async (client, message, args) => {
 		const m = await message.channel.send('Ping?');
 		m.edit(
 			`Pong! A latência é ${m.createdTimestamp - message.createdTimestamp}ms.`

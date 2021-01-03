@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
+const botUtils = require("../../../utils.js");
 
-module.exports = (client, botUtils, message, args) => {
+module.exports = (client, message, args) => {
   newError = botUtils.newError;
   try {
     let messageArray = message.content.split(/ +/);

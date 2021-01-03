@@ -1,11 +1,12 @@
 const Discord = require("discord.js");
 const config = require("../../config.json");
 const fs = require("fs");
-
+const botUtils = require("../../utils.js");
 prefix = config.prefix;
 
 module.exports = {
-  run: (client, botUtils, message, args) => {
+  // Execução do comando
+  run: (client, message, args) => {
     newError = botUtils.newError;
     isDir = botUtils.isDir;
 
@@ -17,7 +18,7 @@ module.exports = {
         if (client.commands.has(command) || client.commands.get(client.aliases.get(command))) {
           command = client.commands.get(command) || client.commands.get(client.aliases.get(command));
                     
-          let aliases = command.config.noalias;
+          let aliases = command.config.noalias || "Sem aliases";
           if(command.config.aliases.length > 0) aliases = command.config.aliases.join(", ");
 
           let embed = new Discord.MessageEmbed()
@@ -30,6 +31,8 @@ module.exports = {
             .addField(`Sinônimos:`,`${aliases}`)
             .setFooter(`Requisitado por: ${message.author.tag}`);
           message.channel.send(embed);
+        } else {
+          message.channel.send("Comando não encontrado");
         }
         return;
       }
