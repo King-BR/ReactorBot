@@ -1,10 +1,8 @@
 const Discord = require("discord.js");
+const botUtils = require("../../../utils.js");
 
-
-//fica mais prático pra mudar dps
 module.exports = {
-  // Execução do comando
-  run: (client, botUtils, message, result, imageExists, args) => {
+  run: async (client, message, result, imageExists, args) => {
     newError = botUtils.newError;
 
     try {

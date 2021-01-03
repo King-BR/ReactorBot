@@ -1,8 +1,9 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const download = require('download');
+const botUtils = require("../../../utils.js");
 
-module.exports = async (client, botUtils, message, base) => {
+module.exports = async (client, message, base) => {
   newError = botUtils.newError;
   try {
     let schema = botUtils.mndGetScheme(base);

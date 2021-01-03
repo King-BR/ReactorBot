@@ -1,8 +1,9 @@
 const config = require('../../config.json');
 const Discord = require('discord.js');
 prefix = config.prefix;
+const botUtils = require("../../utils.js");
 
-module.exports = async ({ client, botUtils }, message) => {
+module.exports = (client, message) => {
   newError = botUtils.newError;
 
   try {
@@ -26,8 +27,8 @@ module.exports = async ({ client, botUtils }, message) => {
 
     // detecta schematicas
     let schem = message.attachments.find(a => a.name.endsWith(".msch"));
-    if (schem) return require("./Utils/scheme.js")(client, botUtils,message,schem);
-    if(!require("./Utils/schemeMes.js")(client, botUtils,message,message.content)) return;
+    if (schem) return require("./Utils/scheme.js")(client, message, schem);
+    if(!require("./Utils/schemeMes.js")(client, message, message.content)) return;
     
     // tudo oq n possui prefixo é ignorado
     if (!message.content.startsWith(prefix)) return;
@@ -37,7 +38,7 @@ module.exports = async ({ client, botUtils }, message) => {
       client.commands.get(cmd.slice(prefix.length)) ||
       client.commands.get(client.aliases.get(cmd.slice(prefix.length)));
 
-    if (commandfile) commandfile.run(client, botUtils, message, args);
+    if (commandfile) commandfile.run(client, message, args);
   } catch (err) {
     let IDs = {
       server: message.channel.id,

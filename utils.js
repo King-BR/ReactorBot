@@ -32,12 +32,13 @@ function generateErrorID(fileName = "null", IDs = { server: null, user: null, ms
   return errorID;
 }
 
+
 //--------------------------------------------------------------------------------------------------//
 // Exports
 module.exports = {
 
   //--------------------------------------------------------------------------------------------------//
-  // Chalk config
+  //#region Chalk config
 
   chalkClient: {
     chalk: chalk,
@@ -46,8 +47,9 @@ module.exports = {
     ok: chalk.bold.green
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Mix utils
+  //#region Mix utils
 
   /**
    * Checa se o usuario do ID fornecido faz parte do time de desenvolvedores
@@ -76,8 +78,9 @@ module.exports = {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Handler utils
+  //#region Handler utils
 
   /**
    * Checa se o caminho fornecido é uma pasta/diretorio
@@ -93,8 +96,9 @@ module.exports = {
     }
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Error handler utils
+  //#region Error handler utils
 
   /**
    * Cria o log de um novo erro
@@ -313,8 +317,9 @@ module.exports = {
     }
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Math utils
+  //#region Math utils
 
   /**
    * Transforma um numero entre 0 e 1 em outro entre o minimo e maximo informado
@@ -327,8 +332,9 @@ module.exports = {
     return (max - min) * norm + min
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Json utils
+  //#region Json utils
 
   /**
    * transforma um objeto em um .json
@@ -383,8 +389,9 @@ module.exports = {
     };
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Rewarding system utils
+  //#region Rewarding system utils
 
   userGive: (userID, money = 0, xp = 0, fileName = '???') => {
     //criando função de erro
@@ -434,31 +441,136 @@ module.exports = {
     });
   },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Schematics utils
+  //#region Schematics utils
 
   /**
    * Transforma um Json em um base64 de schema
    */
 
   mndJsonToScheme: (schema) => {
-
-    // Escreve os Tamanhos
-      //Escreve a largura
-      //Escreve a altura
     
-    // Escreve as tags
-      //Escreve a altura
+    // Constantes
 
-    // Escreves os nomes
-    
-    // Escreves os blocos
-      //Escreve o tipo
-      //Escreve a posição
-      //Escreve a config
-      //Escreve a rotação
-    
+    const block = new module.exports.StreamStructure("byte", "short", "short", "byte", "buffer", "byte")
+    const schem = new module.exports.StreamStructure(
+      "short", // Largura
+      "short", // Altura
+      "string[1][]", // Tags
+      "string[1]", // nomes
+      "block[4]" // blocos
+    ).setType("block",block);
 
+    const config = (type,val) => {
+      switch (type) {
+        case 0: return null;
+        case 1: {
+          let buffer = Buffer.alloc(4)
+          buffer.writeInt32BE(val)
+          return buffer;
+        };
+        case 2: {
+          let buffer = Buffer.alloc(8)
+          buffer.writeBigInt64BE(val);
+          return
+        }
+        case 3: {
+          let buffer = Buffer.alloc(4)
+          buffer.writeFloatBE(val);
+          return
+        }
+        case 4: {
+          let buffer = Buffer.alloc(Buffer.byteLength(val)+3);
+          buffer.writeInt8(val?1:0,0);
+          buffer.writeInt16BE(Buffer.byteLength(val),1);
+          buffer.write(val,3);
+          return buffer
+        }
+        case 5: {
+          let content = module.exports.jsonPull('./dataBank/mindustryContent.json');
+          let buffer = Buffer.alloc(3);
+          let type = ['item', null, null, null, 'liquid'].indexOf(val.type)
+          if(type == -1) type = 0;
+          buffer.writeInt8(type,0);
+          let item = constent[['item', null, null, null, 'liquid'][type]].findIndex(n => n.name == val.name);
+          if(item == -1) item = 0;
+          buffer.writeInt16BE(item,1);
+          return buffer;
+        }
+        case 6: {
+          let buffer = Buffer.alloc(3);
+          buffer.writeUInt16BE(val.length)
+          val.forEach((v,i) => {buffer.writeInt32BE(v,i*4+2)})
+          return buffer
+        }
+        case 7: {
+          let buffer = Buffer.alloc(8);
+          buffer.writeInt32BE(val[0])
+          buffer.writeInt32BE(val[1])
+          return buffer
+        }
+        case 8: {
+          let buffer = Buffer.alloc(val.length*4+1);
+          buffer.writeInt8(val.length);
+          val.forEach((v,i) => {buffer.writeInt16BE(v[0]);buffer.writeInt16BE(v[1])})
+          return buffer;
+        }
+        case 10: {
+          let buffer = Buffer.alloc(1)
+          buffer.writeInt8(val)
+          return buffer
+        }
+        case 11: {
+          let buffer = Buffer.alloc(8)
+          buffer.writeDoubleBE(val)
+          return buffer
+        }
+        case 14: {
+          let buffer = Buffer.alloc(4+val.length);
+          buffer.writeInt32BE(val.length);
+          if(Buffer.isBuffer(val)) val = [...val];
+          val.forEach((v,i) => {buffer.writeUInt8(v,i+4)});
+          return buffer;
+        }
+        case 15: {
+          let buffer = Buffer.alloc(1)
+          buffer.writeInt8(val)
+          return buffer
+        }
+        default: throw new Error("Tipo de config não registrado")
+      }
+    }
+
+    // Detectar entradas invalidas
+    if (isNaN(schema.width) || parseInt(schema.width) < 1) throw new Error("Invalid width")
+    if (isNaN(schema.height) || parseInt(schema.height) < 1) throw new Error("Invalid height")
+
+    // Transformar
+    schema.blocks = schema.blocks.map(v => {
+      let end = []
+      end.push(v.type || 0);
+      end.push(v.position[0] || 0);
+      end.push(v.position[1] || 0);
+      end.push(v.configt || 0);
+      end.push(config(v.configt || 0,v.config));
+      end.push(v.rotation || 0);
+      return end;
+    })
+
+    let buffer = schem.toBuffer(
+      schema.width || 1,
+      schema.height|| 1,
+      schema.tags ? Object.entries(schema.tags) : [["name","nameless"]],
+      schema.names || [],
+      schema.blocks || []
+    )
+
+    let prefix = Buffer.alloc(5)
+    prefix.write("msch",0)
+    prefix.writeInt8(1,4)
+
+    return Buffer.concat([prefix,zlib.deflateSync(buffer)]).toString("base64")
   },
 
   mndGetScheme: (binarySchem) => {
@@ -533,7 +645,7 @@ module.exports = {
     let bits;
 
     try {
-      let i = ['m', 's', 'c', 'h', "\01"].findIndex((v,i) => v.toString().charCodeAt() != text[i]);
+      let i = ['m', 's', 'c', 'h', "\01"].findIndex((v, i) => v.toString().charCodeAt() != text[i]);
 
       if (i >= 0) return Math.floor(i / 4);
 
@@ -590,6 +702,9 @@ module.exports = {
     return result
   },
 
+  /**
+   * @param schema {Schema}
+   */
   schemeToCanvas: async (schema) => {
 
     // Constantes
@@ -632,8 +747,8 @@ module.exports = {
 
       for (let x = -Math.floor((size - 1) / 2); x <= Math.floor(size / 2); x++) {
         for (let y = -Math.floor((size - 1) / 2); y <= Math.floor(size / 2); y++) {
-          x = Math.min(Math.max(block.position[0] + x,0),schema.width-1)
-          y = Math.min(Math.max(block.position[1] + y,0),schema.height-1)
+          x = Math.min(Math.max(block.position[0] + x, 0), schema.width - 1)
+          y = Math.min(Math.max(block.position[1] + y, 0), schema.height - 1)
           schema.memory[x][y] = id;
         }
       }
@@ -718,7 +833,8 @@ module.exports = {
         draw(ctx, atlas[objName + (obj.config > 0 ? '-open' : '')], obj.position[0], obj.position[1])
       } else { //Block itself
 
-        //console.log(obj.config)
+        //console.log(objName)
+        if(objName == "micro-processor") console.log(zlib.inflateSync(Buffer.from(obj.config)))
         draw(ctx, atlas[objName], obj.position[0], obj.position[1], cons.ROTATE.includes(objName) ? -obj.rotation : 0);
       }
     })
@@ -816,43 +932,143 @@ module.exports = {
     if (schema.crafterSize) embed.addField("Eficiência de espaço", Math.floor(schema.crafterSize * 10000) / 100 + "%");
 
     message.channel.send(embed).then(msg => msg.react('📪'));
-  }
+  },
 
+  //#endregion
   //--------------------------------------------------------------------------------------------------//
-  // Level system utils
+  //#region Class
 
   /**
-   * Configuração do sistema de level
-   * @param [XPconfig] {Object} Opções do sistema de level
-   * @param [XPconfig.modPerLVL=1.2] {Number} Modificador da quantidade de XP por level
-   * @param [XPconfig.maxLVL=50] {Number} Level maximo
-   * @param [XPconfig.defaultXPnextLVL=500] {Number} Quantidade padrao para upar de level
-   * @returns {void}
-   *
-  setupXPconfig: (XPconfig = { modPerLVL: 1.2, maxLVL: 50, defaultXPnextLVL: 500 }) => {
-    if (!fs.existsSync("./dataBank")) fs.mkdirSync("./dataBank");
-    if (!fs.existsSync("./dataBank/levelSystem.json")) fs.writeFileSync("./dataBank/levelSystem.json", "[]", { encoding: "utf8" });
+   * @class
+   */
+  StreamStructure: class StreamStructure {
 
-    let XPdataArray = [];
-    let txp = XPconfig.defaultXPnextLVL;
-    let XPNextLevel = XPconfig.defaultXPnextLVL;
-
-    for (let i = 1; i <= XPconfig.maxLVL; i++) {
-      XPdataArray.push({
-        lvl: i,
-        txp: txp,
-        XPNextLevel: XPNextLevel
+    /**
+     * Cria um nova instancia
+     * @param arr {String[]} json
+     */
+    constructor() {
+      Array.from(arguments).some(v => {
+        if (typeof v != "string") throw new Error(`Foi esperado uma string porem foi enviado um (${typeof v})`);
+        if (!(/^[a-z]+(?:\[[0-68]?\])*$/i.test(v))) throw new Error(`Foi enviado um tipo inesperado (${v.toString()})`);
       });
-
-      XPNextLevel = Math.round(XPNextLevel * XPconfig.modPerLVL);
-      txp += XPNextLevel;
+      this.struct = Array.from(arguments);
+      this.types = {};
     }
 
-    //console.log(XPdataArray);
+    /**
+     * Transforma em buffer
+     * 
+     * @returns {Buffer}
+     */
+    toBuffer() {
 
-    if (JSON.stringify(module.exports.jsonPull("./dataBank/levelSystem.json")) == JSON.stringify(XPdataArray)) return;
-    fs.writeFileSync("./dataBank/levelSystem.json", JSON.stringify(XPdataArray), { encoding: "utf8" });
-    return;
+      let size = 0;
+      let gettingSize = true;
+      const reg1 = /^([a-z]+)((?:\[[0-68]?\])*)$/i
+      const reg2 = /^\[([0-68]?)\]((?:\[[0-68]?\])*)$/i
+
+      const getSize = (type, layer, val, func) => {
+        
+        if (val === undefined) throw new Error(`O valor inserido do tipo "${type}" esta vazio`)
+
+        if (layer) {
+
+          if (!Array.isArray(val)) throw new Error(`Ò valor experado era uma Array mas foi recebido uma ${typeof val}`)
+
+          let times = val.length;
+          let number = parseInt(reg2.exec(layer)[1] || 0);
+          if(gettingSize){
+            size += number;
+          } else {
+            if(number) index = bits.writeIntBE(times,index,number);
+          }
+          layer = reg2.exec(layer)[2];
+
+          for (let i = 0; i < times; i++) {
+            getSize(type, layer, val[i], func)
+          }
+
+        } else if (this.types[type]) {
+
+          if (!Array.isArray(val)) throw new Error(`Ò valor experado era uma Array mas foi recebido uma ${typeof val}`)
+
+          this.types[type].forEach((v, i) => {
+
+            let type = reg1.exec(v)[1]
+            let layers = reg1.exec(v)[2]
+
+            getSize(type, layers, val[i], func)
+          });
+
+        } else {
+
+          func(type, val)
+        }
+      }
+
+      this.struct.forEach((v, i) => {
+
+        let type = reg1.exec(v)[1]
+        let layers = reg1.exec(v)[2]
+
+        getSize(type, layers, arguments[i], (type, val) => {
+          switch (type) {
+            case "byte": size += 1; break;
+            case "short": size += 2; break;
+            case "int": size += 4; break;
+            case "long": size += 8; break;
+
+            case "string": size += 2 + Buffer.byteLength(val); break;
+            case "buffer": size += val ? val.length : 0; break;
+
+            default: throw new Error(`Tipo desconhecido (${type})`)
+          }
+        })
+      });
+      
+      gettingSize = false;
+      let bits = Buffer.alloc(size);
+      let index = 0;
+
+      this.struct.forEach((v, i) => {
+
+        let type = reg1.exec(v)[1]
+        let layers = reg1.exec(v)[2]
+
+        getSize(type, layers, arguments[i], (type, val) => {
+          switch (type) {
+            case "byte": index = bits.writeInt8(val, index); break;
+            case "short": index = bits.writeInt16BE(val, index); break;
+            case "int": index = bits.writeInt32BE(val, index); break;
+            case "long": index = bits.writeBigInt64BE(val, index); break;
+
+            case "buffer": index += val ? val.copy(bits, index) : 0; break;
+            case "string": {
+              index = bits.writeInt16BE(Buffer.byteLength(val), index);
+              index += bits.write(val, index);
+              break;
+            }
+          }
+        })
+
+      });
+
+      return bits;
+    }
+
+    /**
+     * Cria um novo tipo de variavel para ser salva
+     * @param {string} nome - Nome do tipo a ser salvo 
+     * @param {StreamStructure} tipo - A estrutura a ser salva no local 
+     */
+    setType(name, struct) {
+      const reg = /^([a-z]+)(?:\[[0-68]?\])*$/i
+
+      if(struct.struct.map(v => reg.exec(v)[1]).includes(name)) throw new Error("Foi detectado uma Call recursiva infinita");
+      this.types[name] = struct.struct;
+      return this;
+    }
   }
-  */
+  //#endregion
 }

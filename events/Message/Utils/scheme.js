@@ -1,8 +1,9 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const download = require('download');
+const botUtils = require("../../../utils.js");
 
-module.exports = async (client, botUtils, message, file, isSchem) => {
+module.exports = async (client, message, file, isSchem) => {
   newError = botUtils.newError;
   try {
     let base = (await download(file.attachment)).toString("base64");

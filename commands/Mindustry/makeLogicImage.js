@@ -2,15 +2,14 @@ const Discord = require("discord.js");
 const Canvas = require("canvas");
 const imageExists = require('is-image-url');
 const zlib = require("zlib");
+const botUtils = require("../../utils.js");
 
 module.exports = {
-  // Execução do comando
-  run: async (client, botUtils, message, args) => {
+  run: async (client, message, args) => {
     newError = botUtils.newError;
 
     try {
       // Codigo do comando
-
       let start = new Date().getTime();
       let imagem = message.attachments.size ? message.attachments.first().url || null : args.pop();
       if (!imageExists(imagem)) return message.reply("img invalida");
@@ -33,11 +32,12 @@ module.exports = {
       let data = ctx.getImageData(0, 0, canvas.width, canvas.height);
       let resultraw = []; //[r,g,b,x,y,w,h]
 
-      const toCol = (n) => "#" +
-        Math.floor(n[0] * 255).toString(16).padStart(2, "0") +
-        Math.floor(n[1] * 255).toString(16).padStart(2, "0") +
-        Math.floor(n[2] * 255).toString(16).padStart(2, "0");
-
+      const toCol = (n) => {
+        return "#" +
+          Math.floor(n[0] * 255).toString(16).padStart(2, "0") +
+          Math.floor(n[1] * 255).toString(16).padStart(2, "0") +
+          Math.floor(n[2] * 255).toString(16).padStart(2, "0");
+      }
       const quad = (x, y, w, h, q) => {
         let b = [null, null, null, null, null];
 
@@ -108,142 +108,153 @@ module.exports = {
 
       //variaveis
       const MAXLINE = 1000;
-      const DRAWPERPRO = 8;
+      const DRAWPERPRO = 5;
       let qpp = Math.floor((MAXLINE - DRAWPERPRO) / 2);
       let ptotal = Math.ceil(resultraw.length / qpp);
 
       //result para texto
       let result = [];
       let resultord = [];
-      let lastcolor = [-1,-1,-1]
-      resultraw.forEach((v, i) => {
-        let c = [Math.round(v[0] * 255),Math.round(v[1] * 255),Math.round(v[2] * 255)]
-        if(lastcolor.some((v,i) => v != c[i]) || resultord[resultord.length-1].length == MAXLINE-DRAWPERPRO) {
-          lastcolor = c;
-          resultord.push([`draw color ${Math.round(v[0] * 255)} ${Math.round(v[1] * 255)} ${Math.round(v[2] * 255)} 255 0 0`])  
-        };
-        resultord[resultord.length-1].push(`draw rect ${v[3]} ${canvas.height - v[4] - v[6]} ${v[5]} ${v[6]} 0 0`)
-      });
-      resultord = resultord.sort((a,b) => b.length - a.length)
-      
+      let lastcolor = [-1, -1, -1]
 
+      //resultraw == todos os pixels
+
+      resultraw.forEach((v, i) => {
+        let color = [Math.round(v[0] * 255), Math.round(v[1] * 255), Math.round(v[2] * 255)];
+        let last = resultord[resultord.length - 1];
+
+        if (lastcolor.some((v, i) => v != color[i]) || last.length == MAXLINE - DRAWPERPRO - 3) {
+          lastcolor = color;
+          resultord.push([
+            `draw color ${Math.round(v[0] * 255)} ${Math.round(v[1] * 255)} ${Math.round(v[2] * 255)} 255 0 0`,
+            `draw rect ${v[3]} ${canvas.height - v[4] - v[6]} ${v[5]} ${v[6]} 0 0`
+            ])
+        } else {
+          last.push(`draw rect ${v[3]} ${canvas.height - v[4] - v[6]} ${v[5]} ${v[6]} 0 0`)
+        }
+      });
+      resultord = resultord.sort((a, b) => b.length - a.length)
+
+      //resultord == todos os pixels separados por cor (para n ter q utilizar o comando color mais de uma vez)
+
+      let mi = 0;
       resultord.forEach((v) => {
-        let ind = result.findIndex((q) => MAXLINE - DRAWPERPRO - q.length >= v.length)
-        if(ind < 0) {
+        let ind = result.findIndex((q) => MAXLINE - DRAWPERPRO - q.length - 4 >= v.length)
+        if (v.length > 2) mi = Math.max(mi, ind + 1);
+        if (ind < 0) {
           result.push(v)
         } else {
           result[ind] = result[ind].concat(v)
         }
       })
+      result = result.reverse()
 
-      console.log(result.length)
-      return message.reply("esta em manutenção");
+      //result == todos os pixels separados por processador
+
+      result = result.map((v, i) => {
+        if (i <= result.length - mi - 1) {
+          let l = Math.ceil(v.length / MAXLINE * DRAWPERPRO)-1
+          v.push(`read r cell1 0`)
+          v.push(`jump ${v.length - 1 + l} notEqual r ${i}`)
+          v.push(`write ${i + 1}`)
+          v.push(`jump ${v.length - 3 + l} always r false`)
+          console.log(v)
+        } else {
+          v.unshift("jump 0 notEqual r " + (i <= result.length - mi - 1 ? 0 : i));
+          v.unshift(`read r cell1 0`);
+          v.push(`write ${i + 1}`)
+        }
+        return v;
+      })
+
       //colocrando comando de desenhar ${DRAWPERPRO}x para cada processador
       let tam = MAXLINE / DRAWPERPRO;
-      result.forEach
-      for (let i = tam; i <= result.length; i += tam) result.splice(i - 1, 0, "drawflush display1");
-      if (result.slice(-1).pop() != "drawflush display1") result.push("drawflush display1");
-      result = result.join('\n').split('\n');
+      result.map((b) => {
+        for (let i = 1; i < DRAWPERPRO; i++) {
+          if (i * MAXLINE / DRAWPERPRO >= b.length) break;
+          b.splice(i * MAXLINE / DRAWPERPRO, 0, "drawflush display1")
+        }
+        b.splice(b.length - 1, 0, "drawflush display1")
+      })
 
       // FAZENDO SCHEMATIC
-      let tags = { name: name, description: `Made by ${message.author.tag} using ReactorBot from MindustryBr discord server` };
-      let res = [];
-      let names = ["micro-processor", "large-logic-display", "message"];
-      let addheight = Math.floor((result.length / MAXLINE + 1) / 6);
+      let addheight = Math.floor((result.length + 1) / 6);
 
-      let display = Buffer.alloc(7);
-      let index = 0;
-      index = display.writeInt8(1, index);
-      index = display.writeInt16BE(2, index);
-      index = display.writeInt16BE(3 + addheight, index);
-      index = display.writeInt8(0, index);
-      index = display.writeInt8(0, index);
-      res.push(display);
+      let schem = {
+        width: 6,
+        height: 7 + addheight,
+        tags: {
+          name: name,
+          description: `Made by ${message.author.tag} using ReactorBot from MindustryBr discord server`
+        },
+        names: ["micro-processor", "large-logic-display", "message", "memory-cell"],
+        blocks: [
+          {
+            type: 1,
+            position: [2, 3 + addheight],
+          },
+          {
+            type: 2,
+            position: [
+              Math.floor(result.length + 1) % 6,
+              addheight - Math.floor((result.length + 1) / 6)
+            ],
+            configt: 4,
+            config: `Made by [RED]${message.author.tag}[] using [PURPLE]Reactor[][gray]Bot[] from MindustryBr https://discord.gg/G5zvFHN`,
+          },
+          {
+            type: 3,
+            position: [0, addheight],
+          }
+        ]
+      }
 
-      result.forEach((b,i) => {
-        let string = result.join('\n');
-        let code = Buffer.alloc(23 + string.length);
+      result.forEach((b, i) => {
+        let string = b.join('\n');
+        let code = Buffer.alloc(23 + string.length + 2 + 5 + 4);
         let index = 0;
-        index = code.writeInt8(1, index);
-        index = code.writeInt32BE(string.length, index);
-        index += code.write(string, index);
-        index = code.writeInt32BE(1, index); // MUDA PRA 1
-        index = code.writeInt16BE(8, index);
-        index += code.write("display1", index);
-        index = code.writeInt16BE(2 - (i / MAXLINE % 6), index); // LINK X
-        index = code.writeInt16BE(3 + Math.floor(i / MAXLINE / 6), index); // LINK Y
+        index = code.writeInt8(1, index); // VERSION
+        index = code.writeInt32BE(string.length, index); // CODE SIZE
+        index += code.write(string, index); // CODE
+        index = code.writeInt32BE(2, index); // LINKS
 
+        index = code.writeInt16BE(8, index); // LINK NAME SIZE
+        index += code.write("display1", index); // LINK NAME
+        index = code.writeInt16BE(1 - ((i + 1) % 6), index); // LINK X
+        index = code.writeInt16BE(3 + Math.floor((i + 1) / 6), index); // LINK Y
+
+        index = code.writeInt16BE(5, index); // LINK NAME SIZE
+        index += code.write("cell1", index); // LINK NAME
+        index = code.writeInt16BE(-((i + 1) % 6), index); // LINK X
+        index = code.writeInt16BE(Math.floor((i + 1) / 6), index); // LINK Y
+
+        //Config tipo + tamanho
         let config = zlib.deflateSync(code);
         let bconfig = Buffer.alloc(5);
-        index = 0;
-        index = bconfig.writeInt8(14, index);
-        index = bconfig.writeInt32BE(config.length, index);
-        config = new Buffer.concat([bconfig, config]);
+        bconfig.writeInt8();
+        bconfig.writeInt32BE(config.length);
+        //config = new Buffer.concat([bconfig, config]);
 
-        let block = Buffer.alloc(1 + 4);
-        index = 0;
-        index = block.writeInt8(0, index);
-        index = block.writeInt16BE(i / MAXLINE % 6, index);
-        index = block.writeInt16BE(addheight - Math.floor(i / MAXLINE / 6), index);
-        block = new Buffer.concat([block, config])
+        //Criando bloco
+        let block = {
+          type: 0,
+          position: [
+            (1 + i) % 6,
+            addheight - Math.floor((i + 1) / 6)
+          ],
+          configt: 14,
+          config: config
+        }
 
-        res.push(Buffer.from([...block].concat([0])))
-      })
-      for (let i = 0; i < result.length; i += MAXLINE) {
-      }
-      let string = `Made by [RED]${message.author.tag}[] using [PURPLE]Reactor[][gray]Bot[] from MindustryBr`;
-      let config = Buffer.alloc(4 + Buffer.byteLength(string));
-      index = 0;
-      index = config.writeInt8(4, index);
-      index = config.writeInt8(1, index);
-      index = config.writeInt16BE(Buffer.byteLength(string), index);
-      index += config.write(string, index);
+        console.log(block)
 
-      let block = Buffer.alloc(5);
-      index = 0;
-      index = block.writeInt8(2, index);
-      index = block.writeInt16BE(Math.floor(1 + result.length / MAXLINE) % 6, index);
-      index = block.writeInt16BE(addheight - Math.floor((result.length / MAXLINE + 1) / 6), index);
-      block = new Buffer.concat([block, config])
-
-      res.push(Buffer.from([...block].concat([0])))
-
-      let ic = Buffer.alloc(2 + 2 + 1 + Object.keys(tags).length * 4 + Object.entries(tags).map(v => Buffer.byteLength(v[0]) + Buffer.byteLength(v[1])).reduce((a, b) => a + b, 0) + 1 + names.length * 2 + names.map(v => Buffer.byteLength(v)).reduce((a, b) => a + b, 0) + 4)
-      index = 0;
-
-      index = ic.writeInt16BE(6, index);
-      index = ic.writeInt16BE(7 + addheight, index);
-      index = ic.writeInt8(Object.keys(tags).length, index);
-      Object.entries(tags).forEach(opt => {
-        index = ic.writeInt16BE(Buffer.byteLength(opt[0]), index);
-        index += ic.write(opt[0], index);
-        index = ic.writeInt16BE(Buffer.byteLength(opt[1]), index);
-        index += ic.write(opt[1], index);
-      })
-      index = ic.writeInt8(names.length, index);
-      names.forEach(v => {
-        index = ic.writeInt16BE(Buffer.byteLength(v), index);
-        index += ic.write(v, index);
+        schem.blocks.push(block)
       })
 
-      index = ic.writeInt32BE(res.length, index);
+      // ENVIANDO
 
-      res.unshift(ic)
-      let bend = Buffer.from([109, 115, 99, 104, 1].concat([...zlib.deflateSync(new Buffer.concat(res))]))
-
-
-      //let html = "<html>\t<head>\n\t\t<style></style>\n\t</head>\n\t<body>\n"+res.join("\n")+"\n\t</body>\n</html>"
-
-
-      //console.log((new Date().getTime() - start) / 1000)
+      bend = botUtils.mndJsonToScheme(schem);
       let attach1 = new Discord.MessageAttachment(canvas.toBuffer(), "imagem.png");
-      //let attach2 = new Discord.MessageAttachment(Buffer.from(res.join("\n\n")), "comand.html");
-      /* let attach2 = new Discord.MessageAttachment(Buffer.from(bend), "comand.msch");
-      let embed = new Discord.MessageEmbed()
-        .setTitle(`o tamanho foi de ${canvas.width * canvas.height}px² para ${result.length}px²`)
-        .attachFiles([attach1, attach2])
-        .setImage("attachment://image.png") */
-
       let s = botUtils.mndGetScheme(bend.toString("base64"))
       botUtils.mndSendMessageEmbed(bend.toString("base64"), s, message)
 

@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const Canvas = require('canvas');
 const imageExists = require('is-image-url');
+const botUtils = require("../../utils.js");
 
 module.exports = {
-  // Execução do comandoant
-  run: async (client, botUtils, message, args) => {
+  run: async (client, message, args) => {
     newError = botUtils.newError;
 
     try {
@@ -51,7 +51,7 @@ module.exports = {
         case 'cf':
         case 'config': {
 
-          const c = client.utils.Info.config.run(client, botUtils, message, result, imageExists, args)
+          const c = client.utils.Info.config.run(client, message, result, imageExists, args)
           if (c) return c;
         }
         default: {
@@ -104,7 +104,7 @@ module.exports = {
         case 'bezier':
         case 'linha':
         case 'barra':
-          client.utils.Info.profImage.run(client, botUtils, message, result);
+          client.utils.Info.profImage.run(client, message, result);
           break;
         case 'ascii':
           let str = '';

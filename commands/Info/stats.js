@@ -2,10 +2,10 @@ const Discord = require("discord.js");
 const os = require('os');
 const cpuStat = require("cpu-stat");
 const fetch = require("node-superfetch");
+const botUtils = require("../../utils.js");
 
 module.exports = {
-  // Execução do comando
-  run: async (client, botUtils, message, args) => {
+  run: async (client, message, args) => {
     newError = botUtils.newError;
 
     try {

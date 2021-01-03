@@ -1,13 +1,18 @@
 const Discord = require("discord.js");
 const download = require('download');
+const botUtils = require("../../utils.js");
 
-module.exports = async ({ client, botUtils }, messageReaction, user) => {
+module.exports = async (client, messageReaction, user) => {
   newError = botUtils.newError;
 
   try {
 
     //se é partial, ent carrega
-    if (messageReaction.message.partial) await messageReaction.message.fetch();
+    try {
+      if (messageReaction.message.partial) await messageReaction.message.fetch();
+    } catch (e) {
+      return;
+    }
 
     let attach = messageReaction.message.attachments.find(a => a.name.endsWith(".msch"));
     if (messageReaction.emoji.toString() == '📪' && !user.bot && attach) {

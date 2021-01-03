@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
+const botUtils = require("../../utils.js");
 
-module.exports = ({ client, botUtils }) => {
+module.exports = (client) => {
   newError = botUtils.newError;
   try {
     const guild = client.guilds.cache.get("699823229354639471");
