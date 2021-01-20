@@ -30,8 +30,7 @@ Users.findById("id do usuario", (errDB, doc) => {
     doc.money += 50;
 
     // Add 50 de xp para o usuario
-    doc.levelSystem.xp += 50;
-    doc.levelSystem.txp += 50;
+    doc.txp += 50;
 
     // Salva as alterações na database
     doc.save();
