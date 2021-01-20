@@ -39,178 +39,58 @@ var Warn = new Schema({
   }
 });
 
+// Cria o schema do MindustryRP
+var MindustryRP = new Schema({
+  _id: String,
+  resources: {
+    copper: 0,
+    lead: 0,
+    plastanium: 0,
+    phase_fabric: 0,
+    surge_alloy: 0,
+    spore_pod: 0,
+    blast_compound: 0,
+    pyratite: 0,
+    metaglass: 0,
+    graphite: 0,
+    sand: 0,
+    coal: 0,
+    titanium: 0,
+    thorium: 0,
+    scrap: 0,
+    silicon: 0,
+    water: 0,
+    slag: 0,
+    oil: 0,
+    cryofluid: 0
+  },
+  buildings: {
+    blast_mixer: 0,
+    melter: 0,
+    separator: 0,
+    disassembler: 0,
+    spore_press: 0,
+    pulverizer: 0,
+    coal_centrifuge: 0,
+    incinerator: 0,
+    copper_wall: 0,
+    large_copper_wall: 0,
+    titanium_wall: 0,
+    large_titanium_wall: 0,
+    plastanium_wall: 0,
+    large_plastanium_wall: 0,
+    thorium_wall: 0,
+    large_thorium_wall: 0,
+    phase_wall: 0
+  }
+});
+
 // Cria o schema de usuarios
 var User = new Schema({
   _id: String,
   mindustryRP: {
-    resources: {
-      items: {
-        blast_compound: {
-          type: Number,
-          default: 0
-        },
-        coal: {
-          type: Number,
-          default: 0
-        },
-        copper: {
-          type: Number,
-          default: 0
-        },
-        graphite: {
-          type: Number,
-          default: 0
-        },
-        lead: {
-          type: Number,
-          default: 0
-        },
-        metaglass: {
-          type: Number,
-          default: 0
-        },
-        phase_fabric: {
-          type: Number,
-          default: 0
-        },
-        plastanium: {
-          type: Number,
-          default: 0
-        },
-        pyratite: {
-          type: Number,
-          default: 0
-        },
-        sand: {
-          type: Number,
-          default: 0
-        },
-        scrap: {
-          type: Number,
-          default: 0
-        },
-        silicon: {
-          type: Number,
-          default: 0
-        },
-        spore_pod: {
-          type: Number,
-          default: 0
-        },
-        surge_alloy: {
-          type: Number,
-          default: 0
-        },
-        thorium: {
-          type: Number,
-          default: 0
-        },
-        titanium: {
-          type: Number,
-          default: 0
-        }
-      },
-      liquids: {
-        cryofluid: {
-          type: Number,
-          default: 0
-        },
-        oil: {
-          type: Number,
-          default: 0
-        },
-        slag: {
-          type: Number,
-          default: 0
-        },
-        water: {
-          type: Number,
-          default: 0
-        }
-      }
-    },
-    mechs: {
-      alpha: {
-        have: {
-          type: Boolean,
-          default: true
-        },
-        using: {
-          type: Boolean,
-          default: true
-        }
-      },
-      dart: {
-        have: {
-          type: Boolean,
-          default: false
-        },
-        using: {
-          type: Boolean,
-          default: false
-        }
-      },
-      delta: {
-        have: {
-          type: Boolean,
-          default: false
-        },
-        using: {
-          type: Boolean,
-          default: false
-        }
-      },
-      glaive: {
-        have: {
-          type: Boolean,
-          default: false
-        },
-        using: {
-          type: Boolean,
-          default: false
-        }
-      },
-      javelin: {
-        have: {
-          type: Boolean,
-          default: false
-        },
-        using: {
-          type: Boolean,
-          default: false
-        }
-      },
-      omega: {
-        have: {
-          type: Boolean,
-          default: false
-        },
-        using: {
-          type: Boolean,
-          default: false
-        }
-      },
-      tau: {
-        have: {
-          type: Boolean,
-          default: false
-        },
-        using: {
-          type: Boolean,
-          default: false
-        }
-      },
-      trident: {
-        have: {
-          type: Boolean,
-          default: false
-        },
-        using: {
-          type: Boolean,
-          default: false
-        }
-      }
-    }
+    type: MindustryRP,
+    default: () => ({})
   },
   money: {
     type: Number,
@@ -219,12 +99,6 @@ var User = new Schema({
   txp: {
     type: Number,
     default: 0
-  },
-  levelSystem: {
-    txp: {
-      type: Number,
-      default: 0
-    }
   },
   warn: {
     quant: {
@@ -279,309 +153,9 @@ var Base = new Schema({
     type: Number,
     default: 1
   },
-  blocks: {
-    crafting: {
-      alloy_smelter: {
-        type: Number,
-        default: 0
-      },
-      blast_mixer: {
-        type: Number,
-        default: 0
-      },
-      coal_centrifuge: {
-        type: Number,
-        default: 0
-      },
-      cryofluidmixer: {
-        type: Number,
-        default: 0
-      },
-      graphite_press: {
-        type: Number,
-        default: 0
-      },
-      incinerator: {
-        type: Number,
-        default: 0
-      },
-      kiln: {
-        type: Number,
-        default: 0
-      },
-      melter: {
-        type: Number,
-        default: 0
-      },
-      multi_press: {
-        type: Number,
-        default: 0
-      },
-      phase_weaver: {
-        type: Number,
-        default: 0
-      },
-      plastanium_compressor: {
-        type: Number,
-        default: 0
-      },
-      pulverizer: {
-        type: Number,
-        default: 0
-      },
-      pýratite_mixer: {
-        type: Number,
-        default: 0
-      },
-      separator: {
-        type: Number,
-        default: 0
-      },
-      silicon_smelter: {
-        type: Number,
-        default: 0
-      },
-      spore_press: {
-        type: Number,
-        default: 0
-      }
-    },
-    defense: {
-      copper_wall_large: {
-        type: Number,
-        default: 0
-      },
-      copper_wall: {
-        type: Number,
-        default: 0
-      },
-      door_large: {
-        type: Number,
-        default: 0
-      },
-      door: {
-        type: Number,
-        default: 0
-      },
-      phase_wall_large: {
-        type: Number,
-        default: 0
-      },
-      phase_wall: {
-        type: Number,
-        default: 0
-      },
-      plastanium_wall_large: {
-        type: Number,
-        default: 0
-      },
-      plastanium_wall: {
-        type: Number,
-        default: 0
-      },
-      scrap_wall_gigantic: {
-        type: Number,
-        default: 0
-      },
-      scrap_wall_huge: {
-        type: Number,
-        default: 0
-      },
-      scrap_wall_large: {
-        type: Number,
-        default: 0
-      },
-      scrap_wall: {
-        type: Number,
-        default: 0
-      },
-      surge_wall_large: {
-        type: Number,
-        default: 0
-      },
-      surge_wall: {
-        type: Number,
-        default: 0
-      },
-      thorium_wall_large: {
-        type: Number,
-        default: 0
-      },
-      thorium_wall: {
-        type: Number,
-        default: 0
-      },
-      titanium_wall_large: {
-        type: Number,
-        default: 0
-      },
-      titanium_wall: {
-        type: Number,
-        default: 0
-      }
-    },
-    distribution: {
-      armored_conveyor: {
-        type: Number,
-        default: 0
-      },
-      bridge_conveyor: {
-        type: Number,
-        default: 0
-      },
-      conveyor: {
-        type: Number,
-        default: 0
-      },
-      distributor: {
-        type: Number,
-        default: 0
-      },
-      inverted_sorter: {
-        type: Number,
-        default: 0
-      },
-      item_source: {
-        type: Number,
-        default: 0
-      },
-      item_void: {
-        type: Number,
-        default: 0
-      },
-      junction: {
-        type: Number,
-        default: 0
-      },
-      mass_driver: {
-        type: Number,
-        default: 0
-      },
-      overflow_gate: {
-        type: Number,
-        default: 0
-      },
-      phase_conveyor: {
-        type: Number,
-        default: 0
-      },
-      router: {
-        type: Number,
-        default: 0
-      },
-      sorter: {
-        type: Number,
-        default: 0
-      },
-      titanium_conveyor: {
-        type: Number,
-        default: 0
-      },
-      underflow_gate: {
-        type: Number,
-        default: 0
-      }
-    },
-    effect: {
-    },
-    liquid: {
-    },
-    power: {
-    },
-    production: {
-    },
-    turret: {
-    },
-    units: {
-    },
-    upgrade: {
-    }
-  },
-  resources: {
-    items: {
-      blast_compound: {
-        type: Number,
-        default: 0
-      },
-      coal: {
-        type: Number,
-        default: 0
-      },
-      copper: {
-        type: Number,
-        default: 0
-      },
-      graphite: {
-        type: Number,
-        default: 0
-      },
-      lead: {
-        type: Number,
-        default: 0
-      },
-      metaglass: {
-        type: Number,
-        default: 0
-      },
-      phase_fabric: {
-        type: Number,
-        default: 0
-      },
-      plastanium: {
-        type: Number,
-        default: 0
-      },
-      pyratite: {
-        type: Number,
-        default: 0
-      },
-      sand: {
-        type: Number,
-        default: 0
-      },
-      scrap: {
-        type: Number,
-        default: 0
-      },
-      silicon: {
-        type: Number,
-        default: 0
-      },
-      spore_pod: {
-        type: Number,
-        default: 0
-      },
-      surge_alloy: {
-        type: Number,
-        default: 0
-      },
-      thorium: {
-        type: Number,
-        default: 0
-      },
-      titanium: {
-        type: Number,
-        default: 0
-      }
-    },
-    liquids: {
-      cryofluid: {
-        type: Number,
-        default: 0
-      },
-      oil: {
-        type: Number,
-        default: 0
-      },
-      slag: {
-        type: Number,
-        default: 0
-      },
-      water: {
-        type: Number,
-        default: 0
-      }
-    }
+  stats: {
+    type: MindustryRP,
+    default: () => ({})
   }
 });
 
@@ -594,5 +168,7 @@ var Bases = mongoose.model('Bases', Base);
 module.exports = {
   Users: Users,
   Clans: Clans,
-  Bases: Bases
+  Bases: Bases,
+  UserSchema: User,
+  WarnSchema: Warn
 }
