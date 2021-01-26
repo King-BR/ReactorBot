@@ -162,13 +162,13 @@ module.exports = {
     return changes.reverse();
   },
 
+
   /**
    * Retorna uma pagina
    * @param {TextChannel} channel - o canal onde vai ser enviado 
    * @param {Number} size - quantidade de paginas
    * @param {Callback} Callback - a função realizada por pagina 
    */
-
   createPage: (channel, size, func) => {
     let page = 1;
 

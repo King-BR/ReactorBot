@@ -7,28 +7,39 @@ module.exports = {
     try {
       // Execução do comando
 
-      let embed = new Discord.MessageEmbed()
-        .setTitle("Achou!!")
-        .setColor("RANDOM")
-        .setTimestamp();
+      const search = args.join(' ').toLowerCase();
+      const fBR = [];
+      const fEN = [];
 
-      if (!helpers.textBR.map(t => t.toLowerCase()).some((t, i) => {
-        if (t.match(args.join(' ').toLowerCase())) {
-          embed.addField('LinhaBR:', i+1);
-          embed.addField('TextoBR:', `\`${t}\``);
-          return true;
-        }
-      })) embed.addField('BR:', 'não foi encontrado');
+      helpers.textBR.forEach((t, i) => {
+        if (t.toLowerCase().match(args.join(' ').toLowerCase())) fBR.push([i + 1, t])
+      })
+      helpers.textEN.forEach((t, i) => {
+        if (t.toLowerCase().match(args.join(' ').toLowerCase())) fEN.push([i + 1, t])
+      })
 
-      if (!helpers.textEN.map(t => t.toLowerCase()).some((t, i) => {
-        if (t.match(args.join(' ').toLowerCase())) {
-          embed.addField('LinhaEN:', i+1);
-          embed.addField('TextoEN:', `\`${t}\``);
-          return true;
-        }
-      })) embed.addField('EN:', 'não foi encontrado');
+      botUtils.createPage(message.channel, Math.max(fBR.length, fEN.length), (page) => {
+        let embed = new Discord.MessageEmbed()
+          .setTitle(`(${page + 0}/${Math.max(fBR.length, fEN.length)}) Achou!!`)
+          .setColor("RANDOM")
+          .setTimestamp();
 
-      message.channel.send(embed)
+        if (fBR.length) {
+          if (fBR.length > page) {
+            embed.addField('LinhaBR:', fBR[page - 1][0]);
+            embed.addField('TextoBR:', `\`${fBR[page - 1][1]}\``);
+          } else { embed.addField('BR:', 'Não foi encontrado mais nada') }
+        } else { embed.addField('BR:', 'Não foi encontrado') }
+
+        if (fEN.length) {
+          if (fEN.length > page) {
+            embed.addField('LinhaEN:', fEN[page - 1][0]);
+            embed.addField('TextoEN:', `\`${fEN[page - 1][1]}\``);
+          } else { embed.addField('EN:', 'Não foi encontrado mais nada') }
+        } else { embed.addField('EN:', 'Não foi encontrado') }
+
+        return embed;
+      })
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

@@ -36,13 +36,12 @@ module.exports = async (client, messageReaction, user) => {
         .catch(err => console.log(`=> ${newError(err, "messageReaction")}`));
     }
 
-    if (messageReaction.message.channel.id == '775957550038384670') {
+    if (messageReaction.message.channel.id == '775957550038384670') { // Tradução
       const msg = messageReaction.message
       if (!msg.embeds.length) return console.log('Foi reagido uma mensagem que n possui embed,');
       const emb = msg.embeds[0]
       const line = (/\d+/i).exec(emb.title)[0]
       const authorId = (/\d+/i).exec(emb.author.iconURL)[0]
-
 
       botUtils.jsonChange('./dataBank/MindustryTraductions/creating.json', props => {
 
@@ -52,6 +51,8 @@ module.exports = async (client, messageReaction, user) => {
         };
 
         const i = props[line].findIndex(p => p.author == authorId);
+
+        if((props[line][i].timestamp || 0) > msg.createdTimestamp) return;
 
         if (messageReaction.emoji.toString() == '✅') {
           if (user.id == authorId) return;
@@ -92,7 +93,7 @@ module.exports = async (client, messageReaction, user) => {
 
       if (messageReaction.emoji.toString() == '👍') {
         let txt = messageReaction.message.content.split(/\s+/)
-        if (txt[0] == 'emoji:' && txt.length == 2 && messageReaction.message.attachments.size) {
+        if (txt[0].toLowerCase() == 'emoji:' && txt.length == 2 && messageReaction.message.attachments.size) {
           let url = messageReaction.message.attachments.first().url;
           request({ url, encoding: null }, (err, resp, buffer) => {
             if (err) return console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`);

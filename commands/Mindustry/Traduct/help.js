@@ -12,7 +12,7 @@ module.exports = {
         line: "Mostra o conteudo que aparece em tal linha",
         proposal: "Envia uma proposta para o banco de dados do bot, para posteriormente ser enviado para o mindustry",
         proposals: "Vê todas as propostas atuais, se enviado a linha e o nome do membro é possivel votar",
-        getchanges: "Pega o arquivo final com as mudanças,caso queira somente as mudanças basta escrever `!traduct getchanges changes`",
+        get: "Pega os arquivo de tradução armazenados no ReactorBot",
         delete: "Apaga uma proposta feita pelo author do comando",
         diff: "Envia um arquivo com as diferenças entre o bundleBR e o bundleEN",
         find: "Acha uma certa palavra no bundleBR",

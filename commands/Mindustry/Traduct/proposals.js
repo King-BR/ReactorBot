@@ -28,7 +28,7 @@ module.exports = {
           
 
           let lembed = new Discord.MessageEmbed()
-            .setTitle(`${page}/${lines.length}Proposta da linha ${lines[page-1]}`)
+            .setTitle(`${page}/${lines.length} Proposta da linha ${lines[page-1]}`)
             .setColor("RANDOM")
             .setTimestamp();
 
@@ -49,10 +49,11 @@ module.exports = {
         const lines = Object.keys(allLines).map(lin => `**${allLines[lin].length - 1} propostas na linha:** \`${lin}\``)
         botUtils.createPage(message.channel,Math.ceil(lines.length/10), page => {
 
+          let txt = "";
+          lines.filter((l,i) => i<page*10 && i >= (page-1)*10).forEach(l => txt += l + "\n");
           let embed = new Discord.MessageEmbed()
+            .setDescription(txt)
             .setTitle(`${page}/${Math.ceil(lines.length/10)} Linhas com propostas`);
-          lines.filter((l,i) => i<page*10 && i >= (page-1)*10).forEach(l => {embed.setDescription(l)});
-          console.log(page*10,(page-1)*10)
 
           return embed
         });

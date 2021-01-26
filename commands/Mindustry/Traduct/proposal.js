@@ -13,7 +13,7 @@ module.exports = {
       if (!args[0]) return message.reply('Eu preciso saber o que voce deseja por no lugar');
       if (line > 0 && line - helpers.textBR.length - 1 > 0) return message.reply('numero invalido, precisa ser entre 1 e ' + helpers.textBR.length - 1)
 
-      const trad = helpers.textBR[line-1]
+      const trad = helpers.textBR[line - 1]
       const prop = args.join(' ')
       const eng = helpers.textEN.find(t => t.replace(helpers.regSep, '$1').trim() == trad.replace(helpers.regSep, '$1').trim())
 
@@ -22,18 +22,20 @@ module.exports = {
         if (!lines[line]) {
           lines[line] = [{
             msg: trad.replace(helpers.regSep, '$2').trim(),
-            author: 'defalt',
+            author: 'default',
+            timestamp: new Date().getTime(),
             likes: -1,
             mUp: [],
             mDown: []
           }]
-        } else if (lines[line].some(obj => obj.author == message.author.id)  ) {
-          lines[line].splice(lines[line].findIndex(obj => obj.author == message.author.id),1)
+        } else if (lines[line].some(obj => obj.author == message.author.id)) {
+          lines[line].splice(lines[line].findIndex(obj => obj.author == message.author.id), 1)
         }
 
         lines[line].push({
           msg: prop,
           author: message.author.id,
+          timestamp: new Date().getTime(),
           likes: 0,
           mUp: [],
           mDown: []
@@ -53,14 +55,14 @@ module.exports = {
 
       let nembed = new Discord.MessageEmbed()
         .setTitle(`Linha: \`${line}\`, Nova proposta`)
-				.setAuthor(message.author.tag,message.author.displayAvatarURL())
+        .setAuthor(message.author.tag, message.author.displayAvatarURL())
         .setColor("RANDOM")
         .addField('Atual:', '```' + trad + '```')
         .addField('Original:', eng ? '```' + eng + '```' : '_Não foi achado_')
         .addField('Proposta:', '```' + (trad ? trad.replace(helpers.regSep, '$1').trim() + ' = ' : '') + (prop || 'Oh no') + '```')
         .setTimestamp();
       client.channels.cache.get("775957550038384670").send(nembed)
-        .then(msg => {msg.react('❌').then(() => {msg.react('✅')})});
+        .then(msg => { msg.react('❌').then(() => { msg.react('✅') }) });
 
 
     } catch (err) {
