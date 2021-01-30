@@ -54,6 +54,6 @@ module.exports = {
     aliases: [],
     description: "Check the information in the database",
     usage: "db [@usermention or userid]",
-    accessableby: "Desenvolvedores"
+    accessableby: "Developers"
   }
 }
