@@ -5,7 +5,7 @@ const botUtils = require("../../utils.js");
 module.exports = {
   // Execução do comando
   run: (client, message, args) => {
-    if (!botUtils.isDev(message.author.id)) return message.channel.send("Voce não tem permissão para executar esse comando");
+    if (!botUtils.isDev(message.author.id)) return message.channel.send("You are not allowed to execute this command");
 
     newError = botUtils.newError;
 
@@ -22,7 +22,7 @@ module.exports = {
           let newUser = new Users({ _id: user.id });
           newUser.save();
 
-          message.channel.send("tente novamente");
+          message.channel.send("try again");
           return;
         }
 
@@ -34,8 +34,8 @@ module.exports = {
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()
-        .setTitle("Erro inesperado")
-        .setDescription("Um erro inesperado aconteceu. por favor contate os ADMs\n\nUm log foi criado com mais informações do erro");
+        .setTitle("UnexpectedError")
+        .setDescription("An unexpected error has occurred. please contact the ADMs \ n \ nA log was created with more information about the error");
       message.channel.send(embed);
 
       let IDs = {
@@ -50,10 +50,10 @@ module.exports = {
   // Configuração do comando
   config: {
     name: "db",
-    noalias: "Sem sinonimos",
+    noalias: "No synonyms",
     aliases: [],
-    description: "Cheque as informações na database",
-    usage: "db [@usuario ou ID]",
+    description: "Check the information in the database",
+    usage: "db [@usermention or userid]",
     accessableby: "Desenvolvedores"
   }
 }
