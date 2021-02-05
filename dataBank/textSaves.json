@@ -16,12 +16,18 @@
 
     "Prensa de Grafite","Multi-Prensa","Fundidora de Silício","Fornalha de Silício","Forno","Compressor de Plastânio","Palheta de Fase","Fundidora de Liga","Misturador de Crio Fluido","Misturador de piratita","Misturador de Explosão","Aparelho de Fusão","Separador","Desmontador","Prensa de Esporo","Pulverizador","Centrífuga de Carvão","Incinerador",
 
-    "Centro de Comando","Fábrica de Unidades Terrestres","Fábrica de Unidades Aéreas","Fábrica de Unidades Navais","Reconstrutor aditivo","Reconstrutor Multiplicativo","Reconstrutor Exponencial","Reconstrutor Tetrativo","Ponto de Reparo","Ponto de Reabastecimento",
+    "Centro de Comando","Fábrica de Unidades Terrestres","Fábrica de Unidades Aéreas","Fábrica de Unidades Navais","Reconstrutor Aditivo","Reconstrutor Multiplicativo","Reconstrutor Exponencial","Reconstrutor Tetrativo","Ponto de Reparo","Ponto de Reabastecimento",
 
     "Reparador","Projetor de Reparo","Projetor de Sobrecarga","Domo de Sobrecarga","Projetor de Campo de Força","Mina de Choque","Fragmento do Núcleo","Fundação do Núcleo","Centro do Núcleo","Cofre","Contêiner","Descarregador","Plataforma de Lançamento","Plataforma de Lançamento Grande","Acelerador Interplanetário",
 
     "Mensagem","Alavanca","Micro Processador","Processador Lógico","Hiper Processador","Célula de Memória","Banco de Memória","Monitor Lógico","Monitor Lógico Grande",
 
-    "Adaga","Fortaleza","Rastejante"
+    "Dagger","Mace","Fortress","Scepter","Reign",
+    "Mono","Poly","Mega","Quad","Oct",
+    "Crawler","Atrax","Spiroct","Arkyid","Toxopid",
+    "Flare","Horizon","Zenith","Antumbra","Eclipse",
+    "Nova",Pulsar","Quasar","Vela","Corvus",
+    "Risso","Minke","Bryde","Sei","Omura",
+    "Alpha",Beta","Gamma"
   ]
 }
