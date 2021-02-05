@@ -22,11 +22,13 @@
 
     "Mensagem","Alavanca","Micro Processador","Processador Lógico","Hiper Processador","Célula de Memória","Banco de Memória","Monitor Lógico","Monitor Lógico Grande",
 
+    "Cobre","Chumbo","Metavidro","Grafite","Areia","Carvão","Titânio","Tório","Sucata","Silício","Plastânio","Tecido de Fase","Liga de Surto","Cápsula de Esporos","Composto Explosivo","Piratita",
+
     "Dagger","Mace","Fortress","Scepter","Reign",
     "Mono","Poly","Mega","Quad","Oct",
     "Crawler","Atrax","Spiroct","Arkyid","Toxopid",
     "Flare","Horizon","Zenith","Antumbra","Eclipse",
-    "Nova",Pulsar","Quasar","Vela","Corvus",
+    "Nova","Pulsar","Quasar","Vela","Corvus",
     "Risso","Minke","Bryde","Sei","Omura",
     "Alpha",Beta","Gamma"
   ]
