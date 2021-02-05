@@ -2,7 +2,7 @@
   "quizWords": [
     "Anuken","Mindustry",
 
-    "Torreta Dupla","Dispersão","Lança-chamas","Artilharia","Onda","Lanceiro","Tesla","Paralaxe","Enxame","Salvo","Segmento","Tsunami","Fusível","Morteiro","Ciclone","Espectro","Fusão",
+    "Torreta Dupla","Dispersão","Lança-chamas","Artilharia","Onda","Lanceiro","Tesla","Paralaxe","Enxame","Salvo","Segmento","Tsunami","Fusível","Morteiro","Ciclone","Foreshadow","Espectro","Fusão",
 
     "Broca Mecânica","Broca Pneumática","Broca a Laser","Broca de Impacto","Extrator de Água","Cultivador","Bomba de Petróleo",
 
@@ -18,11 +18,13 @@
 
     "Centro de Comando","Fábrica de Unidades Terrestres","Fábrica de Unidades Aéreas","Fábrica de Unidades Navais","Reconstrutor Aditivo","Reconstrutor Multiplicativo","Reconstrutor Exponencial","Reconstrutor Tetrativo","Ponto de Reparo","Ponto de Reabastecimento",
 
-    "Reparador","Projetor de Reparo","Projetor de Sobrecarga","Domo de Sobrecarga","Projetor de Campo de Força","Mina de Choque","Fragmento do Núcleo","Fundação do Núcleo","Centro do Núcleo","Cofre","Contêiner","Descarregador","Plataforma de Lançamento","Plataforma de Lançamento Grande","Acelerador Interplanetário",
+    "Reparador","Projetor de Reparo","Projetor de Sobrecarga","Domo de Sobrecarga","Projetor de Campo de Força","Mina de Choque","Fragmento do Núcleo","Fundação do Núcleo","Centro do Núcleo","Cofre","Contêiner","Descarregador","Plataforma de Lançamento","Acelerador Interplanetário",
 
     "Mensagem","Alavanca","Micro Processador","Processador Lógico","Hiper Processador","Célula de Memória","Banco de Memória","Monitor Lógico","Monitor Lógico Grande",
 
     "Cobre","Chumbo","Metavidro","Grafite","Areia","Carvão","Titânio","Tório","Sucata","Silício","Plastânio","Tecido de Fase","Liga de Surto","Cápsula de Esporos","Composto Explosivo","Piratita",
+
+    "Água","Escória","Petróleo","Fluído Criogênico",
 
     "Dagger","Mace","Fortress","Scepter","Reign",
     "Mono","Poly","Mega","Quad","Oct",
