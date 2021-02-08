@@ -2,7 +2,7 @@
   "quizWords": [
     "Anuken","Mindustry",
 
-    "Torreta Dupla","Dispersão","Lança-chamas","Artilharia","Onda","Lanceiro","Tesla","Paralaxe","Enxame","Salvo","Segmento","Tsunami","Fusível","Morteiro","Ciclone","Espectro","Fusão",
+    "Torreta Dupla","Dispersão","Lança-chamas","Artilharia","Onda","Lanceiro","Tesla","Paralaxe","Enxame","Salvo","Segmento","Tsunami","Fusível","Morteiro","Ciclone","Foreshadow","Espectro","Fusão",
 
     "Broca Mecânica","Broca Pneumática","Broca a Laser","Broca de Impacto","Extrator de Água","Cultivador","Bomba de Petróleo",
 
@@ -16,12 +16,24 @@
 
     "Prensa de Grafite","Multi-Prensa","Fundidora de Silício","Fornalha de Silício","Forno","Compressor de Plastânio","Palheta de Fase","Fundidora de Liga","Misturador de Crio Fluido","Misturador de piratita","Misturador de Explosão","Aparelho de Fusão","Separador","Desmontador","Prensa de Esporo","Pulverizador","Centrífuga de Carvão","Incinerador",
 
-    "Centro de Comando","Fábrica de Unidades Terrestres","Fábrica de Unidades Aéreas","Fábrica de Unidades Navais","Reconstrutor aditivo","Reconstrutor Multiplicativo","Reconstrutor Exponencial","Reconstrutor Tetrativo","Ponto de Reparo","Ponto de Reabastecimento",
+    "Centro de Comando","Fábrica de Unidades Terrestres","Fábrica de Unidades Aéreas","Fábrica de Unidades Navais","Reconstrutor Aditivo","Reconstrutor Multiplicativo","Reconstrutor Exponencial","Reconstrutor Tetrativo","Ponto de Reparo","Ponto de Reabastecimento",
 
-    "Reparador","Projetor de Reparo","Projetor de Sobrecarga","Domo de Sobrecarga","Projetor de Campo de Força","Mina de Choque","Fragmento do Núcleo","Fundação do Núcleo","Centro do Núcleo","Cofre","Contêiner","Descarregador","Plataforma de Lançamento","Plataforma de Lançamento Grande","Acelerador Interplanetário",
+    "Reparador","Projetor de Reparo","Projetor de Sobrecarga","Domo de Sobrecarga","Projetor de Campo de Força","Mina de Choque","Fragmento do Núcleo","Fundação do Núcleo","Centro do Núcleo","Cofre","Contêiner","Descarregador","Plataforma de Lançamento","Acelerador Interplanetário",
 
     "Mensagem","Alavanca","Micro Processador","Processador Lógico","Hiper Processador","Célula de Memória","Banco de Memória","Monitor Lógico","Monitor Lógico Grande",
 
-    "Adaga","Fortaleza","Rastejante"
+    "Cobre","Chumbo","Metavidro","Grafite","Areia","Carvão","Titânio","Tório","Sucata","Silício","Plastânio","Tecido de Fase","Liga de Surto","Cápsula de Esporos","Composto Explosivo","Piratita",
+
+    "Água","Escória","Petróleo","Fluído Criogênico",
+
+    "Marco Zero","Planícies de Sal","Floresta Congelada","Biomass Synthesis Facility","as Crateras","Costas Ruinosas","Windswept Islands","Montanhas Manchadas","Extraction Outpost","Passagem fúngica","Supercrescimento","Campos de Piche","Impact 0078","Fenda desolada","Complexo de Produção Nuclear","Terminal de Lançamento Planetário",
+
+    "Dagger","Mace","Fortress","Scepter","Reign",
+    "Mono","Poly","Mega","Quad","Oct",
+    "Crawler","Atrax","Spiroct","Arkyid","Toxopid",
+    "Flare","Horizon","Zenith","Antumbra","Eclipse",
+    "Nova","Pulsar","Quasar","Vela","Corvus",
+    "Risso","Minke","Bryde","Sei","Omura",
+    "Alpha","Beta","Gamma"
   ]
 }
