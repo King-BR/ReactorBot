@@ -1,3 +1,5 @@
+[![Discord](https://img.shields.io/discord/699823229354639471.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/Rt5HjqW)
+
 # English
 ## About
 Bot made for the [MindustryBR](https://discord.gg/UjzPZKe) server.
