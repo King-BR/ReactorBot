@@ -1,10 +1,34 @@
+const Discord = require("discord.js");
 const botUtils = require("../../utils.js");
+//const Dashboard = require("discord-bot-dashboard");
 
 module.exports = (client) => {
   newError = botUtils.newError;
 
+
+// to testando um negocio
+/*
+    const dashboard = new Dashboard(client, {
+      port: 5000,
+      clientSecret: process.env.CLIENT_SECRET,
+      redirectURI: process.env.REDIRECT_URI
+    });
+
+    dashboard.run()//.catch(e => console.log("a"));
+*/
+  
   try {
+    /** @type {Discord.Guild} */
     const guild = client.guilds.cache.get("699823229354639471");
+
+    // Teste
+
+    client.api.applications(client.user.id).guilds('699823229354639471').commands.post({
+      data: {
+        name: 'ping',
+        description: 'ping pong!'
+      }
+    })
 
     //log no console
     console.log(`\nBot foi logado como ${client.user.tag}`)
@@ -58,12 +82,12 @@ module.exports = (client) => {
 
           //pega as respostas e o tipo do evento
           const ret = require("./utils/minievents.js")(client, botUtils, server, editing);
-          if ( ret) {
-          server.eventType = ret[1];
-          server.eventWin = ret[0];
+          if (ret) {
+            server.eventType = ret[1];
+            server.eventWin = ret[0];
 
-          server.nextMiniquiz = d.getTime() + Math.floor((Math.random() + 1) * 20 * 60 * 1000);
-          } else {console.log(`=> ${newError(new Error("Não foi retornado nenhum valor para se colocar no miniquiz"), "ClientReady_MiniquizReturn")}`);}
+            server.nextMiniquiz = d.getTime() + Math.floor((Math.random() + 1) * 20 * 60 * 1000);
+          } else { console.log(`=> ${newError(new Error("Não foi retornado nenhum valor para se colocar no miniquiz"), "ClientReady_MiniquizReturn")}`); }
         }
 
         // Mensagem do dia/Intervalo24h 

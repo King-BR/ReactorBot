@@ -49,7 +49,7 @@ module.exports = async (client, member) => {
     let welcome = new Discord.MessageEmbed()
       .setTitle(`${emoji} Até Logo!`)
       .setDescription(`${member} (${member.user.tag}), saiu do nosso servidor!` + description)
-      .setColor("RANDOM")
+      .setColor("ff8000")
       .setTimestamp()
       .setThumbnail(member.user.displayAvatarURL({ format: "png", dynamic: true, size: 512 }))
     //.setImage("https://thumbs.gfycat.com/BrownFavoriteCock-small.gif");

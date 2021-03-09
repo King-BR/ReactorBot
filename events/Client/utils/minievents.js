@@ -4,7 +4,27 @@ module.exports = (client, botUtils, server, editing) => {
   newError = botUtils.newError;
   try {
     const channel = client.channels.cache.get("768238015830556693");
-    if (server.eventWin) channel.send('Ninguem respondeu certo u.u');
+    if (server.eventWin) {
+      const frases = [
+        'Ninguem respondeu certo u.u, a resposta era `@r`.',
+        'Garaio só tem ameba aqui ?, tava na cara que era `@r`.',
+        'Os cara é muito néscio mano kkkkkk,conseguem nem ver que a reposta é `@r`.',
+        'vejo dentro dos meus arquivos que a resposta é `@r`.',
+        'se tivessem falado `@r`, teriam acertado, mas jeito ne.',
+        '`@r`,`@r`,`@r`!! Quantas vezes eu vo precisar falar ?',
+        'Tão obvio quem nem vo falar, vão ficar curioso msm kkkkkkk.',
+        'Não é possivel que os cara não saiba q a resposta é `@r`.',
+        'Em plena `@h` da manhã, os caras não falam um simples `@r`',
+        '┌(˵ ͡° ͜ʖ ͡°˵)=ε[`@r`]	(✜ ︵✜  )',
+        '...',
+      ]
+      const data = new Date(new Date().getTime() + 3 * 3600 * 1000)
+      channel.send(
+        "> " + frases[~~(Math.random() * frases.length)]
+          .replace(/@r/g, Array.isArray(server.eventWin) ? server.eventWin.join(" ") : server.eventWin)
+          .replace("@h", `${data.getHours()}:${data.getMinutes()}`)
+      );
+    }
 
     //funções do evento
 
@@ -85,7 +105,7 @@ module.exports = (client, botUtils, server, editing) => {
       },
       function() { // Sistema
         const resp = [Math.floor(Math.random() * 20 - 10), Math.floor(Math.random() * 20 - 10)]
-        let str = `Qual é o valor de \`x\` e \`y\` do sistema\n\`\`\`\nxy = ${resp[0] * resp[1]}\nx+y = ${resp[0] + resp[1]}\`\`\``
+        let str = `Qual é o valor de \`x\` e \`y\` do sistema\n\`\`\`\nx·y = ${resp[0] * resp[1]}\nx+y = ${resp[0] + resp[1]}\`\`\``
         return [str, resp];
       },
       function() { // Error

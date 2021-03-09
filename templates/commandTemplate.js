@@ -3,10 +3,16 @@ const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
+
+  /**
+   * @param {Discord.Client} client
+   * @param {Discord.Message} message
+   * @param {String[]} args
+   */
   run: (client, message, args) => {
     newError = botUtils.newError;
 
-    try {
+    try { 
       // Codigo do comando
 
     } catch (err) {

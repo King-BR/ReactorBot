@@ -9,7 +9,7 @@ module.exports = {
     newError = botUtils.newError;
     try {
       // Codigo do comando
-			if(!message.member.hasPermission(["KICK_MEMBERS", "ADMINISTRATOR"])) return message.reply("Você não tem permissão para isso");
+			if(!message.member.hasPermission("KICK_MEMBERS",{checkAdmin: true, checkOwner: true})) return message.reply("Você não tem permissão para isso");
 			if(!args[1]) return message.reply("A duração do mute precisa ser definida");
 			
       const user = message.mentions.members.first();

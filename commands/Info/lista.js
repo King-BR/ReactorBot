@@ -40,8 +40,8 @@ module.exports = {
               if (!bans.size) embed.setDescription('Ninguem esta banido')
               bans.each(b => {
                 embed.addField(b.user.tag, b.reason, true)
-                message.channel.send(embed)
               })
+              message.channel.send(embed)
             })
             .catch(err => console.log(`=> ${newError(err, 'lista', IDs)}`))
           break;

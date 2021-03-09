@@ -19,7 +19,7 @@ module.exports = {
 
 
 
-      message.channel.send(botUtils.arrDiference(t1,t2).join('\n'))
+      message.channel.send(JSON.stringify(botUtils.arrDiference(t1,t2)))
       message.channel.send((new Date().getTime() - start)/1000 + 's')
     } catch (err) {
       let embed = new Discord.MessageEmbed()

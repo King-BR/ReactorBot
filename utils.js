@@ -4,6 +4,7 @@ const fs = require("fs");
 const format = require("date-fns/format");
 const md5 = require("md5");
 const zlib = require("zlib");
+const Discord = require("discord.js");
 
 // Files requires
 const config = require("./config.json");
@@ -81,8 +82,8 @@ module.exports = {
 
   /**
    * Retorna as mudanças entre para a array1 virar a array2
-   * @param {array} tabela original
-   * @param {array} tabela modificada
+   * @param {String[]} tabela original
+   * @param {String[]} tabela modificada
    * @returns {array} mudanças necessarias para a transformação
    */
   arrDiference: (arr1, arr2) => {
@@ -133,9 +134,11 @@ module.exports = {
 
     //calculando resultado
     let changes = [];
+    let dist = 0;
     let x = t1.length - 1;
     let y = t2.length - 1;
     let cont;
+    console.log(matriz.map(v => v.join(" ")).join("\n"))
     do {
 
       cont = x + y > 0
@@ -144,28 +147,35 @@ module.exports = {
         case 'd':
           changes.push([y + 1 + '-', t1[x]]);
           x--;
+          dist++;
           break;
         case 'i':
           changes.push([y + 1 + '+', t2[y]]);
+          dist++;
           y--;
           break;
         case 's':
-          changes.push([y + 1 + '+', t2[y]]);
-          changes.push([y + 1 + '-', t1[x]]);
+          console.log(y)
+          if(true) changes.push([y + 1 + '+', t2[y]]);
+          if(true) changes.push([y + 1 + '-', t1[x]]);
+          dist++;
         case 'm':
           x--;
           y--;
           break;
       }
+
+      x = Math.max(x, 0);
+      y = Math.max(y, 0);
+
     } while (cont)
 
-    return changes.reverse();
+    return { distance: dist, change: changes.reverse() };
   },
-
 
   /**
    * Retorna uma pagina
-   * @param {TextChannel} channel - o canal onde vai ser enviado 
+   * @param {Discord.TextChannel} channel - o canal onde vai ser enviado 
    * @param {Number} size - quantidade de paginas
    * @param {Callback} Callback - a função realizada por pagina 
    */
@@ -205,6 +215,54 @@ module.exports = {
 
   },
 
+
+  /**
+   * Procura um usuario no server pelo nome
+   * @param {Discord.Guild} guild - Guilda do server
+   * @param {String} name - Nome do usuario
+   * @returns {Discord.User} mudanças necessarias para a transformação
+   */
+  stringToUser: (guild, name) => {
+
+    const client = guild.client;
+
+    if (/^<@!\d+>$/.test(name)) {
+      return client.users.cache.get(name.slice(3, -1));
+    } else if (!isNaN(name)) {
+      return client.users.cache.get(name);
+    } else if (/.+#\d{4}$/.test(name)) {
+      return client.users.cache.find(v => v.tag === name);
+    } else {
+
+      let user;
+
+      user = guild.members.cache.find(v => v.displayName.toLowerCase() === name.toLowerCase());
+      if (user) return user.user;
+
+      user = client.users.cache.find(v => v.username.toLowerCase() === name.toLowerCase());
+      if (user) return user;
+
+      let users = [];
+
+      guild.members.cache.forEach((u, id) => {
+        users.push([id, [u.user.username]])
+        if (u.nickname) users[1].push(u.nickname)
+      })
+
+      users = users.map(v => {
+
+        console.log(v[1][0].split(""), name.split(""))
+
+        let dif = module.exports.arrDiference(v[1][0].split(""), name.split("")).length;
+        if (v[1][1])
+          dif = Math.min(dif, module.exports.arrDiference(v[1][1].split(""), name.split("")).length);
+        return [v, dif];
+      })
+
+      console.log(users)
+
+    }
+  },
 
   /**
    * @param txp {Number} Total de xp do usuario

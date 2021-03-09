@@ -39,9 +39,8 @@ module.exports = {
                       let oriMoney = doc.money;
                       doc.money += quantia * (u == winner ? belters.length - 1 : -1);
                       changes.push(`${client.users.cache.get(u).tag} (${oriMoney}$ => ${doc.money}$)`);
+                      doc.txp += 5;
 
-                      doc.levelSystem.xp += 5;
-                      doc.levelSystem.txp += 5;
                       doc.save();
 
                       if (changes.length == belters.length)

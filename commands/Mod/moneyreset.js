@@ -11,9 +11,15 @@ module.exports = {
     newError = botUtils.newError;
 
     try {
-      let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
+      let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
-      Users.findById(user.id, (err, doc) => {
+      if(!user && args[0]) {
+        user = args[0];
+      } else {
+        user = user.id;
+      }
+
+      Users.findById(user, (err, doc) => {
         if (err) {
           console.log("\n=> " + newError(err, module.exports.config.name, { user: user.id, server: message.guild.id, msg: message.id }));
           return;
@@ -45,7 +51,7 @@ module.exports = {
                       let embedLog = new Discord.MessageEmbed()
                       .setTitle("Dinheiro resetado")
                       .setAuthor(message.author.tag,message.author.displayAvatarURL())
-                      .setThumbnail(user.user.displayAvatarURL({format:'png',dynamic:true}))
+                      .setThumbnail(user.user.displayAvatarURL({format:'png',dynamic:true}) || "")
                       .setDescription(`${user.user.tag || "`desconhecido`"} resetou o seu dinheiro (${doc.money}$)`);
 
                       msg.edit(embedReset);

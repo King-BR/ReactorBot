@@ -12,7 +12,7 @@ module.exports = async (client, member) => {
     let welcome = new Discord.MessageEmbed()
       .setTitle(`${emoji} Bem vindo!`)
       .setDescription(`${member} (${member.user.tag}), obrigado por entrar em nosso servidor!`)
-      .setColor("RANDOM")
+      .setColor("#0000ff")
       .setTimestamp()
       .setThumbnail(member.user.displayAvatarURL({ format: "png", dynamic: true, size: 512 }))
     client.channels.cache.get("699823229354639474").send(welcome);
