@@ -5,6 +5,7 @@ const format = require("date-fns/format");
 const md5 = require("md5");
 const zlib = require("zlib");
 const Discord = require("discord.js");
+const { closest } = require('fastest-levenshtein');
 
 // Files requires
 const config = require("./config.json");
@@ -156,8 +157,8 @@ module.exports = {
           break;
         case 's':
           console.log(y)
-          if(true) changes.push([y + 1 + '+', t2[y]]);
-          if(true) changes.push([y + 1 + '-', t1[x]]);
+          if (true) changes.push([y + 1 + '+', t2[y]]);
+          if (true) changes.push([y + 1 + '-', t1[x]]);
           dist++;
         case 'm':
           x--;
@@ -215,14 +216,14 @@ module.exports = {
 
   },
 
-
   /**
    * Procura um usuario no server pelo nome
    * @param {Discord.Guild} guild - Guilda do server
    * @param {String} name - Nome do usuario
+   * @param {Boolean} notnull - Se a saida precisa ser obrigatoriamente um usuario
    * @returns {Discord.User} mudanças necessarias para a transformação
    */
-  stringToUser: (guild, name) => {
+  stringToUser: (guild, name, notnull) => {
 
     const client = guild.client;
 
@@ -242,25 +243,22 @@ module.exports = {
       user = client.users.cache.find(v => v.username.toLowerCase() === name.toLowerCase());
       if (user) return user;
 
-      let users = [];
+      if (notnull) {
 
-      guild.members.cache.forEach((u, id) => {
-        users.push([id, [u.user.username]])
-        if (u.nickname) users[1].push(u.nickname)
-      })
+        let userlist = [];
 
-      users = users.map(v => {
+        let part = guild.members.cache.filter(u => u.displayName.toLowerCase().includes(name.toLowerCase()));
 
-        console.log(v[1][0].split(""), name.split(""))
+        (part.size ? part : guild.members.cache).forEach(u => {
+          userlist.push(u.displayName.toLowerCase());
+        });
 
-        let dif = module.exports.arrDiference(v[1][0].split(""), name.split("")).length;
-        if (v[1][1])
-          dif = Math.min(dif, module.exports.arrDiference(v[1][1].split(""), name.split("")).length);
-        return [v, dif];
-      })
+        let member = closest(name.toLowerCase(), userlist);
 
-      console.log(users)
+        return guild.members.cache.find(m => m.displayName.toLowerCase() === member).user;
+      }
 
+      return null;
     }
   },
 

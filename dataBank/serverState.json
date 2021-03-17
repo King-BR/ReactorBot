@@ -1,8 +1,48 @@
 {
-  "serverStarted": 1615322252750,
-  "nextMiniquiz": 1615333856139,
-  "nextMsgOfDay": 1615377600000,
+  "serverStarted": 1615996600738,
+  "nextMiniquiz": 1616008655179,
+  "nextMsgOfDay": 1616068800000,
   "nextMsgChange": 1604340000000,
-  "eventType": null,
-  "eventWin": null
+  "hanoiRecords": {
+    "3": {
+      "user": "291693225411084289",
+      "moves": 7,
+      "time": 7159
+    },
+    "4": {
+      "user": "291693225411084289",
+      "moves": 15,
+      "time": 18375
+    },
+    "5": {
+      "user": "291693225411084289",
+      "moves": 31,
+      "time": 61917
+    },
+    "6": {
+      "user": "375462796697010176",
+      "moves": 68,
+      "time": 273138
+    },
+    "7": {
+      "user": "616042440058732544",
+      "moves": 138,
+      "time": 454862
+    },
+    "8": {
+      "user": "616042440058732544",
+      "moves": 265,
+      "time": 840150
+    },
+    "10": {
+      "user": "616042440058732544",
+      "moves": 1096,
+      "time": 5283500
+    }
+  },
+  "eventType": 3,
+  "eventWin": [
+    -9,
+    8
+  ]
 }

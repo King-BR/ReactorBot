@@ -18,7 +18,7 @@ module.exports = (client, botUtils, server, editing) => {
         '┌(˵ ͡° ͜ʖ ͡°˵)=ε[`@r`]	(✜ ︵✜  )',
         '...',
       ]
-      const data = new Date(new Date().getTime() + 3 * 3600 * 1000)
+      const data = new Date(new Date().getTime() - 3 * 3600 * 1000)
       channel.send(
         "> " + frases[~~(Math.random() * frases.length)]
           .replace(/@r/g, Array.isArray(server.eventWin) ? server.eventWin.join(" ") : server.eventWin)

@@ -17,6 +17,11 @@ module.exports = {
         return;
       }
 
+      if (user.user.bot) {
+        message.channel.send("Não pode enviar o dinheiro pra um bot");
+        return;
+      }
+
       if(user.id == message.author.id) {
         message.channel.send("doente mental");
         return;

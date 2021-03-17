@@ -6,29 +6,43 @@ module.exports = (client) => {
   newError = botUtils.newError;
 
 
-// to testando um negocio
-/*
-    const dashboard = new Dashboard(client, {
-      port: 5000,
-      clientSecret: process.env.CLIENT_SECRET,
-      redirectURI: process.env.REDIRECT_URI
-    });
-
-    dashboard.run()//.catch(e => console.log("a"));
-*/
+  // to testando um negocio
+  /*
+      const dashboard = new Dashboard(client, {
+        port: 5000,
+        clientSecret: process.env.CLIENT_SECRET,
+        redirectURI: process.env.REDIRECT_URI
+      });
   
+      dashboard.run()//.catch(e => console.log("a"));
+  */
+
   try {
     /** @type {Discord.Guild} */
     const guild = client.guilds.cache.get("699823229354639471");
 
-    // Teste
-
+    // Cria um comando
     client.api.applications(client.user.id).guilds('699823229354639471').commands.post({
       data: {
-        name: 'ping',
-        description: 'ping pong!'
+        name: 'pinga',
+        description: 'pedir uma pinga!'
       }
     })
+
+    //Detecta Interações
+    client.ws.on("INTERACTION_CREATE", async interaction => {
+      // Do stuff here - interaction is an InteractionResponse object. To get the name, use interaction.data.name
+      // In particular, the values you passed to the interaction when creating it will be passed back here
+      //console.log(interaction)
+      client.api.interactions(interaction.id, interaction.token).callback.post({
+        data: {
+          type: 3,
+          data: {
+            content: `To fazendo a tua pinga...`,
+          },
+        },
+      });
+    });
 
     //log no console
     console.log(`\nBot foi logado como ${client.user.tag}`)
@@ -62,9 +76,14 @@ module.exports = (client) => {
           if (Math.sign(muted[userid][0]) * (d.getTime() - muted[userid][0]) > 0) {
             delete muted[userid];
             const user = client.users.cache.get(userid);
-            user.send(`Você foi desmutado do server ${guild}`);
-            guild.member(user).roles.remove(guild.roles.cache.get("755665930159390721"), 'A duração do mute ja foi completa');
-            console.log(`o ${user.tag}(${user}) foi desmutado.`);
+            if (user) {
+              user.send(`Você foi desmutado do server ${guild}`);
+              guild.member(user).roles.remove(guild.roles.cache.get("755665930159390721"), 'A duração do mute ja foi completa');
+              console.log(`o ${user.tag}(${user}) foi desmutado.`);
+            } else {
+              console.log(`o (${userid}) foi desmutado.`);
+            }
+              
           }
         }
         return muted;

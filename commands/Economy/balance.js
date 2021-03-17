@@ -4,11 +4,16 @@ const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, message, args) => {
+  run: (client, message, args, textContent) => {
     newError = botUtils.newError;
+    const guild = client.guilds.cache.get("699823229354639471");
 
     try {
-    let user = message.mentions.members.first() || client.guilds.cache.get("699823229354639471").members.cache.get(args[0]) || message.member;
+      let user =
+        message.mentions.members.first() ||
+        textContent && guild.member(botUtils.stringToUser(guild,textContent, true))|| 
+        message.member;
+      
       Users.findById(user.id, (err, doc) => {
         if (err) {
           let embed = new Discord.MessageEmbed()

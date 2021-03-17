@@ -9,8 +9,7 @@ module.exports = async (client, guild) => {
 
     const roles = [
       { name: "Colecionador", react: '🏮', role: "773627457462075453" , desc: 'Poder utilizar o bot Mudae, para colecionar personagens de anime'},
-      { name: "Tradução", react: '🌐', role: "773763715794862110" , desc: 'Poder pedir/acompanhar/conversar sobre traduções dos mods'},
-      { name: "Steam", react: '🎮', role: "774371061344763935", desc: 'Marque caso você tenha mindustry da steam'}
+      { name: "Tradução", react: '🌐', role: "773763715794862110" , desc: 'Poder pedir/acompanhar/conversar sobre traduções dos mods'}
     ]
 
     const bannedChannels = [
