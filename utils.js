@@ -275,18 +275,18 @@ module.exports = {
       xpString: `0/${XPconfig[0].XPNextLevel}`
     }
 
-    let control = false;
-    XPconfig.forEach((c, index, arrConfig) => {
-      if (txp < c.txp && !control) {
-        levelSystem = {
-          level: c.lvl,
-          xp: c.txp - txp,
-          txp: txp,
-          xpString: `${c.txp - txp}/${c.XPNextLevel}`
-        }
-        control = true;
-      }
-    });
+    const base = 1.2;
+
+    //Level atual
+    let lvl = Math.floor(Math.log(txp * (base - 1) / 500 + 1) / Math.log(base)) + 1;
+    //Xp pro Nivel atual 
+    let bxp = Math.round(500 * (base ** (lvl - 1) - 1) / (base - 1));
+    //Xp pro proximo Nivel
+    let axp = Math.round(500 * (base ** lvl - 1) / (base - 1));
+
+    levelSystem.level = lvl;
+    levelSystem.xp = txp-bxp;
+    levelSystem.xpString = `${txp - bxp}/${axp - bxp}`;
 
     return levelSystem;
   },
@@ -839,6 +839,47 @@ module.exports = {
     } catch { return 5 }
 
     return result
+  },
+
+  //#endregion
+  //--------------------------------------------------------------------------------------------------//
+  //#region Mindustry utils
+
+  fastEditMessage: class fastEditMessage {
+
+    /**
+     * @param {Discord.Message} msg
+     */
+    constructor(msg) {
+
+      this.lstid = 0;
+      this.actid = 0;
+      this.actmsg = "";
+      /** @type {Boolean} */
+      this.editing = false;
+      /** @type {Discord.Message} */
+      this.message = msg;
+
+    }
+
+    /**
+     * @param {String} text
+     */
+    edit(text) {
+      if (text) {
+        this.actid++;
+        this.actmsg = text;
+      }
+      if (this.lstid === this.actid) return;
+      if (!this.editing) {
+        this.editing = true;
+        this.lstid = this.actid
+        this.message.edit(this.actmsg).then(() => {
+          this.editing = false;
+          this.edit();
+        })
+      }
+    }
   }
 
   //#endregion

@@ -6,45 +6,15 @@ module.exports = (client) => {
   newError = botUtils.newError;
 
 
-  // to testando um negocio
-  /*
-      const dashboard = new Dashboard(client, {
-        port: 5000,
-        clientSecret: process.env.CLIENT_SECRET,
-        redirectURI: process.env.REDIRECT_URI
-      });
-  
-      dashboard.run()//.catch(e => console.log("a"));
-  */
-
   try {
     /** @type {Discord.Guild} */
     const guild = client.guilds.cache.get("699823229354639471");
+    const reactorLog = guild.channels.cache.get("767982805908324411");
 
-    // Cria um comando
-    client.api.applications(client.user.id).guilds('699823229354639471').commands.post({
-      data: {
-        name: 'pinga',
-        description: 'pedir uma pinga!'
-      }
-    })
+    const startEmbed = new Discord.MessageEmbed()
+      .setTitle("O Bot Ligou")
+      .setColor("RANDOM");
 
-    //Detecta Interações
-    client.ws.on("INTERACTION_CREATE", async interaction => {
-      // Do stuff here - interaction is an InteractionResponse object. To get the name, use interaction.data.name
-      // In particular, the values you passed to the interaction when creating it will be passed back here
-      //console.log(interaction)
-      client.api.interactions(interaction.id, interaction.token).callback.post({
-        data: {
-          type: 3,
-          data: {
-            content: `To fazendo a tua pinga...`,
-          },
-        },
-      });
-    });
-
-    //log no console
     console.log(`\nBot foi logado como ${client.user.tag}`)
     console.log("Iniciado em " + botUtils.formatDate(new Date()));
 
@@ -55,6 +25,7 @@ module.exports = (client) => {
       console.log(`Demorou ${Math.floor(dTime / 60000)}:${(Math.floor(dTime / 1000) % 60).toString().padStart(2, '0')}  para iniciar\n`);
 
     }, true);
+    //reactorLog.send(startEmbed);    
 
     // Reactor reaction
     require('./utils/reactionRole')(client, guild)

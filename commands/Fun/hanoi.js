@@ -33,7 +33,7 @@ module.exports = {
       if (args[0] > 11) return message.channel.send("Quantidade máxima: 11");
 
       let recompensa = {
-        money: Math.floor((Math.pow(2.1, args[0]) - 1) / 2) + Math.floor((Math.pow(2.1, args[0]) - 1) / 10),
+        money: Math.floor((Math.pow(2.1, args[0]) - 1) * 0.6),
         xp: Math.floor((Math.pow(2.1, args[0]) - 1) / 3) * 2 + Math.floor((Math.pow(2.1, args[0]) - 1) / 4)
       }
 
@@ -87,19 +87,23 @@ module.exports = {
       }
 
       message.channel.send(embed).then(async msg => {
-        await msg.react("🇦");
-        await msg.react("🇧");
-        await msg.react("🇨");
+        msg = new botUtils.fastEditMessage(msg)
+
+        await msg.message.react("🇦");
+        await msg.message.react("🇧");
+        await msg.message.react("🇨");
 
         let filter = (r, u) => ((r.emoji.name == "🇦" || r.emoji.name == "🇧" || r.emoji.name == "🇨") && u.id == message.author.id);
 
         startTime = new Date().getTime();
-        var collector = msg.createReactionCollector(filter, { idle: 1000 * 60 * 5, dispose: true });
+        var collector = msg.message.createReactionCollector(filter, { idle: 1000 * 60 * 5, dispose: true });
         let moveFrom = null;
 
         var run = function(r, u) {
           if (moveFrom == null) {
             moveFrom = ["🇦", "🇧", "🇨"].indexOf(r.emoji.name);
+
+            if (hanoi[moveFrom].findIndex(v => v > 0) < 0) return;
 
             let embed2 = new Discord.MessageEmbed()
               .setTitle("Torres de hanoi")
@@ -115,43 +119,17 @@ module.exports = {
             msg.edit(embed2);
 
           } else {
-            let pieceChosed = hanoi[moveFrom].filter(e => e != 0)[0];
+
             let towerChosed = ["🇦", "🇧", "🇨"].indexOf(r.emoji.name);
+            if (moveFrom != towerChosed) {
 
-            if (moveFrom == towerChosed) break;
+              let pieceChosed = hanoi[moveFrom].filter(e => e != 0)[0];
+              let moveTo = hanoi[towerChosed].filter(e => e == 0).length - 1
 
-            let moveTo = hanoi[towerChosed].filter(e => e == 0).length - 1
-
-            switch (r.emoji.name) {
-              case "🇦": {
-                if (hanoi[moveFrom].indexOf(pieceChosed) != -1) {
-                  if (hanoi[0][moveTo + 1] == null || hanoi[moveFrom][hanoi[moveFrom].indexOf(pieceChosed)] < hanoi[0][moveTo + 1]) {
-                    hanoi[0][moveTo] = pieceChosed;
-                    hanoi[moveFrom][hanoi[moveFrom].indexOf(pieceChosed)] = 0;
-                    quantMoves++;
-                  }
-                }
-                break;
-              }
-              case "🇧": {
-                if (hanoi[moveFrom].indexOf(pieceChosed) != -1) {
-                  if (hanoi[1][moveTo + 1] == null || hanoi[moveFrom][hanoi[moveFrom].indexOf(pieceChosed)] < hanoi[1][moveTo + 1]) {
-                    hanoi[1][moveTo] = pieceChosed;
-                    hanoi[moveFrom][hanoi[moveFrom].indexOf(pieceChosed)] = 0;
-                    quantMoves++;
-                  }
-                }
-                break;
-              }
-              case "🇨": {
-                if (hanoi[moveFrom].indexOf(pieceChosed) != -1) {
-                  if (hanoi[2][moveTo + 1] == null || hanoi[moveFrom][hanoi[moveFrom].indexOf(pieceChosed)] < hanoi[2][moveTo + 1]) {
-                    hanoi[2][moveTo] = pieceChosed;
-                    hanoi[moveFrom][hanoi[moveFrom].indexOf(pieceChosed)] = 0;
-                    quantMoves++;
-                  }
-                }
-                break;
+              if (pieceChosed < (hanoi[towerChosed][moveTo + 1] || Number.POSITIVE_INFINITY)) {
+                hanoi[towerChosed][moveTo] = pieceChosed;
+                hanoi[moveFrom][hanoi[moveFrom].indexOf(pieceChosed)] = 0;
+                quantMoves++;
               }
             }
             moveFrom = null;
@@ -182,7 +160,7 @@ module.exports = {
         collector.on("remove", run);
 
         collector.on("end", () => {
-          msg.reactions.removeAll();
+          msg.message.reactions.removeAll();
 
           if (hanoi[2].includes(0)) return;
           let endTime = new Date().getTime() - startTime;
@@ -238,7 +216,7 @@ module.exports = {
 
             let embed3 = new Discord.MessageEmbed()
               .setTitle("Torres de hanoi")
-              .setDescription(`Quantidade minima de movimentos: ${minMoves}\n\nMovimentos: \`${quantMoves}\`\nResolvido em: \`${Math.floor(endTime / 60000)}:${Math.floor(endTime / 1000 % 60).toString().padStart(2, '0')}.${endTime % 1000}\`\n\n**Recompensas:**\n$${recompensa.money}\n${recompensa.xp} xp`)
+              .setDescription(`Quantidade minima de movimentos: ${minMoves}\n\nMovimentos: \`${quantMoves}\`\nResolvido em: \`${Math.floor(endTime / 60000)}:${Math.floor(endTime / 1000 % 60).toString().padStart(2, '0')}.${(endTime % 1000).toString().padStart(3,"0")}\`\n\n**Recompensas:**\n$${recompensa.money}\n${recompensa.xp} xp`)
               .setColor("RANDOM")
               .setTimestamp();
 

@@ -4,11 +4,13 @@ const botUtils = require("../../utils.js");
 
 module.exports = {
   // Execução do comando
-  run: (client, message, args) => {
+  run: (client, message, args, msgContent) => {
     newError = botUtils.newError;
-
+    const guild = message.guild;
     try {
-      let member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
+      let member = message.mentions.members.first() ||
+        msgContent && guild.member(botUtils.stringToUser(guild,msgContent,true)) ||
+        message.member;
 
       Users.findById(member.id, (errDB, doc) => {
         if (errDB) {

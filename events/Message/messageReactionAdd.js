@@ -4,6 +4,12 @@ const sharp = require('sharp');
 const request = require('request');
 const botUtils = require("../../utils.js");
 
+/**
+ * 
+ * @param {Discord.Client} client
+ * @param {Discord.MessageReaction} messageReaction
+ * @param {Discord.User} user
+ */
 module.exports = async (client, messageReaction, user) => {
   newError = botUtils.newError;
 
@@ -11,6 +17,10 @@ module.exports = async (client, messageReaction, user) => {
 
     //se é partial, ent carrega
     if (messageReaction.message.partial) await messageReaction.message.fetch();
+    await messageReaction.fetch()
+    await messageReaction.users.fetch()
+
+    console.log(messageReaction.users.cache.size)
 
     //se foi o bot q mando
     if (user.id == client.user.id) return;
@@ -52,7 +62,7 @@ module.exports = async (client, messageReaction, user) => {
 
         const i = props[line].findIndex(p => p.author == authorId);
 
-        if((props[line][i].timestamp || 0) > msg.createdTimestamp) return;
+        if ((props[line][i].timestamp || 0) > msg.createdTimestamp) return;
 
         if (messageReaction.emoji.toString() == '✅') {
           if (user.id == authorId) return;
@@ -89,6 +99,7 @@ module.exports = async (client, messageReaction, user) => {
 
       return;
     } else if (messageReaction.message.channel.id == '700147119465431050') {
+
       if (messageReaction.users.cache.has(client.user.id)) return;
 
       if (messageReaction.emoji.toString() == '👍') {
@@ -103,14 +114,25 @@ module.exports = async (client, messageReaction, user) => {
               .toBuffer()
               .then(data => {
                 guild.emojis.create(data, txt[1], { reason: `Em pedido por ${messageReaction.message.author.tag} e aceito por ${user.tag}` })
-                  .then(messageReaction.message.react('👍'))
+                  .then((emj) => {
+                    messageReaction.message.react('👍')
+                    /** @type {Discord.TextChannel} */
+                    const reactorLog = client.channels.cache.get("767982805908324411");
+                    let embed = new Discord.MessageEmbed()
+                      .setTitle("Foi criado um novo emoji")
+                      .setDescription(emj)
+                      .setTimestamp()
+                      .addField("Already marked", messageReaction.users.cache.mapValues(user => user.tag).array().join("\n") || "~nobody")
+                      .setAuthor(user.tag, user.displayAvatarURL());
+                    reactorLog.send(embed)
+                  })
                   .catch(err => console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`))
               })
               .catch(err => console.log(`=> ${newError(err, "messageReaction_emojisugestao")}`));
           });
         }
       } else if (messageReaction.emoji.toString() == '🗒️') {
-        botUtils.jsonChange("dataBank/sugestao.json",(sugs) => {
+        botUtils.jsonChange("dataBank/sugestao.json", (sugs) => {
           sugs.stored.push({
             author: messageReaction.message.author.id,
             content: messageReaction.message.content,
@@ -119,9 +141,9 @@ module.exports = async (client, messageReaction, user) => {
             data: messageReaction.message.createdTimestamp
           });
           messageReaction.message.react('🗒️')
-          sugs.stored = sugs.stored.sort((a,b) => a.data-b.data);
+          sugs.stored = sugs.stored.sort((a, b) => a.data - b.data);
           return sugs;
-        },true);
+        }, true);
       }
     }
 

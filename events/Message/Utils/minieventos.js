@@ -1,8 +1,15 @@
 const { Users } = require('../../../database.js');
 const botUtils = require("../../../utils.js");
+const Discord = require("discord.js");
 
+/**
+ * 
+ * @param {Discord.Client} client
+ * @param {Discord.Message} message
+ */
 module.exports = (client, message) => {
   newError = botUtils.newError;
+
   try {
     // detecta os mini eventos
     if (message.author.bot) return;
@@ -30,22 +37,23 @@ module.exports = (client, message) => {
         }
 
         if (correct) {
+
+          // constantes 
+          const money = Math.floor(Math.random() * 5 + 5);
+          const xp = Math.floor(Math.random() * 50 + 100);
+
+          // Configura o Canal
+          message.channel.send(`\`${message.author.tag}\` respondeu certo! ganhou ${money}\$ e ${xp} xp`);
           message.channel.overwritePermissions([
             { id: '700183808783286372', allow: 805829713 },
             { id: '755665930159390721', deny: 2112 },
             { id: '699823229354639471', allow: 66624, deny: 805763089 }
           ]);
           message.react('✅');
-
-          const money = Math.floor(Math.random() * 5 + 5);
-          const xp = Math.floor(Math.random() * 50 + 100);
-
-          message.channel.send(`\`${message.author.tag}\` respondeu certo! ganhou ${money}\$ e ${xp} xp`);
-
           obj.eventWin = null;
           obj.eventType = null;
 
-          let XPconfig = require('../../../dataBank/levelSystem.json');
+          // Configura
 
           Users.findById(message.author.id, (err, doc) => {
             if (err) {
@@ -63,9 +71,29 @@ module.exports = (client, message) => {
             doc.save();
           });
 
-          return obj;
         } else {
-          message.react('❌');
+
+          const emojis = [
+            '<:burro:825090955954225152>',
+            ['😡','❌'],
+            '❌'
+          ];
+          const weigths = [
+            1,
+            1,
+            28
+          ];
+
+          let number = Math.floor(Math.random() * weigths.reduce((a, b) => a + b));
+          emojis.some((emoji, i) => {
+            number -= weigths[i];
+            if (number < 0) {
+              if (Array.isArray(emoji))
+                return emoji.reduce((_,str) => _.then(message.react(str)), Promise.resolve());
+              else
+                return message.react(emoji);
+            }
+          })
         }
 
         return obj;
