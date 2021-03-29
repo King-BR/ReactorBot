@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const botUtils = require("../../../utils.js");
 
 module.exports = {
-  run: async (client, message, result, imageExists, args) => {
+  run: (client, message, result, imageExists, args) => {
     newError = botUtils.newError;
 
     try {
@@ -20,7 +20,7 @@ module.exports = {
           
           let imagem = args[0];
           if (imagem && !imageExists(imagem) && !img) return message.channel.send("img invalida");
-          result.background = args[0] || (img && img.url && imageExists(img.url)) || null;
+          result.background = args[0] || (img && imageExists(img.url) && img.url) || null;
 
           conf.players[message.member.id].background = result.background;
           break;

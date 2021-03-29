@@ -15,10 +15,10 @@ module.exports = {
         json = JSON.parse(txt)
       } catch {return message.reply("Não foi possivel entender seu JSON")}
       try{
-        buf = botUtils.mndJsonToScheme(JSON.parse(txt));
+        buf = new botUtils.Schematic(JSON.parse(txt));
       } catch {return message.reply("Não foi possivel transformar sua schematica")}
 
-      message.channel.send(`\`\`\`${buf}\`\`\``)
+      botUtils.mndSendMessageEmbed(buf.toBuffer().toString("base64"),message,buf)
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

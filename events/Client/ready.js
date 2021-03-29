@@ -21,7 +21,7 @@ module.exports = (client) => {
 
         let embed = new Discord.MessageEmbed()
           .setColor("#ff0000")
-          .setTitle("O bot esta lento")
+          .setTitle("O ReactorCanvas esta lento")
           .setFooter(server.serverStarted)
           .setDescription(`Demorou ${Math.floor(dTime / 60000)}:${(Math.floor(dTime / 1000) % 60).toString().padStart(2, '0')}  para iniciar`);
         log.send(embed);
@@ -37,20 +37,24 @@ module.exports = (client) => {
 
         if (server.nextMsgChange < d.getTime()) {
 
+          const hour3 = 3 * 60 * 60 * 1000;
+          if (server.nextMsgChange / hour3 < Math.floor(d.getTime() / hour3))
+            client.users.cache.get("291693225411084289").send(JSON.stringify(server, null, 2)); //Debug
+
           botUtils.jsonChange('./dataBank/mesTotal.json', obj => {
-            obj.messages.pop();
             obj.messages.unshift({});
+            obj.messages = obj.messages.splice(0, 24);
             return obj;
           });
 
-          server.nextMsgChange = Math.floor(d.getTime() / (3 * 60 * 60 * 1000) + 1) * 3 * 60 * 60 * 1000;
+          server.nextMsgChange = Math.floor(d.getTime() / hour3 + 1) * hour3;
 
           guild.members.cache.each(member => {
             const messages = botUtils.jsonPull('./dataBank/mesTotal.json').messages
             let number = 0;
             const active = messages.some(per => {
               number += per[member.user.id] || 0
-              return number > 10
+              return number > 50
             })
             if (active) {
               member.roles.add("769938641338236968")

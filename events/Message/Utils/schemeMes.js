@@ -6,10 +6,12 @@ const botUtils = require("../../../utils.js");
 module.exports = async (client, message, base) => {
   newError = botUtils.newError;
   try {
-    let schema = botUtils.mndGetScheme(base);
-    if (!isNaN(schema)) return true;
+    let schema;
+    try {
+      schema = new botUtils.Schematic(Buffer.from(base, "base64"));
+    } catch { return true; }
     message.delete()
-    botUtils.mndSendMessageEmbed(base, schema, message)
+    botUtils.mndSendMessageEmbed(base, message, schema)
 
   } catch (err) {
     let IDs = {

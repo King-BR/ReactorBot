@@ -3,6 +3,11 @@ const Canvas = require("canvas");
 const botUtils = require("../../../utils.js");
 
 module.exports = {
+  /**
+   * @param {Discord.Client} client
+   * @param {Discord.Message} message
+   * @param {{name: String,image: String,background: String|null,msgs: Number[],msgBig: Number,msgTotal: Number,colors: String,type: String}} result
+   */
   run: async (client, message, result) => {
     newError = botUtils.newError;
 
@@ -23,7 +28,7 @@ module.exports = {
       const displayy = 90;
       const displayw = 420;
       const displayh = 190;
-      const sizePL = 50;
+      const sizePL = 50*2**Math.max(Math.floor(Math.log2(result.msgBig/300)),0);
 
       const lasttime = Math.floor(new Date().getHours() / 3) * 3;
       const cheight = Math.max(Math.ceil(result.msgBig / sizePL), 1);
@@ -52,16 +57,23 @@ module.exports = {
       // result.img = image
       let bg = result.background
       if (bg) {
+        
         const backg = await Promise.race([
           Canvas.loadImage(bg),
           botUtils.sleep(3000)
         ])
+
         if(!backg) return message.reply("Demorou muito para carregar seu background.");
+
+
+
         ctx.drawImage(backg, 0, 0, canvas.width, canvas.height);
+
       } else if (!bg) {
         ctx.fillStyle = "#444466";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
+
       //lines
       ctx.lineWidth = 2;
       ctx.strokeStyle = '#ffffff22';

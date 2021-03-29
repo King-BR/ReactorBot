@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "atob": "^2.1.2",
-    "bit-buffer": "^0.2.4",
     "btoa": "^1.2.1",
     "canvas": "^2.6.1",
     "chalk": "^4.1.0",

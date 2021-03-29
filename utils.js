@@ -3,7 +3,6 @@ const chalk = require("chalk");
 const fs = require("fs");
 const format = require("date-fns/format");
 const zlib = require("zlib");
-const bb = require("bit-buffer");
 const Canvas = require('canvas');
 const Discord = require('discord.js');
 
@@ -369,7 +368,6 @@ module.exports = {
    * e nunca vai remover algo dele coloca no lugar de min o booleano true.
    */
   jsonChange: async (path, func, min = 0) => {
-    //console.log(path);
     let bal = module.exports.jsonPull(path);
 
     if (!bal) return console.log(`=> ${module.exports.newError(new Error('Não foi encontrado um json no caminho inserido'), "utils_jsonChange")}`);;
@@ -446,459 +444,15 @@ module.exports = {
   //#region Schematics utils
 
   /**
-   * Transforma um Json em um base64 de schema
+   * 
+   * @param {String} base64
+   * @param {Discord.Message} message
+   * @param {Schematic} schema
+   * @param {Canvas.Canvas?} canvas
    */
+  mndSendMessageEmbed: async (base64, message, schema, canvas) => {
 
-  mndJsonToScheme: (schema) => {
-    
-    // Constantes
-
-    const block = new module.exports.StreamStructure("byte", "short", "short", "byte", "buffer", "byte")
-    const schem = new module.exports.StreamStructure(
-      "short", // Largura
-      "short", // Altura
-      "string[1][]", // Tags
-      "string[1]", // nomes
-      "block[4]" // blocos
-    ).setType("block",block);
-
-    const config = (type,val) => {
-      switch (type) {
-        case 0: return null;
-        case 1: {
-          let buffer = Buffer.alloc(4)
-          buffer.writeInt32BE(val)
-          return buffer;
-        };
-        case 2: {
-          let buffer = Buffer.alloc(8)
-          buffer.writeBigInt64BE(val);
-          return
-        }
-        case 3: {
-          let buffer = Buffer.alloc(4)
-          buffer.writeFloatBE(val);
-          return
-        }
-        case 4: {
-          let buffer = Buffer.alloc(Buffer.byteLength(val)+3);
-          buffer.writeInt8(val?1:0,0);
-          buffer.writeInt16BE(Buffer.byteLength(val),1);
-          buffer.write(val,3);
-          return buffer
-        }
-        case 5: {
-          let content = module.exports.jsonPull('./dataBank/mindustryContent.json');
-          let buffer = Buffer.alloc(3);
-          let type = ['item', null, null, null, 'liquid'].indexOf(val.type)
-          if(type == -1) type = 0;
-          buffer.writeInt8(type,0);
-          let item = constent[['item', null, null, null, 'liquid'][type]].findIndex(n => n.name == val.name);
-          if(item == -1) item = 0;
-          buffer.writeInt16BE(item,1);
-          return buffer;
-        }
-        case 6: {
-          let buffer = Buffer.alloc(3);
-          buffer.writeUInt16BE(val.length)
-          val.forEach((v,i) => {buffer.writeInt32BE(v,i*4+2)})
-          return buffer
-        }
-        case 7: {
-          let buffer = Buffer.alloc(8);
-          buffer.writeInt32BE(val[0])
-          buffer.writeInt32BE(val[1])
-          return buffer
-        }
-        case 8: {
-          let buffer = Buffer.alloc(val.length*4+1);
-          buffer.writeInt8(val.length);
-          val.forEach((v,i) => {buffer.writeInt16BE(v[0]);buffer.writeInt16BE(v[1])})
-          return buffer;
-        }
-        case 10: {
-          let buffer = Buffer.alloc(1)
-          buffer.writeInt8(val)
-          return buffer
-        }
-        case 11: {
-          let buffer = Buffer.alloc(8)
-          buffer.writeDoubleBE(val)
-          return buffer
-        }
-        case 14: {
-          let buffer = Buffer.alloc(4+val.length);
-          buffer.writeInt32BE(val.length);
-          if(Buffer.isBuffer(val)) val = [...val];
-          val.forEach((v,i) => {buffer.writeUInt8(v,i+4)});
-          return buffer;
-        }
-        case 15: {
-          let buffer = Buffer.alloc(1)
-          buffer.writeInt8(val)
-          return buffer
-        }
-        default: throw new Error("Tipo de config não registrado")
-      }
-    }
-
-    // Detectar entradas invalidas
-    if (isNaN(schema.width) || parseInt(schema.width) < 1) throw new Error("Invalid width")
-    if (isNaN(schema.height) || parseInt(schema.height) < 1) throw new Error("Invalid height")
-
-    // Transformar
-    schema.blocks = schema.blocks.map(v => {
-      let end = []
-      end.push(v.type || 0);
-      end.push(v.position[0] || 0);
-      end.push(v.position[1] || 0);
-      end.push(v.configt || 0);
-      end.push(config(v.configt || 0,v.config));
-      end.push(v.rotation || 0);
-      return end;
-    })
-
-    let buffer = schem.toBuffer(
-      schema.width || 1,
-      schema.height|| 1,
-      schema.tags ? Object.entries(schema.tags) : [["name","nameless"]],
-      schema.names || [],
-      schema.blocks || []
-    )
-
-    let prefix = Buffer.alloc(5)
-    prefix.write("msch",0)
-    prefix.writeInt8(1,4)
-
-    return Buffer.concat([prefix,zlib.deflateSync(buffer)]).toString("base64")
-  },
-
-  mndGetScheme: (binarySchem) => {
-    const VERSION = 1;
-    const DEBUG = true;
-
-    const config = (bits) => {
-
-      const type = bits.readInt8();
-
-      switch (type) {
-        case 0: return null;
-        case 1: return bits.readInt32();
-        case 2: return bits.readInt32() * 2 ** 32 + bits.readUint32();
-        case 3:
-          var buf = new ArrayBuffer(4);
-          var view = new DataView(buf);
-          bits.readArrayBuffer(4).forEach((b, i) => view.setint8(i, b));
-          return view.getFloat32(0);
-        case 4: return bits.readInt8() != 0 ? bits.readUTF8String(bits.readInt16()) : null;
-        case 5:
-          let content = module.exports.jsonPull('./dataBank/mindustryContent.json');
-          return content[['item', null, null, null, 'liquid'][bits.readInt8()]][bits.readUint16()];
-        case 6:
-          let list = [];
-          let length = bits.readUInt16();
-          while (length-- > 0) { list.push(bits.readInt32()); }
-          return list;
-        case 7: return [bits.readInt32(), bits.readInt32()];
-        case 8:
-          let len = bits.readInt8();
-          let out = [];
-          while (len-- > 0) {
-            out.push([bits.readInt16(), bits.readInt16()]);
-          }
-          return out;
-        case 10: return bits.readInt8();
-        case 11:
-          var buf = new ArrayBuffer(8);
-          var view = new DataView(buf);
-          bits.readArrayBuffer(8).forEach((b, i) => view.setUint8(i, b));
-          return view.getFloat64(0);
-        case 14:
-          let blen = bits.readInt32();
-          let bytes = [];
-          while (blen-- > 0) {
-            bytes.push(bits.readUint8())
-          }
-          return bytes;
-        case 15: return bits.readInt8(); //Centro de comando
-
-        //Não Atribuidos
-        case 9:
-          bits.readInt8(); bits.readInt16();
-          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
-        case 12:
-          bits.readInt32();
-          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
-        case 13:
-          bits.readInt16();
-          console.log("Foi utilizado uma configuração não atribuida (" + type + ")"); return type;
-
-        default: throw new Error("Tipo desconhecido " + type);
-
-      }
-    }
-
-    // --- Verifying --- //
-
-    let text = [...Buffer.from(binarySchem, 'base64')];
-    let result = {};
-    let bits;
-
-    try {
-      let i = ['m', 's', 'c', 'h', "\01"].findIndex((v, i) => v.toString().charCodeAt() != text[i]);
-
-      if (i >= 0) return Math.floor(i / 4);
-
-      bits = new bb.BitStream(zlib.inflateSync(Buffer.from(binarySchem, 'base64').slice(5)));
-      bits.bigEndian = true;
-    } catch (e) {
-      if (DEBUG) console.log(e);
-      return 3;
-    }
-    // --- CRIAÇÃO --- //
-
-    try {
-      // pegar largura e altura da schematic
-      result.width = bits.readInt16()
-      result.height = bits.readInt16()
-
-      //pegar tags
-      result.tags = {}
-      let size = bits.readInt8()
-      while (size-- > 0) {
-        result.tags[bits.readUTF8String(bits.readInt16())] = bits.readUTF8String(bits.readInt16())
-      }
-
-      //pegar nomes dos blocos
-      result.names = [];
-      size = bits.readInt8()
-      while (size-- > 0) {
-        result.names.push(bits.readUTF8String(bits.readInt16()));
-      }
-
-    } catch (e) {
-      if (DEBUG) console.log(e);
-      return 4;
-    }
-
-    //pegar os blocos
-    result.blocks = [];
-    try {
-      size = bits.readInt32()
-      while (size-- > 0) {
-        let block = {}
-        block.type = bits.readInt8()
-        block.position = [bits.readInt16(), bits.readInt16()]
-        block.config = config(bits)
-        block.rotation = bits.readInt8()
-
-        result.blocks.push(block)
-      }
-    } catch (e) {
-      if (DEBUG) console.log(e);
-      return 5;
-    }
-
-    return result
-  },
-
-  /**
-   * @param schema {Schema}
-   */
-  schemeToCanvas: async (schema) => {
-
-    // Constantes
-    const cons = {
-      CONVEYOR: ["titanium-conveyor", "conveyor", "armored-conveyor", "conduit", "plated-conduit", "pulse-conduit"],
-      ITEMSCONVEYOR: ["titanium-conveyor", "conveyor", "armored-conveyor"],
-      LIQUIDSCONVEYOR: ["conduit", "plated-conduit", "pulse-conduit"],
-      PLATEDCONVEYOR: ["plated-conduit", "armored-conveyor"],
-
-      BRIDGE: ["bridge-conveyor", "phase-conveyor", "bridge-conduit", "phase-conduit"],
-      ITEMSBRIDGE: ["bridge-conveyor", "phase-conveyor"],
-      LIQUIDSBRIDGE: ["bridge-conduit", "phase-conduit"],
-
-      ROTATE: ["plastanium-conveyor"],
-    }
-
-    // Pegando os canvas
-    let canvas = Canvas.createCanvas(schema.width * 32, schema.height * 32);
-    let canvasM = Canvas.createCanvas(schema.width * 32, schema.height * 32);
-    let ctx = canvas.getContext("2d");
-    let ctxM = canvasM.getContext("2d");
-
-    // Pegando as imagens
-    const content = JSON.parse(fs.readFileSync('./dataBank/mindustryBlocks.json'));
-    const atlas = JSON.parse(fs.readFileSync('./images/blocks.atlas'));
-    let image = await Canvas.loadImage("./images/blocks.png");
-
-    //Criando a memoria
-    schema.memory = []
-    for (let x = 0; x < schema.width; x++) {
-      schema.memory[x] = [];
-      for (let y = 0; y < schema.height; y++) {
-        schema.memory[x][y] = -1;
-      }
-    }
-
-    schema.blocks.forEach((block, id) => {
-      let a = atlas[schema.names[block.type]]
-      let size = a ? a[0] : 1;
-
-      for (let x = -Math.floor((size - 1) / 2); x <= Math.floor(size / 2); x++) {
-        for (let y = -Math.floor((size - 1) / 2); y <= Math.floor(size / 2); y++) {
-          x = Math.min(Math.max(block.position[0] + x, 0), schema.width - 1)
-          y = Math.min(Math.max(block.position[1] + y, 0), schema.height - 1)
-          schema.memory[x][y] = id;
-        }
-      }
-
-    })
-
-    //Funções
-    const draw = (ctx, item, x, y, rot) => {
-      if (!item) item = atlas["error"];
-
-      let s = item[0] * 32;
-      x = x * 32 + 32
-      y = (schema.height - y) * 32 - 32
-
-      let px = x - Math.floor(item[0] / 2 + 0.5) * 32 + 32 - s / 2 % 32;
-      let py = y - Math.floor(item[0] / 2) * 32 + 32 - s / 2 % 32;
-
-      ctx.save()
-      ctx.translate(px, py);
-
-      if (rot) {
-        ctx.rotate((rot || 0) * Math.PI / 2);
-      }
-
-      ctx.drawImage(image, item[1] * 32, item[2] * 32, s, s, s / 2 % 32 - 32, s / 2 % 32 - 32, s, s);
-      ctx.restore();
-    }
-    const getBlock = (x, y, name) => {
-      if (x < 0 || y < 0 || x >= schema.width || y >= schema.height) return;
-      let block = schema.blocks[schema.memory[x][y]]
-      return name && block ? schema.names[block.type] : block
-    };
-    const bridgeEnd = (x, y) => {
-      let block = getBlock(x, y);
-      if (block.config[0] && block.config[1]) return true;
-      if (!(block.config[0] || block.config[1])) return true;
-      return false;
-    };
-
-    //Desenha blocos
-    schema.blocks.forEach((obj, i) => {
-      let objName = schema.names[obj.type];
-
-      if (cons.CONVEYOR.includes(objName)) { //Conveyors
-
-        let pos = obj.position;
-        let rot = (4 - obj.rotation) % 4;
-        let sides = [0, 0, 0, 0];
-        let plated = cons.PLATEDCONVEYOR.includes(objName)
-        let name = cons.ITEMSCONVEYOR.includes(objName) ? "items" : "liquids";
-
-        for (let i = 0; i < 4; i++) {
-          let x = pos[0] + (i - 1) % 2;
-          let y = pos[1] + (2 - i) % 2;
-          let block = getBlock(x, y, true);
-          if (
-            (!plated && content[name].includes(block)) ||
-            (cons[`${name.toUpperCase()}CONVEYOR`].includes(block) && getBlock(x, y).rotation == (4 - i) % 4) ||
-            (!plated && cons[`${name.toUpperCase()}BRIDGE`].includes(block) && bridgeEnd(x, y))
-          ) {
-            sides[(i + obj.rotation) % 4] = 1;
-          }
-        }
-
-        let n = 0;
-        if (sides[1]) {
-          if (sides[0]) n = 6;
-          if (!sides[0]) n = 1;
-        }
-        if (sides[3]) {
-          if (sides[0]) n = 2;
-          if (!sides[0]) n = 5;
-        }
-        if (sides[1] && sides[3]) {
-          if (sides[0]) n = 3;
-          if (!sides[0]) n = 4;
-        }
-
-        draw(ctx, atlas[`${objName}-${n}`], obj.position[0], obj.position[1], rot)
-
-      } else if (["door", "door-large"].includes(objName)) { //Doors
-        draw(ctx, atlas[objName + (obj.config > 0 ? '-open' : '')], obj.position[0], obj.position[1])
-      } else { //Block itself
-
-        //console.log(objName)
-        if(objName == "micro-processor") console.log(zlib.inflateSync(Buffer.from(obj.config)))
-        draw(ctx, atlas[objName], obj.position[0], obj.position[1], cons.ROTATE.includes(objName) ? -obj.rotation : 0);
-      }
-    })
-
-    //Overlay de cor
-    schema.names.forEach((type, typeID) => {
-      if (["unloader", "item-source", "sorter", "inverted-sorter", "liquid-source"].includes(type)) {
-
-        let atlasBlock = atlas[type + "-center"] || atlas["color-center"]
-        ctxM.globalCompositeOperation = "source-over";
-        schema.blocks.filter(block => block.type == typeID && block.config).forEach((block) => {
-          ctxM.fillStyle = block.config.color;
-          ctxM.fillRect(block.position[0] * 32, (schema.height - block.position[1] - 1) * 32, 32, 32);
-
-          ctxM.beginPath();
-          ctxM.save()
-          ctxM.rect(block.position[0] * 32, (schema.height - block.position[1] - 1) * 32, 32, 32);
-          ctxM.clip();
-
-          ctxM.globalCompositeOperation = "destination-in";
-          draw(ctxM, atlasBlock, block.position[0], block.position[1])
-          ctxM.restore()
-        });
-
-      }
-    });
-    ctx.drawImage(canvasM, 0, 0);
-
-    //Deixa tudo transparente
-    ctx.globalAlpha = 0.8;
-
-    //Desenha pontes
-    schema.names.forEach((type, typeID) => {
-      if (cons.BRIDGE.includes(type)) {
-        schema.blocks.filter(obj => obj.type == typeID)
-          .filter(obj => !(obj.config[0] && obj.config[1]))
-          .forEach((obj) => {
-            let block = getBlock(obj.position[0] + obj.config[0], obj.position[1] + obj.config[1]);
-            if (block && block.type == typeID) {
-
-              let dir = 3 + (obj.config[0] ? Math.sign(obj.config[0]) : 1 + Math.sign(obj.config[1]))
-              let dist = Math.abs(obj.config[0] + obj.config[1]);
-
-              while (dist-- > 1) {
-                draw(ctx, atlas[type + "-bridge"],
-                  obj.position[0] + Math.sign(obj.config[0]) * dist,
-                  obj.position[1] + Math.sign(obj.config[1]) * dist,
-                  -dir);
-              }
-
-            }
-          });
-      }
-    })
-
-    return canvas.toBuffer()
-  },
-
-  mndSendMessageEmbed: async (base64, schema, message) => {
-
-    if (!isNaN(schema)) throw new Error("Foi enviado um numero");
-
-    let final = await module.exports.schemeToCanvas(schema);
-
+    if (typeof base64 !== "string") throw new Error(`No parametro base64 enviado um "${typeof base64}" ao invez de string`);
     // Calculos
 
     const blocks = JSON.parse(fs.readFileSync('./dataBank/mindustryBlocks.json'));
@@ -916,9 +470,8 @@ module.exports = {
     });
     schema.crafterSize /= schema.width * schema.height || 1;
 
-    //Envio
-
-    const attachment1 = new Discord.MessageAttachment(final, 'bufferedfilename.png');
+    //enviado
+    const attachment1 = new Discord.MessageAttachment(canvas || (await schema.toCanvas()).toBuffer(), 'bufferedfilename.png');
     const attachment2 = new Discord.MessageAttachment(Buffer.from(base64, "base64"), schema.tags.name + '.msch');
 
     let embed = new Discord.MessageEmbed()
@@ -938,9 +491,6 @@ module.exports = {
   //--------------------------------------------------------------------------------------------------//
   //#region Class
 
-  /**
-   * @class
-   */
   StreamStructure: class StreamStructure {
 
     /**
@@ -949,8 +499,10 @@ module.exports = {
      */
     constructor() {
       Array.from(arguments).some(v => {
-        if (typeof v != "string") throw new Error(`Foi esperado uma string porem foi enviado um (${typeof v})`);
-        if (!(/^[a-z]+(?:\[[0-68]?\])*$/i.test(v))) throw new Error(`Foi enviado um tipo inesperado (${v.toString()})`);
+        if (typeof v != "string" && !Array.isArray(v))
+          throw new Error(`Foi esperado uma string porem foi enviado um (${typeof v})`);
+        if (typeof v == "string" && !(/^[a-z]+(?:\[[1-68]\])*$/i.test(v)))
+          throw new Error(`Foi enviado um tipo inesperado (${v.toString()})`);
       });
       this.struct = Array.from(arguments);
       this.types = {};
@@ -965,56 +517,57 @@ module.exports = {
 
       let size = 0;
       let gettingSize = true;
-      const reg1 = /^([a-z]+)((?:\[[0-68]?\])*)$/i
-      const reg2 = /^\[([0-68]?)\]((?:\[[0-68]?\])*)$/i
+      const reg1 = /^([a-z]+)((?:\[[1-68]\])*)$/i;
+      const reg2 = /^\[([1-68])\]((?:\[[1-68]\])*)$/i;
 
-      const getSize = (type, layer, val, func) => {
-        
+      /**
+       * 
+       * @param {String|Array} type 
+       * @param {Array} val 
+       * @param {*} func 
+       */
+      const getSize = (type, val, func) => {
+          
+
         if (val === undefined) throw new Error(`O valor inserido do tipo "${type}" esta vazio`)
-
-        if (layer) {
-
-          if (!Array.isArray(val)) throw new Error(`Ò valor experado era uma Array mas foi recebido uma ${typeof val}`)
-
-          let times = val.length;
-          let number = parseInt(reg2.exec(layer)[1] || 0);
-          if(gettingSize){
-            size += number;
+        if (Array.isArray(type)) {
+          if (gettingSize) {
+            size++;
           } else {
-            if(number) index = bits.writeIntBE(times,index,number);
+            index = bits.writeUInt8(val[0], index);
           }
-          layer = reg2.exec(layer)[2];
+          return type[val[0]].forEach((v, i) => getSize(v, val[i + 1], func));
+        }
 
-          for (let i = 0; i < times; i++) {
-            getSize(type, layer, val[i], func)
-          }
+        let [, name, brack] = reg1.exec(type);
+        
 
-        } else if (this.types[type]) {
+        if (brack) {
 
           if (!Array.isArray(val)) throw new Error(`Ò valor experado era uma Array mas foi recebido uma ${typeof val}`)
+          let [, tam, others] = reg2.exec(brack);
 
-          this.types[type].forEach((v, i) => {
+          if (gettingSize) {
+            size += parseInt(tam);
+          } else {
+            index = bits.writeIntBE(val.length, index, parseInt(tam));
+          }
 
-            let type = reg1.exec(v)[1]
-            let layers = reg1.exec(v)[2]
+          val.forEach(v => getSize(name + others, v, func))
+        } else if (this.types[name]) {
+          if (!Array.isArray(val)) throw new Error(`Ò valor experado era uma Array mas foi recebido uma ${typeof val}`)
 
-            getSize(type, layers, val[i], func)
-          });
-
+          this.types[name].forEach((v,i) => getSize(v, val[i], func));
         } else {
-
           func(type, val)
         }
       }
 
       this.struct.forEach((v, i) => {
-
-        let type = reg1.exec(v)[1]
-        let layers = reg1.exec(v)[2]
-
-        getSize(type, layers, arguments[i], (type, val) => {
+        getSize(v, arguments[i], (type, val) => {
           switch (type) {
             case "byte": size += 1; break;
+            case "Ubyte": size += 1; break;
             case "short": size += 2; break;
             case "int": size += 4; break;
             case "long": size += 8; break;
@@ -1026,19 +579,19 @@ module.exports = {
           }
         })
       });
-      
+
       gettingSize = false;
       let bits = Buffer.alloc(size);
       let index = 0;
 
       this.struct.forEach((v, i) => {
+        
 
-        let type = reg1.exec(v)[1]
-        let layers = reg1.exec(v)[2]
 
-        getSize(type, layers, arguments[i], (type, val) => {
+        getSize(v, arguments[i], (type, val) => {
           switch (type) {
             case "byte": index = bits.writeInt8(val, index); break;
+            case "Ubyte": index = bits.writeUInt8(val, index); break;
             case "short": index = bits.writeInt16BE(val, index); break;
             case "int": index = bits.writeInt32BE(val, index); break;
             case "long": index = bits.writeBigInt64BE(val, index); break;
@@ -1058,6 +611,73 @@ module.exports = {
     }
 
     /**
+     * Transforma em buffer
+     * @param {Buffer} data
+     * @returns {Array}
+     */
+    fromBuffer(data) {
+
+      const reg1 = /^([a-z]+)((?:\[[0-68]?\])*)$/i
+      const reg2 = /^\[([0-68]?)\]((?:\[[0-68]?\])*)$/i
+
+      let index = 0;
+
+      const read = (type) => {
+
+        if (Array.isArray(type)) {
+
+          index++;
+          let choice = data.readUInt8(index - 1);
+          if (choice > type.length) throw new Error("Out of choice");
+          return { type: choice, data: type[choice].map(v => read(v)) }
+
+        } if (reg1.exec(type)[2]) {
+          //let name,brack;
+          let [, name, brack] = reg1.exec(type);
+          let [, size, others] = reg2.exec(brack);
+
+          index += parseInt(size);
+          size = data.readIntBE(index - size, parseInt(size));
+          return Array.from({ length: size }, () => read(name + others));
+        } else {
+          switch (type) {
+            case "long":
+              index += 8;
+              return data.readBigInt64BE(index - 8);
+            case "int":
+              index += 4;
+              return data.readInt32BE(index - 4);
+            case "short":
+              index += 2;
+              return data.readInt16BE(index - 2);
+            case "byte":
+              index += 1;
+              return data.readInt8(index - 1);
+            case "double":
+              index += 8;
+              return data.readDoubleBE(index - 8);
+            case "float":
+              index += 4;
+              return data.readFloatBE(index - 4);
+
+            case "string":
+              index += 2;
+              let size = data.readInt16BE(index - 2);
+              index += size;
+              return data.toString("utf8", index - size, index);
+
+            default:
+              if (!this.types[type]) throw new Error("Não foi possivel entender o tipo " + type)
+              return this.types[type].map(t => read(t))
+          }
+        }
+
+      }
+
+      return this.struct.map(v => read(v))
+    }
+
+    /**
      * Cria um novo tipo de variavel para ser salva
      * @param {string} nome - Nome do tipo a ser salvo 
      * @param {StreamStructure} tipo - A estrutura a ser salva no local 
@@ -1065,10 +685,613 @@ module.exports = {
     setType(name, struct) {
       const reg = /^([a-z]+)(?:\[[0-68]?\])*$/i
 
-      if(struct.struct.map(v => reg.exec(v)[1]).includes(name)) throw new Error("Foi detectado uma Call recursiva infinita");
+      if (struct.struct.filter(v => typeof v == "string").map(v => reg.exec(v)[1]).includes(name))
+        throw new Error("Foi detectado uma Call recursiva infinita");
       this.types[name] = struct.struct;
       return this;
     }
-  }
+  },
+
+  Schematic: class Schematic {
+
+    /**
+     * @typedef {Object} Block
+     * @property {Number} type
+     * @property {Number[]} position
+     * @property {Number} configt
+     * @property {*} config
+     * @property {Number} rotation
+     * @property {Number} size
+     */
+
+    /** @type {Number} */
+    width = 1;
+    /** @type {Number} */
+    height = 1;
+    /** @type {Object} */
+    tags = {};
+    /** @type {String[]} */
+    names = [];
+    /** @type {Block[]} */
+    blocks = [];
+
+    /**
+     * 
+     * @param {Buffer|JSON} schema 
+     */
+    constructor(schema) {
+
+      if (!Buffer.isBuffer(schema) && typeof schema !== "object")
+        throw new Error("O valor enviado precisa ser um Buffer ou Objeto")
+
+      if (Buffer.isBuffer(schema)) {
+        const VERSION = 1;
+
+        if (schema.length < 6 || Array.from(schema.slice(0, 5)).some((v, i) => v != [109, 115, 99, 104, VERSION][i]))
+          throw new Error("This is not an Schematic Buffer");
+
+        const SStruct = module.exports.StreamStructure;
+        const SArray = new SStruct("short", "short", "json[1]", "string[1]", "block[4]")
+          .setType("json", new SStruct("string", "string"))
+          .setType("block", new SStruct("byte", "short", "short", [
+            [], //0 - Maioria dos blocos nos quais não possui informação guardada
+            // ex: copper-wall
+            ["int"], //1 
+            ["long"], //2
+            ["float"],//3
+            [[[], ["string"]]], //4 - Utilizado para carregar informações de um unico texto
+            // ex: message
+            ["byte", "short"], //5 - Utilizado para guardar Materiais/Fluidos/Objetos do jogo
+            // ex: item-source, ordenator, 
+            ["int[2]"], //6
+            ["int", "int"], //7 - Utilizado para carregar cordenadas
+            // ex: bridge-conveyor, mass-driver
+            ["pos[1]"], //8 - Utilizada para carregar multiplas coordenadas pequenas
+            // ex: power-node
+            ["byte", "short"],//9 
+            ["byte"], //10 - Utiliado para guardar informações booleanas ou de baixa variedade
+            // ex: door, large-door, switch
+            ["double"], //11
+            ["int"], //12
+            ["short"], //13
+            ["byte[4]"], //14 - Utilizado para guardar informações complexas
+            // ex: processor
+            ["byte"] //15 - ???
+            // ex: command-center
+          ], "byte"))
+          .setType("pos", new SStruct("short", "short"))
+          .fromBuffer(zlib.inflateSync(schema.slice(5)));
+
+        schema = {
+          width: SArray[0],
+          height: SArray[1],
+          tags: Object.fromEntries(SArray[2]),
+          names: SArray[3],
+          blocks: SArray[4].map(v => {
+            return {
+              type: v[0],
+              position: [v[1], v[2]],
+              configt: v[3].type,
+              config: v[3].data,
+              rotation: v[4]
+            }
+          })
+        }
+      }
+      // Constantes
+
+      const atlas = JSON.parse(fs.readFileSync('./images/blocks.atlas'));
+
+
+      // Detectar entradas invalidas
+      if (!schema) throw new Error("Is necessary the input")
+      if (isNaN(schema.width) || parseInt(schema.width) < 1) throw new Error("Invalid width")
+      if (isNaN(schema.height) || parseInt(schema.height) < 1) throw new Error("Invalid height")
+      if (schema.names.some(v => typeof v != "string")) throw new Error("All names must to be String")
+      if (Object.entries(schema.tags).some(v => typeof v[0] != "string" && typeof v[1] != "string"))
+        throw new Error("All names must to be String")
+
+      //armazenando
+
+      this.width = Math.ceil(schema.width);
+      this.height = Math.ceil(schema.height);
+      this.tags = schema.tags || { name: "nameless" };
+      this.names = schema.names || [];
+      this.blocks = (schema.blocks || []).map((v,i) => {
+
+        if (isNaN(v.type)) v.type = 0;
+        if (!Array.isArray(v.position)) v.position = [i%this.width,this.height-1-Math.floor(i/this.width)];
+        if (isNaN(v.configt)) v.configt = 0;
+        if (!v.config) v.config = null;
+        if (isNaN(v.rotation)) v.rotation = 0;
+
+        switch (v.configt) {
+          case 5: {
+
+          }
+        }
+
+        let a = atlas[this.names[v.type]]
+        v.size = a ? a[0] : 1;
+        return v;
+      })
+
+
+
+      //Criando a memoria
+      this.memory = []
+      for (let x = 0; x < schema.width; x++) {
+        this.memory[x] = [];
+        for (let y = 0; y < schema.height; y++) {
+          this.memory[x][y] = -1;
+        }
+      }
+      this.blocks.forEach((block, id) => {
+        let mn = -Math.floor((block.size - 1) / 2);
+        let mx = Math.floor(block.size / 2);
+
+        for (let x = mn; x <= mx; x++) {
+          for (let y = mn; y <= mx; y++) {
+            let lx = Math.min(Math.max(block.position[0] + x, 0), schema.width - 1)
+            let ly = Math.min(Math.max(block.position[1] + y, 0), schema.height - 1)
+            this.memory[lx][ly] = id;
+          }
+        }
+
+      })
+
+      //Transformando plastanium
+
+      let type = this.names.indexOf("plastanium-conveyor");
+      if (type >= 0) {
+        let inID = -1;
+        let outID = -1;
+
+        const validOut = (b) => {
+          if (b.type != type) return false
+
+          let sf = this.lookingBlocks(b, b.rotation, true)
+          let sr = this.lookingBlocks(b, b.rotation + 1)
+          let sl = this.lookingBlocks(b, b.rotation - 1)
+          let sb = this.lookingBlocks(b, b.rotation + 2)
+
+          return sf != "plastanium-conveyor" &&
+            !(
+              sr && sr.type == type && !((sr.rotation - b.rotation + 5) % 4) ||
+              sl && sl.type == type && !((sl.rotation - b.rotation + 3) % 4)
+            ) &&
+            sb && (
+              this.names[sb.type] == "plastanium-conveyor-2" ||
+              sb.type == type && (
+                sb.rotation == b.rotation ||
+                validOut(sb)
+              )
+            )
+        }
+
+        //plastanium-out
+        this.blocks = this.blocks.map(b => {
+          if (b.type != type) return b;
+
+          if (validOut(b)) {
+            if (outID < 0) outID = this.names.push("plastanium-conveyor-2") - 1
+            b.type = outID;
+          }
+          return b;
+        })
+        //plastanium-inp
+        this.blocks = this.blocks.map(b => {
+          if (b.type != type) return b;
+
+          let sf = this.lookingBlocks(b, b.rotation + 0)
+          let sr = this.lookingBlocks(b, b.rotation + 1)
+          let sb = this.lookingBlocks(b, b.rotation + 2)
+          let sl = this.lookingBlocks(b, b.rotation + 3)
+
+          let validIn = !(
+            sb && [type, inID].includes(sb.type) && !((sb.rotation - b.rotation + 4) % 4) ||
+            sr && [type, inID].includes(sr.type) && !((sr.rotation - b.rotation + 5) % 4) ||
+            sl && [type, inID].includes(sl.type) && !((sl.rotation - b.rotation + 3) % 4)
+          ) && !(sb && this.names[sb.type] == "plastanium-conveyor-2") &&
+            sf && sf.type == type;
+
+          if (validIn) {
+            if (inID < 0) inID = this.names.push("plastanium-conveyor-1") - 1
+            b.type = inID;
+          }
+          return b;
+        })
+
+
+        this.names = this.names.map(n => n == "plastanium-conveyor" ? "plastanium-conveyor-0" : n)
+      }
+
+    }
+
+    /**
+     * Retorna o schema de forma comprimida
+     * @returns {Buffer}
+     */
+    toBuffer() {
+      const SStruct = module.exports.StreamStructure;
+      const SArray = new SStruct("short", "short", "json[1]", "string[1]", "block[4]")
+        .setType("json", new SStruct("string", "string"))
+        .setType("block", new SStruct("byte", "short", "short", [
+          [], //0 - Maioria dos blocos nos quais não possui informação guardada
+          // ex: copper-wall
+          ["int"], //1 
+          ["long"], //2
+          ["float"],//3
+          [[[], ["string"]]], //4 - Utilizado para carregar informações de um unico texto
+          // ex: message
+          ["byte", "short"], //5 - Utilizado para guardar Materiais/Fluidos/Objetos do jogo
+          // ex: item-source, ordenator, 
+          ["int[2]"], //6
+          ["int", "int"], //7 - Utilizado para carregar cordenadas
+          // ex: bridge-conveyor, mass-driver
+          ["pos[1]"], //8 - Utilizada para carregar multiplas coordenadas pequenas
+          // ex: power-node
+          ["byte", "short"],//9 
+          ["byte"], //10 - Utiliado para guardar informações booleanas ou de baixa variedade
+          // ex: door, large-door, switch
+          ["double"], //11
+          ["int"], //12
+          ["short"], //13
+          ["Ubyte[4]"], //14 - Utilizado para guardar informações complexas
+          // ex: processor
+          ["byte"] //15 - ???
+          // ex: command-center
+        ], "byte"))
+        .setType("pos", new SStruct("short", "short"));
+
+      let blocks = this.blocks.map(v => [
+        v.type || 0,
+        v.position[0],
+        v.position[1],
+        [v.configt || 0 ,
+        v.config || null],
+        v.rotation || 0
+      ])
+      let tags = Object.entries(this.tags);
+
+      let buffer = SArray.toBuffer(this.width,this.height,tags,this.names,blocks);
+
+      let prefix = Buffer.alloc(5)
+      prefix.write("msch", 0)
+      prefix.writeInt8(1, 4)
+
+      return Buffer.concat([prefix, zlib.deflateSync(buffer)])
+    }
+
+    /**
+     * Retorna o bloco na posição x,y da schematica 
+     * @param {Number} x - posição x
+     * @param {Number} y - posição y
+     * @param {Boolean?} name - Caso seja True, ira retornar apenas o nome
+     * @returns {JSON|string}
+     */
+    getBlockAt(x, y, name = false) {
+      if (x < 0 || y < 0 || x >= this.width || y >= this.height) return;
+      let block = this.blocks[this.memory[x][y]]
+      return name && block ? this.names[block.type] : block
+    }
+
+    /**
+     * Atravez do ID retorna o bloco na qual o bloco principal esta olhando
+     * @param {Number|Object} id - ID do bloco principal
+     * @param {Number=} rot - Caso inserido, vai utilizar tal rotação como preferencia 
+     * @param {Boolean=} name - Caso seja True, ira retornar apenas o nome
+     * @returns {{type: Number,position: Number[],configt: Number,config:*,rotation: Number,size: Number}|string}
+     */
+    lookingBlocks(id, rot, name = false) {
+      const block = isNaN(id) ? id : this.blocks[id];
+      const pos = block.position
+      const off = module.exports.Schematic.rotToPos(!isNaN(rot) ? rot : block.rotation)
+
+      return this.getBlockAt(pos[0] + off[0] * block.size, pos[1] + off[1], name)
+    }
+
+    /**
+     * Transforma o schematic em uma imagem
+     * @param {{team: String}} [options]
+     * @returns {Promise<Buffer>}
+     */
+    async toCanvas(options = { team: "sharded" }) {
+
+      // Constantes
+      const cons = {
+        CONVEYOR: ["titanium-conveyor", "conveyor", "armored-conveyor", "conduit", "plated-conduit", "pulse-conduit"],
+        ITEMSCONVEYOR: ["titanium-conveyor", "conveyor", "armored-conveyor"],
+        LIQUIDSCONVEYOR: ["conduit", "plated-conduit", "pulse-conduit"],
+        PLATEDCONVEYOR: ["plated-conduit", "armored-conveyor"],
+
+        PAYLOADCONVEYOR: ["payload-conveyor"],
+        PAYLOADROUTER: ["payload-router"],
+        PAYLOAINPUTS: ["additive-reconstructor", "multiplicative-reconstructor", "exponential-reconstructor", "tetrative-reconstructor"],
+        PAYLOABLOCKS: ["payload-conveyor", "payload-router", "air-factory", "naval-factory", "ground-factory", "additive-reconstructor", "multiplicative-reconstructor", "exponential-reconstructor", "tetrative-reconstructor"],
+
+        STACKCONVEYOR: ["plastanium-conveyor"],
+
+        BRIDGE: ["bridge-conveyor", "phase-conveyor", "bridge-conduit", "phase-conduit"],
+        ITEMSBRIDGE: ["bridge-conveyor", "phase-conveyor"],
+        LIQUIDSBRIDGE: ["bridge-conduit", "phase-conduit"],
+
+        DOOR: ["door", "door-large"],
+      }
+
+      const teams = {
+        "sharded": [[0.96, -0.61, 0.65], [-0.04, 1.35, -0.47], [0.32, 0.23, -0.06]],
+        "derelict": [[0.02, 0.26, 0.03], [-0.01, 0.35, -0.04], [0.01, 0.32, 0.01]],
+        "crux": [[-1.44, 4.9, -2.47], [0.74, -1.71, 1.53], [0.61, -0.96, 0.77]],
+        "green": [[0.04, 0.23, 0.06], [0.01, 0.85, -0.02], [-0.01, 0.52, -0.03]],
+        "purple": [[-0.01, 0.63, -0.02], [-0.02, 0.42, -0.05], [-0.01, 0.74, -0.04]],
+        "blue": [[-0.04, 0.45, -0.06], [-0.02, 0.35, -0.04], [0.01, 0.93, -0.01]]
+      }
+
+      // Pegando os canvas
+      let canvas = Canvas.createCanvas(this.width * 32, this.height * 32);
+      let canvasM = Canvas.createCanvas(this.width * 32, this.height * 32);
+      let canvasT = Canvas.createCanvas(this.width * 32, this.height * 32);
+      let ctx = canvas.getContext("2d");
+      let ctxM = canvasM.getContext("2d");
+      let ctxT = canvasT.getContext("2d");
+
+      // Pegando as imagens
+
+      /** @type {{item: {name: String,color:String}[],liquid: {name: String,color:String}[]}} */
+      const contentAll = JSON.parse(fs.readFileSync('./dataBank/mindustryContent.json'));
+      const content = JSON.parse(fs.readFileSync('./dataBank/mindustryBlocks.json'));
+      const atlas = JSON.parse(fs.readFileSync('./images/blocks.atlas'));
+      let image = await Canvas.loadImage("./images/blocks.png");
+
+
+      //Funções
+      /**
+       * 
+       * @param {Canvas.CanvasRenderingContext2D} ctx
+       */
+      const draw = (ctx, item, x, y, rot) => {
+        if (!item) item = atlas["error"];
+
+        x = x * 32;
+        y = (this.height - y) * 32 - 32
+
+        let s = item[0] * 32;
+        let px = x - s / 2 % 32 + 32;
+        let py = y + s / 2 % 32; // - Math.floor(item[0] / 2) * 32;
+
+        ctx.save()
+        ctx.translate(px, py)
+
+        if (rot) {
+          ctx.rotate((rot || 0) * Math.PI / 2);
+        }
+
+        ctx.drawImage(
+          image, // Image
+          item[1] * 32, item[2] * 32, // Source Position
+          s, s, // Source Size
+          - s / 2, - s / 2, // Position
+          s, s // Size
+        );
+        ctx.restore();
+      }
+      const bridgeEnd = (x, y) => {
+        let block = this.getBlockAt(x, y);
+        if (block.config[0] && block.config[1]) return true;
+        if (!(block.config[0] || block.config[1])) return true;
+        return false;
+      };
+
+      console.log(this.names)
+
+      //Desenha blocos
+      this.blocks.forEach((obj, i) => {
+        const fastDraw = (name, rotation) => {
+          draw(ctx, atlas[name], obj.position[0], obj.position[1], rotation);
+        }
+        let objName = this.names[obj.type];
+
+        if (cons.PAYLOABLOCKS.includes(objName) && !cons.PAYLOADROUTER.includes(objName)) {
+
+          if (cons.PAYLOADCONVEYOR.includes(objName)) {
+            for (let i = 0; i < 4; i++) {
+
+              let block = this.lookingBlocks(obj);
+
+            }
+          }
+
+
+        } else if (cons.STACKCONVEYOR.some(v => new RegExp(`${v}-[012]`).test(objName))) { //StackConveyors
+
+          const pos = obj.position;
+          const rot = (4 - obj.rotation) % 4;
+          const isStack = (objName) => objName && new RegExp(`${objName.slice(0, -2)}-[012]`).test(objName);
+
+          fastDraw(objName, -obj.rotation);
+          if (objName.endsWith(0)) {
+            for (let i = 0; i < 4; i++) {
+              let block = this.lookingBlocks(obj, i, true);
+              if (
+                !block || isStack(block) && rot != i &&
+                (this.lookingBlocks(obj, i).rotation - i + 6) % 4 &&
+                isStack(block) && block.endsWith("2") && (rot - i + 6) % 4
+              ) {
+                fastDraw(objName.slice(0, -1) + "edge", -i);
+              }
+            }
+          } else if (objName.endsWith(1)) {
+            for (let i = 0; i < 4; i++) {
+              let block = this.lookingBlocks(obj, i, true);
+              if (
+                !content.items.includes(block) &&
+                i != rot
+              ) {
+                fastDraw(objName.slice(0, -1) + "edge", -i);
+              }
+            }
+          } else {
+            for (let i = 0; i < 4; i++) {
+              let block = this.lookingBlocks(obj, i, true);
+              if (
+                !content.items.includes(block) &&
+                !isStack(block) ||
+                (this.lookingBlocks(obj, i).rotation - i + 6) % 4
+              ) {
+                fastDraw(objName.slice(0, -1) + "edge", -i);
+              }
+            }
+          }
+
+        } else if (cons.CONVEYOR.includes(objName)) { //Conveyors
+
+
+          let pos = obj.position;
+          let rot = (4 - obj.rotation) % 4;
+          let sides = [0, 0, 0, 0];
+          let plated = cons.PLATEDCONVEYOR.includes(objName)
+          let name = cons.ITEMSCONVEYOR.includes(objName) ? "items" : "liquids";
+
+          for (let i = 0; i < 4; i++) {
+            let x = pos[0] + (i - 1) % 2;
+            let y = pos[1] + (2 - i) % 2;
+            let block = this.getBlockAt(x, y, true);
+            if (
+              (!plated && content[name].includes(block)) ||
+              (cons[`${name.toUpperCase()}CONVEYOR`].includes(block) && this.getBlockAt(x, y).rotation == (4 - i) % 4) ||
+              (!plated && cons[`${name.toUpperCase()}BRIDGE`].includes(block) && bridgeEnd(x, y))
+            ) {
+              sides[(i + obj.rotation) % 4] = 1;
+            }
+          }
+
+          let n = 0;
+          if (sides[1]) {
+            if (sides[0]) n = 6;
+            if (!sides[0]) n = 1;
+          }
+          if (sides[3]) {
+            if (sides[0]) n = 2;
+            if (!sides[0]) n = 5;
+          }
+          if (sides[1] && sides[3]) {
+            if (sides[0]) n = 3;
+            if (!sides[0]) n = 4;
+          }
+
+          draw(ctx, atlas[`${objName}-${n}`], obj.position[0], obj.position[1], rot)
+
+        } else if (cons.DOOR.includes(objName)) { //Doors
+          fastDraw(obj.config[0] ? objName + "-open" : objName)
+        } else { //Block itself
+
+          if (atlas[objName]) { //Desenha caso encontre
+            fastDraw(objName, 0);
+          } else if (atlas[objName + "1"]) { //Desenha as variaveis
+            let names = Object.keys(atlas).filter(v => new RegExp(objName + "\\d").test(v), 0);
+            fastDraw(names[Math.floor(Math.random() * names.length)], 0)
+          } else // Desenha o error
+            fastDraw("error", 0);
+
+          if (atlas[`${objName}-rotation`]) fastDraw(objName + "-rotation", -obj.rotation);
+          if (!isNaN(obj.config) && atlas[`${objName}-config-${obj.config}`]) fastDraw(`${objName}-config-${obj.config}`, 0);
+          if (atlas[`${objName}-top`]) fastDraw(objName + "-top", 0);
+          if (atlas[`${objName}-team`]) draw(ctxT, atlas[objName + "-team"], obj.position[0], obj.position[1]);
+        }
+      })
+
+      //Overlay de cor
+      this.names.forEach((type, typeID) => {
+        if (["unloader", "item-source", "sorter", "inverted-sorter", "liquid-source"].includes(type)) {
+
+          let atlasBlock = atlas[type + "-center"] || atlas["color-center"]
+          ctxM.globalCompositeOperation = "source-over";
+          this.blocks.filter(block => block.type == typeID && block.config).forEach((block) => {
+            ctxM.fillStyle = contentAll.item[block.config[1]].color;
+            ctxM.fillRect(block.position[0] * 32, (this.height - block.position[1] - 1) * 32, 32, 32);
+
+            ctxM.beginPath();
+            ctxM.save()
+            ctxM.rect(block.position[0] * 32, (this.height - block.position[1] - 1) * 32, 32, 32);
+            ctxM.clip();
+
+            ctxM.globalCompositeOperation = "destination-in";
+            draw(ctxM, atlasBlock, block.position[0], block.position[1])
+            ctxM.restore()
+          });
+
+        }
+      });
+      ctx.drawImage(canvasM, 0, 0);
+
+      //Colorindo Times
+      let data = ctxT.getImageData(0, 0, canvasT.width, canvasT.height);
+      for (let i = 0; i < data.data.length; i += 4) {
+
+        if (!data.data[i + 3]) continue;
+
+        let r, g, b;
+        let f = teams["crux"];
+
+        r = data.data[i + 0] / 255;
+        g = data.data[i + 1] / 255;
+        b = data.data[i + 2] / 255;
+
+        r = (f[0][0] + f[0][1] * r + f[0][2] * r * r) * 255;
+        g = (f[1][0] + f[1][1] * g + f[1][2] * g * g) * 255;
+        b = (f[2][0] + f[2][1] * b + f[2][2] * b * b) * 255;
+        data.data[i + 0] = Math.min(Math.max(0, Math.round(r)), 255)
+        data.data[i + 1] = Math.min(Math.max(0, Math.round(g)), 255)
+        data.data[i + 2] = Math.min(Math.max(0, Math.round(b)), 255)
+
+      }
+      ctxT.putImageData(data, 0, 0);
+      ctx.drawImage(canvasT, 0, 0);
+
+      //Deixa tudo transparente
+      ctx.globalAlpha = 0.8;
+
+      //Desenha pontes
+      this.names.forEach((type, typeID) => {
+        if (cons.BRIDGE.includes(type)) {
+          this.blocks.filter(obj => obj.type == typeID)
+            .filter(obj => !(obj.config[0] && obj.config[1]))
+            .forEach((obj) => {
+              let block = this.getBlockAt(obj.position[0] + obj.config[0], obj.position[1] + obj.config[1]);
+              if (block && block.type == typeID) {
+
+                let dir = 3 + (obj.config[0] ? Math.sign(obj.config[0]) : 1 + Math.sign(obj.config[1]))
+                let dist = Math.abs(obj.config[0] + obj.config[1]);
+
+                while (dist-- > 1) {
+                  draw(ctx, atlas[type + "-bridge"],
+                    obj.position[0] + Math.sign(obj.config[0]) * dist,
+                    obj.position[1] + Math.sign(obj.config[1]) * dist,
+                    -dir);
+                }
+
+              }
+            });
+        }
+      })
+
+
+      return canvas;
+    }
+
+    /**
+     * Retorna a posição relativa para tal rotação
+     * @param {Number} rot
+     * @returns {Number[]} 
+     */
+    static rotToPos(rot) {
+      return [
+        Math.round(Math.cos(rot * Math.PI / 2)),
+        Math.round(Math.sin(rot * Math.PI / 2))
+      ]
+    }
+
+  },
   //#endregion
 }

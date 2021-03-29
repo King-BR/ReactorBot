@@ -38,7 +38,7 @@ module.exports = {
             Object.values(period).forEach(val => {
               numb += val;
             });
-            numb /= Object.values(period).length;
+            //numb /= Object.values(period).length;
             numb = isNaN(numb) ? 0 : numb;
             numb = Math.round(numb);
 
@@ -51,9 +51,11 @@ module.exports = {
         case 'cf':
         case 'config': {
 
-          const c = client.utils.Info.config.run(client, message, result, imageExists, args)
+          const c = client.utils.Info.config.run(client, message, result, imageExists, args);
+          console.log(c)
           if (c) return c;
         }
+
         default: {
           const conf = botUtils.jsonPull('./dataBank/config.json').players[member.id];
 
@@ -72,9 +74,8 @@ module.exports = {
         }
       }
 
-      for (let i = result.msgs.length; i <= 23; i++) {
-        result.msg.unshift(0);
-      }
+      if([command, args[0]].includes("return")) return message.channel.send(`\`${result.msgs.join(" ")}\`\nsize: ${result.msgs.length}`)
+      if(result.msgs.length != 24) return message.reply(`Ocorreu um erro, esta armazenado ${result.msgs.length} periodos, contate um adm`);
 
       //aqui entra uma linha "#FFFFFF #000000"
       let colorsRaw = result.colors.trim().split(" ")

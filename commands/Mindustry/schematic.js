@@ -8,13 +8,13 @@ module.exports = {
     try {
       // Codigo do comando
       if(!args[0]) return message.reply("é necessario enviar um codigo de esquema")
-      let schema = botUtils.mndGetScheme(args[0]);
+      let schema = botUtils.Schematic(Buffer.from(args[0],"base64"));
       if (!isNaN(schema)) {
         if (schema == 1) return message.reply("Isso não é um codigo de esquema");
         if (schema == 2) return message.reply("Esse codigo é muito antigo");
         if (schema >= 3) return message.reply("O codigo esta corrompido, teste no jogo para ver funciona, caso funcione no jogo fale com algum adm (" + schema + ")");
       }
-      botUtils.mndSendMessageEmbed(args[0], schema, message)
+      botUtils.mndSendMessageEmbed(args[0], message, schema)
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

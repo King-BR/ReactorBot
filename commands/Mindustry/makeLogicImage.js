@@ -5,14 +5,34 @@ const zlib = require("zlib");
 const botUtils = require("../../utils.js");
 
 module.exports = {
+  /**
+   * @param {Discord.Client} client;
+   * @param {Discord.Message} message;
+   * @param {String[]} args;
+   */
   run: async (client, message, args) => {
     newError = botUtils.newError;
 
     try {
       // Codigo do comando
+      if (args[0] == "help") {
+        let embed = new Discord.MessageEmbed()
+          .setColor("RANDOM")
+          .setAuthor(message.author.tag, message.author.displayAvatarURL)
+          .setTitle("Como usar o comando !li")
+          .setDescription("Para transformar uma imagem em schematic, precisa utilizar\n`!li <imagem/link da imagem>`\n se deseja colocar um nome na schematic, coloque\n`!li [nome] <img/link da img>`\n se deseja definir o nivel de qualidade da imagem final coloque\n`!li [nome] [qualidade] <img/link da img>`\nqualidade é de 0 - 100, sendo o padrão 80, não recomendado colocar 100, pois ira consumir muito processador para um ganho quase invisivel, para alta resolução recomenda 95");
+
+        return message.reply(embed);
+      }
+
+      //#region Inputs
+
       let start = new Date().getTime();
-      let imagem = message.attachments.size ? message.attachments.first().url || null : args.pop();
+      let imagem = message.attachments.size && message.attachments.first().url || args.pop();
       if (!imageExists(imagem)) return message.reply("img invalida");
+
+      let inps = message.content.match(/\w+\s*:\s*(?:".+?(?<!\\)"|\S+)/gis);
+
 
       let rq = 128 / 255
       let quality = args.pop() || 80;
@@ -21,6 +41,9 @@ module.exports = {
       if (isNaN(quality)) return message.reply("o nivel de qualidade precisa ser um numero");
       if (parseFloat(quality) < 0 || parseFloat(quality) > 100) return message.reply("o nivel de qualidade precisa ser entre 0% e 100%");
       quality = 1 - (parseFloat(quality) / 100) ** (0.2)
+
+      //#endregion
+      //#region Draw
 
       const backg = await new Canvas.loadImage(imagem);
       let big = Math.max(backg.width, backg.height)
@@ -38,70 +61,76 @@ module.exports = {
           Math.floor(n[1] * 255).toString(16).padStart(2, "0") +
           Math.floor(n[2] * 255).toString(16).padStart(2, "0");
       }
-      const quad = (x, y, w, h, q) => {
-        let b = [null, null, null, null, null];
+      const getraw = {
+        quadtree: () => {
+          const quad = (x, y, w, h, q) => {
+            let b = [null, null, null, null, null];
 
-        //Caso seja um pixel, retorna o pixel
-        if (w == 1 && h == 1) {
-          let pos = (x + y * canvas.width) * 4
-          return [data.data[pos] / 255, data.data[pos + 1] / 255, data.data[pos + 2] / 255]
-        }
+            //Caso seja um pixel, retorna o pixel
+            if (w == 1 && h == 1) {
+              let pos = (x + y * canvas.width) * 4
+              return [data.data[pos] / 255, data.data[pos + 1] / 255, data.data[pos + 2] / 255]
+            }
 
-        //Caso seja maior q 1 pixel, retorna uma quadtree de pixels
-        let mnw = Math.floor(w / 2)
-        let mxw = Math.ceil(w / 2)
-        let mnh = Math.floor(h / 2)
-        let mxh = Math.ceil(h / 2)
+            //Caso seja maior q 1 pixel, retorna uma quadtree de pixels
+            let mnw = Math.floor(w / 2)
+            let mxw = Math.ceil(w / 2)
+            let mnh = Math.floor(h / 2)
+            let mxh = Math.ceil(h / 2)
 
-        b[0] = null;
+            b[0] = null;
 
-        if (h > 1 && w > 1) b[1] = quad(x, y, mnw, mnh, q);
-        if (h > 1) b[2] = quad(x + mnw, y, mxw, mnh, q);
-        if (w > 1) b[3] = quad(x, y + mnh, mnw, mxh, q);
-        b[4] = quad(x + mnw, y + mnh, mxw, mxh, q);
+            if (h > 1 && w > 1) b[1] = quad(x, y, mnw, mnh, q);
+            if (h > 1) b[2] = quad(x + mnw, y, mxw, mnh, q);
+            if (w > 1) b[3] = quad(x, y + mnh, mnw, mxh, q);
+            b[4] = quad(x + mnw, y + mnh, mxw, mxh, q);
 
-        //caso sejam iguais, retorne um pixel com a nova cor
-        let c = [0, 0, 0]
-        let l = b.filter((v, i) => i && v).length;
+            //caso sejam iguais, retorne um pixel com a nova cor
+            let c = [0, 0, 0]
+            let l = b.filter((v, i) => i && v).length;
 
-        for (let i = 0; i < c.length; i++) {
-          for (let j = 1; j < 5; j++) {
-            c[i] += b[j] && (isNaN(b[j][i]) ? b[j][0][i] : b[j][i]) || 0;
+            for (let i = 0; i < c.length; i++) {
+              for (let j = 1; j < 5; j++) {
+                c[i] += b[j] && (isNaN(b[j][i]) ? b[j][0][i] : b[j][i]) || 0;
+              }
+              c[i] /= l;
+            }
+            if (!b.filter((v, i) => i && v).some((v) => {
+              return isNaN(v[0]) || c.some((c, i) => q - Math.abs(c - v[i]) < 0)
+            })) return c;
+            b[0] = c
+
+            return b;
           }
-          c[i] /= l;
-        }
-        if (!b.filter((v, i) => i && v).some((v) => {
-          return isNaN(v[0]) || c.some((c, i) => q - Math.abs(c - v[i]) < 0)
-        })) return c;
-        b[0] = c
-
-        return b;
-      }
-      const openquad = (q, x, y, w, h, f) => {
-        if (!q) return;
-        if (isNaN(q[0])) {
-          let mnw = Math.floor(w / 2)
-          let mxw = Math.ceil(w / 2)
-          let mnh = Math.floor(h / 2)
-          let mxh = Math.ceil(h / 2)
+          const openquad = (q, x, y, w, h, f) => {
+            if (!q) return;
+            if (isNaN(q[0])) {
+              let mnw = Math.floor(w / 2)
+              let mxw = Math.ceil(w / 2)
+              let mnh = Math.floor(h / 2)
+              let mxh = Math.ceil(h / 2)
 
 
-          if (q[1]) openquad(q[1], x, y, mnw, mnh)
-          if (q[2]) openquad(q[2], x + mnw, y, mxw, mnh)
-          if (q[3]) openquad(q[3], x, y + mnh, mnw, mxh)
-          if (q[4]) openquad(q[4], x + mnw, y + mnh, mxw, mxh)
-        } else {
-          resultraw.push([Math.round(q[0] * 255 * rq) / 255 / rq, Math.round(q[1] * 255 * rq) / 255 / rq, Math.round(q[2] * 255 * rq) / 255 / rq, x, y, w, h])
+              if (q[1]) openquad(q[1], x, y, mnw, mnh)
+              if (q[2]) openquad(q[2], x + mnw, y, mxw, mnh)
+              if (q[3]) openquad(q[3], x, y + mnh, mnw, mxh)
+              if (q[4]) openquad(q[4], x + mnw, y + mnh, mxw, mxh)
+            } else {
+              resultraw.push([Math.round(q[0] * 255 * rq) / 255 / rq, Math.round(q[1] * 255 * rq) / 255 / rq, Math.round(q[2] * 255 * rq) / 255 / rq, x, y, w, h])
+            }
+          }
+          let qd = quad(0, 0, canvas.width, canvas.height, quality)
+          openquad(qd, 0, 0, canvas.width, canvas.height)
         }
       }
 
-      let qd = quad(0, 0, canvas.width, canvas.height, quality)
-      openquad(qd, 0, 0, canvas.width, canvas.height)
+      getraw["quadtree"]();
+
+      //desenha no canvas
       resultraw.forEach((v, i) => {
         ctx.fillStyle = toCol(v);
         ctx.fillRect(v[3], v[4], v[5], v[6])
       });
-
       resultraw.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2])
 
       // --- CRIANDO SCHEMATICA --- //
@@ -117,7 +146,7 @@ module.exports = {
       let resultord = [];
       let lastcolor = [-1, -1, -1]
 
-      //resultraw == todos os pixels
+      //resultraw == todos os retangulos
 
       resultraw.forEach((v, i) => {
         let color = [Math.round(v[0] * 255), Math.round(v[1] * 255), Math.round(v[2] * 255)];
@@ -128,7 +157,7 @@ module.exports = {
           resultord.push([
             `draw color ${Math.round(v[0] * 255)} ${Math.round(v[1] * 255)} ${Math.round(v[2] * 255)} 255 0 0`,
             `draw rect ${v[3]} ${canvas.height - v[4] - v[6]} ${v[5]} ${v[6]} 0 0`
-            ])
+          ])
         } else {
           last.push(`draw rect ${v[3]} ${canvas.height - v[4] - v[6]} ${v[5]} ${v[6]} 0 0`)
         }
@@ -153,12 +182,11 @@ module.exports = {
 
       result = result.map((v, i) => {
         if (i <= result.length - mi - 1) {
-          let l = Math.ceil(v.length / MAXLINE * DRAWPERPRO)-1
+          let l = Math.ceil(v.length / MAXLINE * DRAWPERPRO) - 1
           v.push(`read r cell1 0`)
           v.push(`jump ${v.length - 1 + l} notEqual r ${i}`)
           v.push(`write ${i + 1}`)
           v.push(`jump ${v.length - 3 + l} always r false`)
-          console.log(v)
         } else {
           v.unshift("jump 0 notEqual r " + (i <= result.length - mi - 1 ? 0 : i));
           v.unshift(`read r cell1 0`);
@@ -200,7 +228,7 @@ module.exports = {
               addheight - Math.floor((result.length + 1) / 6)
             ],
             configt: 4,
-            config: `Made by [RED]${message.author.tag}[] using [PURPLE]Reactor[][gray]Bot[] from MindustryBr https://discord.gg/G5zvFHN`,
+            config: [1,`Made by [RED]${message.author.tag}[] using [PURPLE]Reactor[][gray]Bot[] from MindustryBr https://discord.gg/G5zvFHN`],
           },
           {
             type: 3,
@@ -228,13 +256,6 @@ module.exports = {
         index = code.writeInt16BE(-((i + 1) % 6), index); // LINK X
         index = code.writeInt16BE(Math.floor((i + 1) / 6), index); // LINK Y
 
-        //Config tipo + tamanho
-        let config = zlib.deflateSync(code);
-        let bconfig = Buffer.alloc(5);
-        bconfig.writeInt8();
-        bconfig.writeInt32BE(config.length);
-        //config = new Buffer.concat([bconfig, config]);
-
         //Criando bloco
         let block = {
           type: 0,
@@ -243,24 +264,36 @@ module.exports = {
             addheight - Math.floor((i + 1) / 6)
           ],
           configt: 14,
-          config: config
+          config: Array.from(zlib.deflateSync(code))
         }
-
-        console.log(block)
 
         schem.blocks.push(block)
       })
+      //#endregion
 
       // ENVIANDO
 
-      bend = botUtils.mndJsonToScheme(schem);
-      let attach1 = new Discord.MessageAttachment(canvas.toBuffer(), "imagem.png");
-      let s = botUtils.mndGetScheme(bend.toString("base64"))
-      botUtils.mndSendMessageEmbed(bend.toString("base64"), s, message)
+      let scheme = new botUtils.Schematic(schem);
+      scheme.toCanvas().then(buf => {
+        let canv = Canvas.createCanvas(scheme.width * 32, scheme.height * 32);
+        let ctx = canv.getContext("2d");
 
-      message.channel.send(attach1);
+        ctx.drawImage(buf, 0, 0);
+        ctx.drawImage(canvas, 8, 8, 176, 176);
 
+        const attachment1 = new Discord.MessageAttachment(canv.toBuffer(), 'bufferedfilename.png');
+        const attachment2 = new Discord.MessageAttachment(scheme.toBuffer(), 'img.msch');
 
+        let embed = new Discord.MessageEmbed()
+          .setAuthor(message.author.tag, message.author.displayAvatarURL())
+          .setTitle("Imagem feita !!")
+          .setColor("#9c43d9")
+          .attachFiles([attachment1, attachment2])
+          .setImage('attachment://bufferedfilename.png');
+
+        message.channel.send(embed)
+          .then(msg => msg.react('📪'));
+      });
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

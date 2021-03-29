@@ -1,1042 +1,1932 @@
 {
+  "additive-reconstructor-top": [
+    3,
+    33,
+    15
+  ],
   "additive-reconstructor": [
     3,
-    11,
-    20
+    33,
+    18
   ],
   "air-factory": [
     3,
-    11,
-    23
+    33,
+    21
   ],
   "alloy-smelter": [
     3,
-    11,
-    26
+    30,
+    22
   ],
   "arc": [
     1,
-    9,
-    8
+    45,
+    11
   ],
   "armored-conveyor-0": [
     1,
-    10,
-    8
+    5,
+    45
   ],
   "armored-conveyor-1": [
     1,
-    11,
-    32
+    6,
+    45
   ],
   "armored-conveyor-2": [
     1,
-    12,
-    32
+    7,
+    45
   ],
   "armored-conveyor-3": [
     1,
-    13,
-    32
+    8,
+    45
   ],
   "armored-conveyor-4": [
     1,
-    14,
-    32
+    9,
+    45
   ],
   "armored-conveyor-5": [
     1,
-    15,
-    32
+    10,
+    45
   ],
   "armored-conveyor-6": [
     1,
-    16,
-    32
+    11,
+    45
+  ],
+  "basalt1": [
+    1,
+    29,
+    3
+  ],
+  "basalt2": [
+    1,
+    29,
+    45
+  ],
+  "basalt3": [
+    1,
+    30,
+    6
   ],
   "battery-large": [
     3,
-    11,
-    29
+    29,
+    37
   ],
   "battery": [
     1,
-    23,
-    32
+    44,
+    34
   ],
   "blast-drill": [
     4,
-    0,
-    29
+    21,
+    38
   ],
   "blast-mixer": [
     2,
-    4,
-    29
+    38,
+    2
   ],
   "block-forge": [
     3,
-    13,
-    0
+    30,
+    25
   ],
   "block-loader": [
     3,
-    13,
-    3
+    26,
+    10
   ],
   "block-unloader": [
     3,
-    14,
-    20
+    26,
+    13
   ],
   "bridge-conduit-bridge": [
     1,
-    24,
-    32
-  ],
-  "bridge-conduit-end": [
-    1,
-    25,
-    32
+    44,
+    0
   ],
   "bridge-conduit": [
     1,
-    26,
-    32
+    44,
+    1
   ],
   "bridge-conveyor-bridge": [
     1,
-    27,
-    32
-  ],
-  "bridge-conveyor-end": [
-    1,
-    28,
-    2
+    2,
+    45
   ],
   "bridge-conveyor": [
     1,
-    28,
-    3
-  ],
-  "coal-centrifuge": [
-    2,
-    4,
-    31
+    3,
+    45
   ],
   "color-center": [
     1,
-    28,
+    4,
+    45
+  ],
+  "char1": [
+    1,
+    30,
+    45
+  ],
+  "char2": [
+    1,
+    31,
+    6
+  ],
+  "char3": [
+    1,
+    32,
+    15
+  ],
+  "coal-centrifuge": [
+    2,
+    38,
     4
+  ],
+  "coal1": [
+    1,
+    33,
+    30
+  ],
+  "coal2": [
+    1,
+    34,
+    30
+  ],
+  "coal3": [
+    1,
+    36,
+    5
   ],
   "combustion-generator": [
     1,
-    28,
-    5
+    44,
+    35
+  ],
+  "command-center-team": [
+    2,
+    39,
+    38
   ],
   "command-center": [
     2,
-    7,
-    21
+    39,
+    40
   ],
   "conduit-0": [
     1,
-    28,
-    6
+    44,
+    2
   ],
   "conduit-1": [
     1,
-    28,
-    7
+    44,
+    3
   ],
   "conduit-2": [
     1,
-    28,
-    8
+    44,
+    4
   ],
   "conduit-3": [
     1,
-    28,
-    9
+    44,
+    5
   ],
   "conduit-4": [
     1,
-    28,
-    10
+    44,
+    6
   ],
   "conduit-5": [
     1,
-    28,
-    11
+    44,
+    7
   ],
   "conduit-6": [
     1,
-    28,
-    12
+    44,
+    8
+  ],
+  "container-team": [
+    2,
+    38,
+    26
   ],
   "container": [
     2,
-    9,
-    21
+    39,
+    0
   ],
   "conveyor-0": [
     1,
-    28,
-    13
+    12,
+    45
   ],
   "conveyor-1": [
     1,
-    28,
-    14
+    13,
+    45
   ],
   "conveyor-2": [
     1,
-    28,
-    15
+    14,
+    45
   ],
   "conveyor-3": [
     1,
-    28,
-    16
+    15,
+    45
   ],
   "conveyor-4": [
     1,
-    28,
-    17
+    16,
+    19
   ],
   "conveyor-5": [
     1,
-    28,
-    32
+    16,
+    45
   ],
   "conveyor-6": [
     1,
-    29,
-    2
+    17,
+    19
   ],
   "copper-wall-large": [
     2,
-    13,
-    6
+    40,
+    2
   ],
   "copper-wall": [
     1,
-    29,
-    3
+    45,
+    17
+  ],
+  "copper1": [
+    1,
+    36,
+    29
+  ],
+  "copper2": [
+    1,
+    37,
+    2
+  ],
+  "copper3": [
+    1,
+    37,
+    5
+  ],
+  "core-foundation-team": [
+    4,
+    22,
+    7
   ],
   "core-foundation": [
     4,
-    7,
-    9
+    22,
+    34
+  ],
+  "core-nucleus-team": [
+    5,
+    16,
+    14
   ],
   "core-nucleus": [
     5,
-    6,
-    23
+    17,
+    7
+  ],
+  "core-shard-team": [
+    3,
+    31,
+    43
   ],
   "core-shard": [
     3,
-    14,
-    23
+    32,
+    6
   ],
-  "cryofluid-mixer": [
+  "craters1": [
+    1,
+    37,
+    45
+  ],
+  "craters2": [
+    1,
+    38,
+    28
+  ],
+  "craters3": [
+    1,
+    38,
+    45
+  ],
+  "craters4": [
+    1,
+    40,
+    26
+  ],
+  "craters5": [
+    1,
+    40,
+    27
+  ],
+  "craters6": [
+    1,
+    41,
+    0
+  ],
+  "cryofluid-mixer-bottom": [
     2,
-    15,
-    18
+    38,
+    6
   ],
   "cultivator": [
     2,
-    22,
-    0
+    38,
+    8
   ],
   "cyclone": [
     3,
-    14,
+    32,
+    31
+  ],
+  "dacite-wall-large": [
+    2,
+    35,
+    34
+  ],
+  "dacite-wall1": [
+    1,
+    41,
+    1
+  ],
+  "dacite-wall2": [
+    1,
+    41,
     26
+  ],
+  "dacite1": [
+    1,
+    41,
+    27
+  ],
+  "dacite2": [
+    1,
+    41,
+    28
+  ],
+  "dacite3": [
+    1,
+    41,
+    29
+  ],
+  "dark-metal-large": [
+    2,
+    35,
+    36
+  ],
+  "dark-metal1": [
+    1,
+    41,
+    30
+  ],
+  "dark-metal2": [
+    1,
+    41,
+    31
+  ],
+  "dark-panel-1": [
+    1,
+    41,
+    32
+  ],
+  "dark-panel-2": [
+    1,
+    41,
+    33
+  ],
+  "dark-panel-3": [
+    1,
+    41,
+    34
+  ],
+  "dark-panel-4": [
+    1,
+    41,
+    35
+  ],
+  "dark-panel-5": [
+    1,
+    41,
+    36
+  ],
+  "dark-panel-6": [
+    1,
+    41,
+    37
+  ],
+  "darksand-tainted-water": [
+    1,
+    41,
+    38
+  ],
+  "darksand-water": [
+    1,
+    41,
+    39
+  ],
+  "darksand1": [
+    1,
+    41,
+    40
+  ],
+  "darksand2": [
+    1,
+    41,
+    41
+  ],
+  "darksand3": [
+    1,
+    41,
+    42
+  ],
+  "deepwater": [
+    1,
+    41,
+    43
   ],
   "differential-generator": [
     3,
-    14,
-    29
+    30,
+    3
+  ],
+  "diode-rotation": [
+    1,
+    44,
+    36
   ],
   "diode": [
     1,
-    29,
-    4
+    44,
+    37
+  ],
+  "dirt-wall-large": [
+    2,
+    35,
+    38
+  ],
+  "dirt-wall1": [
+    1,
+    41,
+    44
+  ],
+  "dirt-wall2": [
+    1,
+    41,
+    45
+  ],
+  "dirt1": [
+    1,
+    42,
+    0
+  ],
+  "dirt2": [
+    1,
+    42,
+    1
+  ],
+  "dirt3": [
+    1,
+    42,
+    2
   ],
   "disassembler": [
     3,
-    15,
-    6
+    30,
+    28
   ],
   "distributor": [
     2,
-    22,
-    2
+    27,
+    31
   ],
   "door-large-open": [
     2,
-    22,
+    40,
     4
   ],
   "door-large": [
     2,
-    23,
-    18
+    40,
+    6
   ],
   "door-open": [
     1,
-    29,
-    5
+    45,
+    18
   ],
   "door": [
     1,
-    29,
-    6
+    45,
+    19
+  ],
+  "dune-wall-large": [
+    2,
+    36,
+    3
+  ],
+  "dune-wall1": [
+    1,
+    42,
+    3
+  ],
+  "dune-wall2": [
+    1,
+    42,
+    4
   ],
   "duo": [
     1,
+    45,
+    12
+  ],
+  "edge-stencil": [
+    3,
     29,
     7
   ],
+  "edge": [
+    1,
+    42,
+    5
+  ],
+  "edgier": [
+    1,
+    42,
+    6
+  ],
   "error": [
     1,
-    29,
-    8
+    45,
+    30
+  ],
+  "exponential-reconstructor-top": [
+    7,
+    10,
+    0
   ],
   "exponential-reconstructor": [
     7,
+    10,
+    7
+  ],
+  "factory-in-3": [
+    3,
+    33,
+    24
+  ],
+  "factory-in-5": [
+    5,
+    18,
+    19
+  ],
+  "factory-in-7": [
+    7,
+    14,
+    38
+  ],
+  "factory-in-9": [
+    9,
     0,
-    9
+    20
+  ],
+  "factory-out-3": [
+    3,
+    33,
+    27
+  ],
+  "factory-out-5": [
+    5,
+    18,
+    24
+  ],
+  "factory-out-7": [
+    7,
+    17,
+    0
+  ],
+  "factory-out-9": [
+    9,
+    0,
+    29
+  ],
+  "factory-top-3": [
+    3,
+    34,
+    0
   ],
   "force-projector": [
     3,
-    15,
-    9
+    25,
+    42
   ],
   "foreshadow": [
     4,
-    7,
-    13
+    23,
+    17
   ],
   "fuse": [
     3,
-    15,
-    12
+    32,
+    34
   ],
   "graphite-press": [
     2,
-    23,
-    20
+    38,
+    10
+  ],
+  "grass1": [
+    1,
+    42,
+    7
+  ],
+  "grass2": [
+    1,
+    42,
+    8
+  ],
+  "grass3": [
+    1,
+    42,
+    9
   ],
   "ground-factory": [
     3,
-    15,
-    15
+    34,
+    40
   ],
   "hail": [
     1,
-    29,
-    9
+    45,
+    13
+  ],
+  "hotrock1": [
+    1,
+    42,
+    10
+  ],
+  "hotrock2": [
+    1,
+    42,
+    11
+  ],
+  "hotrock3": [
+    1,
+    42,
+    12
   ],
   "hyper-processor": [
     3,
-    16,
-    0
+    29,
+    31
+  ],
+  "ice-snow1": [
+    1,
+    42,
+    13
+  ],
+  "ice-snow2": [
+    1,
+    42,
+    14
+  ],
+  "ice-snow3": [
+    1,
+    42,
+    15
+  ],
+  "ice-wall-large": [
+    2,
+    36,
+    15
+  ],
+  "ice-wall1": [
+    1,
+    42,
+    16
+  ],
+  "ice-wall2": [
+    1,
+    42,
+    17
+  ],
+  "ice1": [
+    1,
+    42,
+    18
+  ],
+  "ice2": [
+    1,
+    42,
+    19
+  ],
+  "ice3": [
+    1,
+    42,
+    20
+  ],
+  "illuminator-top": [
+    1,
+    44,
+    38
   ],
   "illuminator": [
     1,
-    29,
-    10
+    44,
+    39
   ],
   "impact-reactor": [
     4,
-    7,
-    17
+    21,
+    42
   ],
   "incinerator": [
     1,
-    29,
-    11
+    44,
+    44
+  ],
+  "interplanetary-accelerator-team": [
+    7,
+    0,
+    38
   ],
   "interplanetary-accelerator": [
     7,
-    0,
-    16
+    7,
+    38
   ],
   "inverted-sorter": [
     1,
-    29,
-    12
+    25,
+    45
   ],
   "item-source": [
     1,
-    29,
-    13
+    44,
+    45
   ],
   "item-void": [
     1,
-    29,
-    14
+    45,
+    0
   ],
   "junction": [
     1,
-    29,
-    15
+    26,
+    16
   ],
   "kiln": [
     2,
-    23,
-    22
+    38,
+    12
   ],
   "lancer": [
     2,
-    23,
-    24
+    39,
+    28
   ],
   "large-logic-display": [
     6,
-    0,
-    23
+    10,
+    14
   ],
   "laser-drill": [
     3,
-    16,
-    3
+    28,
+    0
   ],
   "launch-pad-large": [
     4,
-    9,
-    0
+    18,
+    34
   ],
   "launch-pad": [
     3,
-    17,
-    18
+    24,
+    4
+  ],
+  "lead1": [
+    1,
+    42,
+    21
+  ],
+  "lead2": [
+    1,
+    42,
+    22
+  ],
+  "lead3": [
+    1,
+    42,
+    23
   ],
   "liquid-junction": [
     1,
-    29,
-    16
+    44,
+    23
   ],
   "liquid-overflow-gate": [
     1,
-    29,
-    17
+    44,
+    24
   ],
   "liquid-router": [
     1,
-    29,
-    18
+    44,
+    25
   ],
   "liquid-source": [
     1,
-    29,
-    19
+    45,
+    1
   ],
-  "liquid-tank": [
+  "liquid-tank-bottom": [
     3,
-    17,
-    21
+    29,
+    10
   ],
   "liquid-void": [
     1,
-    29,
-    20
+    45,
+    2
   ],
   "logic-display": [
     3,
-    17,
-    24
+    29,
+    34
   ],
   "logic-processor": [
     2,
-    23,
+    37,
+    31
+  ],
+  "magmarock1": [
+    1,
+    42,
+    24
+  ],
+  "magmarock2": [
+    1,
+    42,
+    25
+  ],
+  "magmarock3": [
+    1,
+    42,
     26
   ],
   "mass-driver": [
     3,
-    17,
-    27
+    26,
+    33
   ],
   "mechanical-drill": [
     2,
-    23,
-    28
+    29,
+    40
   ],
   "mechanical-pump": [
     1,
-    29,
-    21
+    44,
+    26
   ],
   "meltdown": [
     4,
-    9,
-    4
+    23,
+    21
   ],
   "melter": [
     1,
-    29,
-    22
+    45,
+    3
   ],
   "memory-bank": [
     2,
-    23,
-    30
+    37,
+    33
   ],
   "memory-cell": [
     1,
-    29,
-    23
+    44,
+    29
   ],
   "mend-projector": [
     2,
-    24,
-    0
+    17,
+    12
   ],
   "mender": [
     1,
-    29,
-    24
+    0,
+    45
   ],
   "message": [
     1,
-    29,
-    25
+    44,
+    30
+  ],
+  "metal-floor-2": [
+    1,
+    42,
+    27
+  ],
+  "metal-floor-3": [
+    1,
+    42,
+    28
+  ],
+  "metal-floor-5": [
+    1,
+    42,
+    29
+  ],
+  "metal-floor-damaged1": [
+    1,
+    42,
+    30
+  ],
+  "metal-floor-damaged2": [
+    1,
+    42,
+    31
+  ],
+  "metal-floor-damaged3": [
+    1,
+    42,
+    32
+  ],
+  "metal-floor": [
+    1,
+    42,
+    33
   ],
   "micro-processor": [
     1,
-    29,
-    26
+    44,
+    31
+  ],
+  "moss1": [
+    1,
+    42,
+    34
+  ],
+  "moss2": [
+    1,
+    42,
+    35
+  ],
+  "moss3": [
+    1,
+    42,
+    36
+  ],
+  "mud1": [
+    1,
+    42,
+    37
+  ],
+  "mud2": [
+    1,
+    42,
+    38
+  ],
+  "mud3": [
+    1,
+    42,
+    39
   ],
   "multi-press": [
     3,
-    17,
-    30
+    31,
+    0
+  ],
+  "multiplicative-reconstructor-top": [
+    5,
+    18,
+    29
   ],
   "multiplicative-reconstructor": [
     5,
-    6,
-    28
+    21,
+    12
   ],
   "naval-factory": [
     3,
-    18,
-    6
+    34,
+    43
   ],
   "oil-extractor": [
     3,
-    18,
-    9
+    28,
+    42
   ],
   "overdrive-dome": [
     3,
-    18,
-    12
+    26,
+    7
   ],
   "overdrive-projector": [
     2,
-    24,
-    2
+    19,
+    12
   ],
   "overflow-gate": [
     1,
-    29,
-    27
+    26,
+    45
   ],
   "parallax": [
     2,
-    24,
+    21,
+    17
+  ],
+  "payload-conveyor-edge": [
+    3,
+    27,
     4
+  ],
+  "payload-conveyor-rotation": [
+    3,
+    27,
+    16
   ],
   "payload-conveyor": [
     3,
-    18,
-    15
+    27,
+    19
+  ],
+  "payload-router-rotation": [
+    3,
+    27,
+    22
+  ],
+  "payload-router-top": [
+    3,
+    27,
+    25
   ],
   "payload-router": [
     3,
-    19,
-    0
+    27,
+    28
+  ],
+  "pebbles1": [
+    1,
+    42,
+    40
+  ],
+  "pebbles2": [
+    1,
+    42,
+    41
+  ],
+  "pebbles3": [
+    1,
+    42,
+    42
   ],
   "phase-conduit-bridge": [
     1,
-    29,
-    28
-  ],
-  "phase-conduit-end": [
-    1,
-    29,
-    29
+    44,
+    27
   ],
   "phase-conduit": [
     1,
-    29,
-    30
+    44,
+    28
   ],
   "phase-conveyor-bridge": [
     1,
-    29,
-    31
-  ],
-  "phase-conveyor-end": [
-    1,
-    29,
-    32
+    27,
+    45
   ],
   "phase-conveyor": [
     1,
-    30,
-    0
+    28,
+    3
   ],
   "phase-wall-large": [
     2,
-    24,
-    6
+    40,
+    8
   ],
   "phase-wall": [
     1,
-    30,
-    1
+    45,
+    20
   ],
   "phase-weaver": [
     2,
-    24,
-    8
+    38,
+    14
   ],
   "plastanium-compressor": [
     2,
-    24,
-    10
+    38,
+    16
   ],
-  "plastanium-conveyor": [
+  "plastanium-conveyor-0": [
     1,
-    30,
-    2
+    17,
+    45
+  ],
+  "plastanium-conveyor-1": [
+    1,
+    18,
+    45
+  ],
+  "plastanium-conveyor-2": [
+    1,
+    19,
+    45
+  ],
+  "plastanium-conveyor-edge": [
+    1,
+    20,
+    45
   ],
   "plastanium-wall-large": [
     2,
-    24,
-    12
+    40,
+    10
   ],
   "plastanium-wall": [
     1,
-    30,
-    3
+    45,
+    21
   ],
   "plated-conduit-0": [
     1,
-    30,
-    4
+    44,
+    9
   ],
   "plated-conduit-1": [
     1,
-    30,
-    5
+    44,
+    10
   ],
   "plated-conduit-2": [
     1,
-    30,
-    6
+    44,
+    11
   ],
   "plated-conduit-3": [
     1,
-    30,
-    7
+    44,
+    12
   ],
   "plated-conduit-4": [
     1,
-    30,
-    8
+    44,
+    13
   ],
   "plated-conduit-5": [
     1,
-    30,
-    9
+    44,
+    14
   ],
   "plated-conduit-6": [
     1,
-    30,
-    10
+    44,
+    15
   ],
   "pneumatic-drill": [
     2,
-    24,
-    14
+    35,
+    30
   ],
   "power-node-large": [
     2,
-    24,
-    16
+    37,
+    35
   ],
   "power-node": [
     1,
-    30,
-    11
+    44,
+    40
   ],
   "power-source": [
     1,
-    30,
-    12
+    44,
+    41
   ],
   "power-void": [
     1,
-    30,
-    13
+    44,
+    42
   ],
   "pulse-conduit-0": [
     1,
-    30,
-    14
+    44,
+    16
   ],
   "pulse-conduit-1": [
     1,
-    30,
-    15
+    44,
+    17
   ],
   "pulse-conduit-2": [
     1,
-    30,
-    16
+    44,
+    18
   ],
   "pulse-conduit-3": [
     1,
-    30,
-    17
+    44,
+    19
   ],
   "pulse-conduit-4": [
     1,
-    30,
-    18
+    44,
+    20
   ],
   "pulse-conduit-5": [
     1,
-    30,
-    19
+    44,
+    21
   ],
   "pulse-conduit-6": [
     1,
-    30,
-    20
+    44,
+    22
   ],
   "pulverizer": [
     1,
-    30,
-    21
+    45,
+    4
   ],
   "pyratite-mixer": [
     2,
-    25,
+    38,
     18
   ],
   "rally-point": [
     2,
-    25,
-    20
+    39,
+    42
+  ],
+  "repair-point-base": [
+    1,
+    45,
+    15
   ],
   "repair-point": [
     1,
-    30,
-    22
+    45,
+    16
   ],
   "resupply-point": [
     2,
-    25,
-    22
+    39,
+    44
   ],
   "ripple": [
     3,
-    19,
-    3
+    32,
+    37
   ],
   "rotary-pump": [
     2,
-    25,
-    24
+    37,
+    29
   ],
   "router": [
     1,
-    30,
-    23
+    28,
+    36
   ],
   "rtg-generator": [
     2,
-    25,
-    26
+    37,
+    37
+  ],
+  "salt-wall-large": [
+    2,
+    36,
+    17
+  ],
+  "salt-wall1": [
+    1,
+    42,
+    43
+  ],
+  "salt-wall2": [
+    1,
+    42,
+    44
+  ],
+  "salt": [
+    1,
+    42,
+    45
   ],
   "salvo": [
     2,
-    25,
-    28
+    39,
+    30
+  ],
+  "sand-boulder1": [
+    1,
+    45,
+    5
+  ],
+  "sand-boulder2": [
+    1,
+    45,
+    6
+  ],
+  "sand-wall-large": [
+    2,
+    36,
+    19
+  ],
+  "sand-wall1": [
+    1,
+    43,
+    0
+  ],
+  "sand-wall2": [
+    1,
+    43,
+    1
+  ],
+  "sand-water": [
+    1,
+    43,
+    2
+  ],
+  "sand1": [
+    1,
+    43,
+    3
+  ],
+  "sand2": [
+    1,
+    43,
+    4
+  ],
+  "sand3": [
+    1,
+    43,
+    5
   ],
   "scatter": [
     2,
-    25,
-    30
+    39,
+    32
   ],
   "scorch": [
     1,
-    30,
-    24
+    45,
+    14
   ],
   "scrap-wall-gigantic": [
     4,
-    11,
-    8
+    23,
+    29
   ],
   "scrap-wall-huge1": [
     3,
-    20,
-    18
+    35,
+    6
   ],
   "scrap-wall-huge2": [
     3,
-    20,
-    21
+    35,
+    9
   ],
   "scrap-wall-huge3": [
     3,
-    20,
-    24
+    35,
+    12
   ],
   "scrap-wall-large1": [
     2,
-    26,
-    0
+    40,
+    12
   ],
   "scrap-wall-large2": [
     2,
-    26,
-    2
+    40,
+    14
   ],
   "scrap-wall-large3": [
     2,
-    26,
-    4
+    40,
+    16
   ],
   "scrap-wall-large4": [
     2,
-    26,
-    6
+    40,
+    18
   ],
   "scrap-wall1": [
     1,
-    30,
-    25
+    45,
+    22
   ],
   "scrap-wall2": [
     1,
-    30,
-    26
+    45,
+    23
   ],
   "scrap-wall3": [
     1,
-    30,
-    27
+    45,
+    24
   ],
   "scrap-wall4": [
     1,
-    30,
-    28
+    45,
+    25
   ],
   "scrap-wall5": [
     1,
-    30,
-    29
+    45,
+    26
+  ],
+  "scrap1": [
+    1,
+    43,
+    6
+  ],
+  "scrap2": [
+    1,
+    43,
+    7
+  ],
+  "scrap3": [
+    1,
+    43,
+    8
   ],
   "segment": [
     2,
     26,
-    8
+    36
   ],
   "separator": [
     2,
-    26,
+    38,
+    20
+  ],
+  "shale-boulder1": [
+    1,
+    45,
+    7
+  ],
+  "shale-boulder2": [
+    1,
+    45,
+    8
+  ],
+  "shale-wall-large": [
+    2,
+    36,
+    21
+  ],
+  "shale-wall1": [
+    1,
+    43,
+    9
+  ],
+  "shale-wall2": [
+    1,
+    43,
     10
+  ],
+  "shale1": [
+    1,
+    43,
+    11
+  ],
+  "shale2": [
+    1,
+    43,
+    12
+  ],
+  "shale3": [
+    1,
+    43,
+    13
   ],
   "shock-mine": [
     1,
-    30,
-    30
+    1,
+    45
+  ],
+  "shrubs-large": [
+    2,
+    36,
+    23
+  ],
+  "shrubs1": [
+    1,
+    43,
+    14
+  ],
+  "shrubs2": [
+    1,
+    43,
+    15
   ],
   "silicon-crucible": [
     3,
-    20,
-    27
+    31,
+    40
   ],
   "silicon-smelter": [
     2,
-    26,
-    12
+    38,
+    22
+  ],
+  "slag": [
+    1,
+    43,
+    16
+  ],
+  "snow-wall-large": [
+    2,
+    36,
+    25
+  ],
+  "snow-wall1": [
+    1,
+    43,
+    17
+  ],
+  "snow-wall2": [
+    1,
+    43,
+    18
+  ],
+  "snow1": [
+    1,
+    43,
+    19
+  ],
+  "snow2": [
+    1,
+    43,
+    20
+  ],
+  "snow3": [
+    1,
+    43,
+    21
   ],
   "solar-panel-large": [
     3,
-    20,
-    30
+    30,
+    16
   ],
   "solar-panel": [
     1,
-    30,
-    31
+    44,
+    43
   ],
   "sorter": [
     1,
-    30,
-    32
+    28,
+    37
+  ],
+  "space": [
+    1,
+    43,
+    22
+  ],
+  "spawn": [
+    1,
+    43,
+    23
   ],
   "spectre": [
     4,
-    11,
-    12
+    23,
+    25
+  ],
+  "spore-moss1": [
+    1,
+    43,
+    24
+  ],
+  "spore-moss2": [
+    1,
+    43,
+    25
+  ],
+  "spore-moss3": [
+    1,
+    43,
+    26
   ],
   "spore-press": [
     2,
-    26,
-    14
+    38,
+    24
+  ],
+  "spore-wall-large": [
+    2,
+    36,
+    27
+  ],
+  "spore-wall1": [
+    1,
+    43,
+    27
+  ],
+  "spore-wall2": [
+    1,
+    43,
+    28
   ],
   "steam-generator": [
     2,
-    26,
-    16
+    37,
+    39
+  ],
+  "stone-wall-large": [
+    2,
+    37,
+    0
+  ],
+  "stone-wall1": [
+    1,
+    43,
+    29
+  ],
+  "stone-wall2": [
+    1,
+    43,
+    30
+  ],
+  "stone1": [
+    1,
+    43,
+    31
+  ],
+  "stone2": [
+    1,
+    43,
+    32
+  ],
+  "stone3": [
+    1,
+    43,
+    33
   ],
   "surge-tower": [
     2,
-    27,
-    18
+    37,
+    41
   ],
   "surge-wall-large": [
     2,
-    27,
+    40,
     20
   ],
   "surge-wall": [
     1,
-    31,
-    0
+    45,
+    27
   ],
   "swarmer": [
     2,
-    27,
-    22
+    39,
+    34
+  ],
+  "switch-on": [
+    1,
+    44,
+    32
   ],
   "switch": [
     1,
-    31,
-    1
+    44,
+    33
+  ],
+  "tainted-water": [
+    1,
+    43,
+    34
+  ],
+  "tar": [
+    1,
+    43,
+    35
+  ],
+  "tendrils1": [
+    1,
+    43,
+    36
+  ],
+  "tendrils2": [
+    1,
+    43,
+    37
+  ],
+  "tendrils3": [
+    1,
+    43,
+    38
+  ],
+  "tetrative-reconstructor-top": [
+    9,
+    9,
+    20
   ],
   "tetrative-reconstructor": [
     9,
-    0,
-    0
+    9,
+    29
   ],
   "thermal-generator": [
     2,
-    27,
-    24
+    37,
+    43
   ],
   "thermal-pump": [
     3,
-    21,
-    6
+    29,
+    13
   ],
   "thorium-reactor": [
     3,
-    21,
-    9
+    30,
+    19
   ],
   "thorium-wall-large": [
     2,
-    27,
-    26
+    40,
+    22
   ],
   "thorium-wall": [
     1,
-    31,
-    2
+    45,
+    28
+  ],
+  "thorium1": [
+    1,
+    43,
+    39
+  ],
+  "thorium2": [
+    1,
+    43,
+    40
+  ],
+  "thorium3": [
+    1,
+    43,
+    41
+  ],
+  "thruster-rotation": [
+    4,
+    24,
+    0
   ],
   "thruster": [
     4,
-    11,
-    16
+    25,
+    38
   ],
   "titanium-conveyor-0": [
     1,
-    31,
-    3
+    22,
+    11
   ],
   "titanium-conveyor-1": [
     1,
-    31,
-    4
+    23,
+    11
   ],
   "titanium-conveyor-2": [
     1,
-    31,
-    5
+    23,
+    33
   ],
   "titanium-conveyor-3": [
     1,
-    31,
-    6
+    24,
+    11
   ],
   "titanium-conveyor-4": [
     1,
-    31,
-    7
+    24,
+    33
   ],
   "titanium-conveyor-5": [
     1,
-    31,
-    8
+    25,
+    11
   ],
   "titanium-conveyor-6": [
     1,
-    31,
-    9
+    25,
+    33
   ],
   "titanium-wall-large": [
     2,
-    27,
-    28
+    40,
+    24
   ],
   "titanium-wall": [
     1,
-    31,
-    10
+    45,
+    29
+  ],
+  "titanium1": [
+    1,
+    43,
+    42
+  ],
+  "titanium2": [
+    1,
+    43,
+    43
+  ],
+  "titanium3": [
+    1,
+    43,
+    44
   ],
   "tsunami": [
     3,
-    21,
-    12
+    33,
+    3
   ],
   "underflow-gate": [
     1,
-    31,
-    11
+    28,
+    45
   ],
   "unloader-center": [
     1,
-    31,
-    12
+    45,
+    9
   ],
   "unloader": [
     1,
-    31,
-    13
+    45,
+    10
+  ],
+  "vault-team": [
+    3,
+    32,
+    9
   ],
   "vault": [
     3,
-    21,
-    15
+    32,
+    12
   ],
   "water-extractor": [
     2,
-    27,
-    30
+    35,
+    32
+  ],
+  "water": [
+    1,
+    43,
+    45
   ],
   "wave": [
     2,
-    28,
+    39,
+    36
+  ],
+  "white-tree-dead": [
+    10,
+    0,
     0
+  ],
+  "white-tree": [
+    10,
+    0,
+    10
   ]
 }
