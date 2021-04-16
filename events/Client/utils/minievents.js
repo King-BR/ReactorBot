@@ -139,6 +139,16 @@ module.exports = (client, botUtils, server, editing) => {
         quest = `Uma palavra foi corrompida(${quant}x), descubra a palavra:\`${quest}\``
 
         return [quest, resp.toLowerCase()];
+      },
+      function() { // Copiar
+        const size = 10;
+        let resp = "";
+
+        for(let i = 0;i < size;i++){
+          resp = resp + Math.floor(Math.random()*36).toString(36);
+        }
+
+        return [`Seja rapido !! **Escreva** o codigo \`${resp.toUpperCase().split('').join('­')}\`. (pode ser em minúsculo)`,resp];
       }
     ];
 

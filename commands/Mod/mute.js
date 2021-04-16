@@ -13,6 +13,7 @@ module.exports = {
 			if(!args[1]) return message.reply("A duração do mute precisa ser definida");
 			
       const user = message.mentions.members.first();
+      console.log(user);
 			const channel = message.guild.channels.cache.get('764634049163427840');
       const reason =  args[2] ? args.slice(2).join(" ") : "[Nenhum motivo foi dado]"
       const d = new Date()
@@ -47,7 +48,7 @@ module.exports = {
 
       let IDs = {
         server: message.guild.id,
-        user: [message.author.id, user.id],
+        user: [message.author.id],
         msg: message.id
       }
       console.log(`=> ${newError(err, module.exports.config.name, IDs)}`);

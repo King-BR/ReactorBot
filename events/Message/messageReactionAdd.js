@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const isImageUrl = require("is-image-url");
+const sImageUrl = require("is-image-url");
 const sharp = require('sharp');
 const request = require('request');
 const botUtils = require("../../utils.js");
@@ -19,8 +19,6 @@ module.exports = async (client, messageReaction, user) => {
     if (messageReaction.message.partial) await messageReaction.message.fetch();
     await messageReaction.fetch()
     await messageReaction.users.fetch()
-
-    console.log(messageReaction.users.cache.size)
 
     //se foi o bot q mando
     if (user.id == client.user.id) return;
