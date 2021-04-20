@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const botUtils = require("../../utils.js");
-//const Dashboard = require("discord-bot-dashboard");
 
 module.exports = (client) => {
   newError = botUtils.newError;

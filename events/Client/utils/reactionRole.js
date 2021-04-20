@@ -10,8 +10,7 @@ module.exports = async (client, guild) => {
     const roles = [
       { name: "Colecionador", react: '🏮', role: "773627457462075453" , desc: 'Poder utilizar o bot Mudae, para colecionar personagens de anime'},
       { name: "Tradução", react: '🌐', role: "773763715794862110" , desc: 'Poder pedir/acompanhar/conversar sobre traduções dos mods'},
-      { name: "Modding", react: '⚙️', role: "825127723914625085" , desc: 'Acesso aos canais de modding de mindustry'},
-      { name: "Anarquia", react: '<:boom:751501838473232444>', role: "822946964588724234" , desc: 'Acesso aos chats anarquicos'}
+      { name: "Modding", react: '⚙️', role: "825127723914625085" , desc: 'Acesso aos canais de modding de mindustry'}
     ]
 
     const bannedChannels = [

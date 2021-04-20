@@ -1,7 +1,7 @@
 {
-  "serverStarted": 1618600787770,
-  "nextMiniquiz": 1618610656843,
-  "nextMsgOfDay": 1618660800000,
+  "serverStarted": 1618942531301,
+  "nextMiniquiz": 1618707101168,
+  "nextMsgOfDay": 1618747200000,
   "nextMsgChange": 1604340000000,
   "hanoiRecords": {
     "3": {
@@ -42,7 +42,7 @@
   },
   "eventType": 2,
   "eventWin": [
-    -9,
-    9
+    3,
+    4
   ]
 }
