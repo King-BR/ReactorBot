@@ -17,6 +17,7 @@ const client = new Discord.Client({
   partials: ['MESSAGE', 'REACTION']
 });
 client.config = config;
+const disbut = require('discord-buttons')(client);
 
 // Utils config
 chalkClient = botUtils.chalkClient;

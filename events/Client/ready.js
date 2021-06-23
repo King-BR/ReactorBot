@@ -67,10 +67,11 @@ module.exports = (client) => {
         const guild = client.guilds.cache.get("699823229354639471");
 
         //se o proximo miniquiz ja chegou  
-        if (server.nextMiniquiz < d.getTime()) {
+        if (server.nextMiniquiz < d.getTime() || server.forceQuiz >= 0) {
 
           //pega as respostas e o tipo do evento
           const ret = require("./utils/minievents.js")(client, botUtils, server, editing);
+          server.forceQuiz = -1;
           if (ret) {
             server.eventType = ret[1];
             server.eventWin = ret[0];

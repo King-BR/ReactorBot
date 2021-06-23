@@ -1,4 +1,5 @@
 const botUtils = require("../../../utils.js");
+const {MessageButton,MessageActionRow} = require("discord-buttons");
 
 module.exports = (client, botUtils, server, editing) => {
   newError = botUtils.newError;
@@ -142,14 +143,35 @@ module.exports = (client, botUtils, server, editing) => {
       },
       function() { // Copiar
         const size = 10;
-        let resp = "";
+        const minipc = 5;
+        const maxipc = 10;
+        const alternatelet = ['0̲','1̲','2̲','3̲','4̲','5̲','6̲','7̲','8̲','9̲','A̲','B̲','C̲','D̲','E̲','F̲','G̲','H̲','I̲','J̲','K̲','L̲','M̲','N̲','O̲','P̲','Q̲','R̲','S̲','T̲','U̲','V̲','W̲','X̲','Y̲','Z̲']
+        let resp = [];
 
         for(let i = 0;i < size;i++){
-          resp = resp + Math.floor(Math.random()*36).toString(36);
+          resp.push(Math.floor(Math.random()*36));
         }
 
-        return [`Seja rapido !! **Escreva** o codigo \`${resp.toUpperCase().split('').join('­')}\`. (pode ser em minúsculo)`,resp];
-      }
+
+        let modf = resp.map((v,i) => v);
+        modf = modf.map((v,i) => alternatelet[v]);
+        modf = modf.map((v,i) => (i?('­').repeat(Math.floor(Math.random()*(maxipc-minipc))+minipc):"")+v);
+
+        return [`Seja rapido !! **Escreva** o codigo \`${modf.join("")}\`. (pode ser em minúsculo)`,resp.map(v=>v.toString(36)).join("")];
+      },
+			function() { // Question
+				const buttonA = new MessageButton().setLabel('A').setStyle("green").setID("miniquiz#A");
+				const buttonB = new MessageButton().setLabel('B').setStyle("green").setID("miniquiz#B");
+				const buttonC = new MessageButton().setLabel('C').setStyle("green").setID("miniquiz#C");
+				const buttonD = new MessageButton().setLabel('D').setStyle("green").setID("miniquiz#D");
+				const actRow = new MessageActionRow()
+					.addComponent(buttonA)
+					.addComponent(buttonB)
+					.addComponent(buttonC)
+					.addComponent(buttonD);
+				
+				return ["25% de acertar :)",['A','B','C','D'][~~(Math.random()*4)],[actRow]];
+			}
     ];
 
 
@@ -157,7 +179,7 @@ module.exports = (client, botUtils, server, editing) => {
 
 
     //escolhe um evento aleatorio
-    number = Math.floor(Math.random() * choose.length)
+    number = server.forceQuiz < 0 || server.forceQuiz >= choose.length ? Math.floor(Math.random() * choose.length) : server.forceQuiz;
     quest = choose[number]();
 
     //se estiver no modo de edição (editing true)
@@ -168,7 +190,7 @@ module.exports = (client, botUtils, server, editing) => {
       color = '#' + [0, 0, 0].map((n, i) => Math.max(1 - Math.max(Math.abs((color * 6 + i * 2) % 6 - 2) - 1, 0), 0))
         .map(n => Math.floor(n * 255).toString(16).padStart(2, '0')).join('')
 
-      channel.send({ embed: { description: quest[0], color: color } });
+      channel.send({ embed: { description: quest[0], color: color }, components: quest[2]});
       channel.overwritePermissions([{ id: "700183808783286372", allow: 805829713 }, { id: "755665930159390721", deny: 2112 }, { id: "699823229354639471", allow: 68672, deny: 805761041 }]);
     }
 

@@ -1,8 +1,9 @@
 {
-  "serverStarted": 1618942531301,
-  "nextMiniquiz": 1618707101168,
-  "nextMsgOfDay": 1618747200000,
+  "serverStarted": 1624372027072,
+  "nextMiniquiz": 1624409896128,
+  "nextMsgOfDay": 1624449600000,
   "nextMsgChange": 1604340000000,
+  "forceQuiz": -1,
   "hanoiRecords": {
     "3": {
       "user": "291693225411084289",
@@ -40,9 +41,8 @@
       "time": 2533402
     }
   },
-  "eventType": 2,
-  "eventWin": [
-    3,
-    4
-  ]
+  "miniquizChooses": {},
+  "eventType": null,
+  "eventWin": null,
+  "lastMiniquiz": ""
 }

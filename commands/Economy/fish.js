@@ -1,5 +1,6 @@
 const fs = require("fs");
 const Discord = require("discord.js");
+const {MessageButton, MessageActionRow} = require("discord-buttons");
 const botUtils = require("../../utils.js");
 
 module.exports = {
@@ -9,7 +10,21 @@ module.exports = {
 
     try {
       //tira dps
-      message.reply('ainda não implementado')
+			let btn = new MessageButton()
+				.setLabel("Bom dia1")
+				.setStyle("green")
+				.setID("Bom Dia");
+
+			let btn2 = new MessageButton()
+				.setLabel("Bom dia2")
+				.setStyle("green")
+				.setID("Bom Dia");
+
+			let row = new MessageActionRow()
+				.addComponent(btn)
+				.addComponent(btn2);
+				
+      message.channel.send("Bom dia?",{components:[row]})
 
     } catch (err) {
       let embed = new Discord.MessageEmbed()

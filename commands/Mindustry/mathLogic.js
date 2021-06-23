@@ -1,8 +1,7 @@
 const nearley = require("nearley");
-const grammar = require("../../dataBank/ETLParser");
+const grammar = require("../../dataBank/grammar/ETLParser");
 const botUtils = require("../../utils.js");
 const Discord = require("discord.js");
-
 
 module.exports = {
   // Execução do comando
