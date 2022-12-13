@@ -19,7 +19,7 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "enmap": "^5.8.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fastest-levenshtein": "^1.0.12",
     "fs": "0.0.1-security",
     "github-content": "^1.0.1",
